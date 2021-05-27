@@ -1,6 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Exam Page | Done exams";
+    ViewData["Title"] = "Exam | Done exams";
 }
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
+</div>
 
 <div class="container-fluid">
     <div class="row">
@@ -9,18 +13,22 @@
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="Index">Informacje</a>
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="PublicExams">Publiczne testy</a>
                 <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exam" asp-action="DoneExams">Zrobione testy</a>
-                <a class="list-group-item list-group-item-action">Wyniki testów</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="ExamsResults">Wyniki testów</a>
             </div>
         </div>
         <div class="col-9">
             <div class="card border-dark mb-3">
-                <div class="card-header">Testy - Zrobione testy</div>
+                <div class="card-header">Zrobione testy</div>
                 <div class="card-body">
-                    <h4 style="font-family:'Mistral'">CZYM SĄ ZROBIONE TESTY?</h4>
-                    <p>
+                    <h4 style="font-family:'Mistral'"><b>CZYM SĄ ZROBIONE TESTY?</b></h4>
+                    <p class="lead">
                         Tutaj ZALOGOWANY użytkownik będzie mógł przejrzeć wszystkie dotychczas
                         zrobione przez siebie testy wraz z ich wynikami.
                     </p>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <br />
+                    }
                 </div>
             </div>
         </div>

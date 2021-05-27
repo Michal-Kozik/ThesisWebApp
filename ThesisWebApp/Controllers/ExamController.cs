@@ -22,5 +22,10 @@ namespace ThesisWebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult ExamsResults()
+        {
+            return View();
+        }
     }
 }

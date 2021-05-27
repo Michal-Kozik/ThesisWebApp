@@ -28,6 +28,21 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
+        public IActionResult AboutApp()
+        {
+            return View();
+        }
+
+        public IActionResult AboutStudent()
+        {
+            return View();
+        }
+
+        public IActionResult AboutTeacher()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
