@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Exam | Done exams";
+    ViewData["Title"] = "Exam | Create";
 }
 
 <div class="border-bottom" style="margin-bottom: 20px">
@@ -12,24 +12,21 @@
             <div class="list-group">
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="Index">Informacje</a>
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="PublicExams">Publiczne testy</a>
-                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exam" asp-action="DoneExams">Zrobione testy</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="DoneExams">Zrobione testy</a>
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="ExamsResults">Wyniki testów</a>
-                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="CreateExam">Stwórz test</a>
+                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exam" asp-action="CreateExam">Stwórz test</a>
             </div>
         </div>
         <div class="col-9">
             <div class="card border-dark mb-3">
-                <div class="card-header">Zrobione testy</div>
+                <div class="card-header">Informacje</div>
                 <div class="card-body">
-                    <h4 style="font-family:'Mistral'"><b>CZYM SĄ ZROBIONE TESTY?</b></h4>
+                    <h4 style="font-family:'Mistral'"><b>TWORZENIE TESTU</b></h4>
                     <p class="lead">
-                        Tutaj ZALOGOWANY użytkownik będzie mógł przejrzeć wszystkie dotychczas
-                        zrobione przez siebie testy wraz z ich wynikami.
+                        Typ zadania:
                     </p>
-                    @for (int i = 0; i < 10; i++)
-                    {
-                        <br />
-                    }
+                    <br />
+                    <button type="button" class="btn btn-outline-primary">Tłumaczenie słów</button>
                 </div>
             </div>
         </div>

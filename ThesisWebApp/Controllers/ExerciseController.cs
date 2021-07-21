@@ -6,29 +6,19 @@ using System.Threading.Tasks;
 
 namespace ThesisWebApp.Controllers
 {
-    public class ExamController : Controller
+    public class ExerciseController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult PublicExams()
+        public IActionResult CreateExercise()
         {
             return View();
         }
 
-        public IActionResult DoneExams()
-        {
-            return View();
-        }
-
-        public IActionResult ExamsResults()
-        {
-            return View();
-        }
-
-        public IActionResult CreateExam()
+        public IActionResult TranslatingWordsPrototype()
         {
             return View();
         }
