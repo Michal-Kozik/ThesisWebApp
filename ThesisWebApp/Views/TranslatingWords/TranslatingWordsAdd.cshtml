@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Translating Words | Settings";
+}
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model TranslatingWordsSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TŁUMACZENIE SŁÓW - UZUPEŁNIANIE</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="alert alert-dismissible alert-danger">
+            <div class="text-center">
+                <strong>Pamiętaj aby wypełnić wszystkie pola!</strong>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-5 text-center">
+                <p>Polski</p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5 text-center">
+                <p>Angielski</p>
+            </div>
+        </div>
+        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        @for (int i = 0; i < Model.NumberOfWords; i++)
+            {
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group">
+                        @*<label asp-for="TranslateFromArray[i]"></label>*@
+                        <input asp-for="TranslateFromArray[i]" class="form-control" />
+                        @*<span asp-validation-for="TranslateFromArray[i]" class="text-danger"></span>*@
+                    </div>
+                </div>
+                <div class="col-2 text-center">
+                    <p>-</p>
+                </div>
+                <div class="col-5">
+                    <div class="form-group">
+                        @*<label asp-for="TranslateToArray[i]"></label>*@
+                        <input asp-for="TranslateToArray[i]" class="form-control" />
+                        @*<span asp-validation-for="TranslateToArray" class="text-danger"></span>*@
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <label asp-for="NumberOfWords"></label>
+            <input asp-for="NumberOfWords" class="form-control" readonly />
+        </div>
+        <br />
+        @*<div class="form-group">
+            <label asp-for="TranslateFrom"></label>
+            <input asp-for="TranslateFrom" class="form-control" />
+            <span asp-validation-for="TranslateFrom" class="text-danger"></span>
+        </div>*@
+        <button asp-controller="TranslatingWords" asp-action="TranslatingWordsAdd" type="submit" class="btn btn-primary">Dalej</button>
+    </form>
+</div>

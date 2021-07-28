@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Translating Words | Settings";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model TranslatingWordsSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TŁUMACZENIE SŁÓW - KONFIGURACJA</b></h1>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <form method="post">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfWords" value="5" class="form-check-input" checked />
+                        5 słów
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfWords" value="10" class="form-check-input" />
+                        10 słów
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfWords" value="15" class="form-check-input" />
+                        15 słów
+                    </label>
+                </div>
+                <button asp-controller="TranslatingWords" asp-action="TranslatingWordsAdd" type="submit" class="btn btn-primary">Dalej</button>
+            </form>
+        </div>
+    </div>
+</div>
