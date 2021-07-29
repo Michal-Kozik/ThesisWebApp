@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
+using System.IO;
 
 namespace ThesisWebApp.Controllers
 {
@@ -20,6 +21,30 @@ namespace ThesisWebApp.Controllers
                 }
             }
             return true;
+        }
+
+        private void SaveExerciseToTxt(TranslatingWordsSettingsViewModel model)
+        {
+            // Tworzenie nazwy pliku txt.
+            DateTime now = DateTime.Now;
+            string nameOfFile = "uzytkownik";
+            nameOfFile += now.Day.ToString();
+            nameOfFile += now.Month.ToString();
+            nameOfFile += now.Year.ToString();
+            nameOfFile += now.Hour.ToString();
+            nameOfFile += now.Minute.ToString();
+            nameOfFile += now.Second.ToString();
+            nameOfFile += ".txt";
+
+            // Zapisywanie slow w pliku w odpowiednim formacie - slowo;slowo.
+            string path = "Content/Resources/" + nameOfFile;
+            var logFile = System.IO.File.Create(path);
+            var logWriter = new System.IO.StreamWriter(logFile);
+            for (int i = 0; i < model.NumberOfWords; i++)
+            {
+                logWriter.WriteLine(model.TranslateFromArray[i] + ';' + model.TranslateToArray[i]);
+            }
+            logWriter.Dispose();
         }
 
         [HttpGet]
@@ -45,6 +70,13 @@ namespace ThesisWebApp.Controllers
         public IActionResult TranslatingWordsResult(TranslatingWordsSettingsViewModel model)
         {
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult TranslatingWordsSave(TranslatingWordsSettingsViewModel model)
+        {
+            SaveExerciseToTxt(model);
+            return View();
         }
     }
 }
