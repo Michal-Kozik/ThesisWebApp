@@ -50,17 +50,17 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult TranslatingWordsSettings()
+        public IActionResult Settings()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult TranslatingWordsAdd(TranslatingWordsSettingsViewModel model)
+        public IActionResult Add(TranslatingWordsSettingsViewModel model)
         {
             if (ValidateWords(model))
             {
-                return RedirectToAction("TranslatingWordsResult", model);
+                return RedirectToAction("Result", model);
             }
             else
             {
@@ -69,13 +69,13 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult TranslatingWordsResult(TranslatingWordsSettingsViewModel model)
+        public IActionResult Result(TranslatingWordsSettingsViewModel model)
         {
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult TranslatingWordsSave(TranslatingWordsSettingsViewModel model)
+        public IActionResult Save(TranslatingWordsSettingsViewModel model)
         {
             SaveExerciseToTxt(model);
             return View();

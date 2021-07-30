@@ -47,7 +47,7 @@
                     @Html.HiddenFor(m => m.TranslateFromArray[i], new { Value = Model.TranslateFromArray[i] });
                     @Html.HiddenFor(m => m.TranslateToArray[i], new { Value = Model.TranslateToArray[i] });
                 }
-                <button asp-controller="TranslatingWords" asp-action="TranslatingWordsSave" class="btn btn-primary">Zapisz</button>
+                <button asp-controller="TranslatingWords" asp-action="Save" class="btn btn-primary">Zapisz</button>
             </form>
         </div>
     </div>
