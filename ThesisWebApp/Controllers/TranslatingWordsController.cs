@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThesisWebApp.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class TranslatingWordsController : Controller
     {
         private bool ValidateWords(TranslatingWordsSettingsViewModel model)
