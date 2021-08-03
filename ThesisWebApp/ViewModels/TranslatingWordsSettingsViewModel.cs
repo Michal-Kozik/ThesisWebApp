@@ -16,13 +16,8 @@ namespace ThesisWebApp.ViewModels
 
         [Display(Name = "Ilość słów")]
         public int NumberOfWords { get; set; }
-        //public string TranslateFrom { get; set; }
-        //public string TranslateTo { get; set; }
 
         public string[] TranslateFromArray { get; set; }
         public string[] TranslateToArray { get; set; }
-
-        //public List<string> TranslateFromList { get; set; }
-        //public List<string> TranslateToList { get; set; }
     }
 }

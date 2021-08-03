@@ -49,6 +49,28 @@ namespace ThesisWebApp.Controllers
             logWriter.Dispose();
         }
 
+        private TranslatingWordsSettingsViewModel ReadExerciseFromTxt()
+        {
+            string nameOfFile = "uzytkownik307202117493.txt";
+            string path = "Content/Resources/" + nameOfFile;
+            string line;
+            int counter = 0;
+            var logReader = new System.IO.StreamReader(path);
+
+            // Wpisywanie slow do modelu.
+            TranslatingWordsSettingsViewModel model = new TranslatingWordsSettingsViewModel();
+            while ((line = logReader.ReadLine()) != null)
+            {
+                string[] pair = line.Split(';');
+                model.TranslateFromArray[counter] = pair[0];
+                model.TranslateToArray[counter] = pair[1];
+                counter++;
+            }
+            logReader.Close();
+            model.NumberOfWords = counter;
+            return model;
+        }
+
         [HttpGet]
         public IActionResult Settings()
         {
@@ -78,7 +100,8 @@ namespace ThesisWebApp.Controllers
         public IActionResult Save(TranslatingWordsSettingsViewModel model)
         {
             SaveExerciseToTxt(model);
-            return View();
+            model = ReadExerciseFromTxt();
+            return View(model);
         }
     }
 }
