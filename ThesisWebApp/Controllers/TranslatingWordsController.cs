@@ -7,12 +7,23 @@ using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using ThesisWebApp.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace ThesisWebApp.Controllers
 {
     [Authorize(Roles = "Teacher")]
     public class TranslatingWordsController : Controller
     {
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public TranslatingWordsController(UserManager<ApplicationUser> userManager)
+        {
+            this.userManager = userManager;
+        }
+
+
+
         private bool ValidateWords(TranslatingWordsSettingsViewModel model)
         {
             for (int i = 0; i < model.NumberOfWords; i++)
@@ -49,6 +60,22 @@ namespace ThesisWebApp.Controllers
             logWriter.Dispose();
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private async Task SaveExerciseInDatabase()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var user = await GetCurrentUserAsync();
+                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = "Zadanie testowe", TypeOfExercise = "Typ test", PathToFile = "Content/Resources/test_file2.txt" };
+                context.Exercises.Add(exercise);
+                await context.SaveChangesAsync();
+            }
+        }
+
         private TranslatingWordsSettingsViewModel ReadExerciseFromTxt()
         {
             string nameOfFile = "uzytkownik307202117493.txt";
@@ -70,6 +97,8 @@ namespace ThesisWebApp.Controllers
             model.NumberOfWords = counter;
             return model;
         }
+
+
 
         [HttpGet]
         public IActionResult Settings()
@@ -97,9 +126,10 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(TranslatingWordsSettingsViewModel model)
+        public async Task<IActionResult> Save(TranslatingWordsSettingsViewModel model)
         {
             SaveExerciseToTxt(model);
+            await SaveExerciseInDatabase();
             model = ReadExerciseFromTxt();
             return View(model);
         }
