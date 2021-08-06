@@ -27,6 +27,6 @@ namespace ThesisWebApp.Data
 
         public DbSet<Exercise> Exercises { get; set; }
 
-        public DbSet<TypeOfExercise> TypeOfExercises { get; set; }
+        public DbSet<ExerciseExams> ExerciseExams { get; set; }
     }
 }

@@ -17,14 +17,9 @@ namespace ThesisWebApp.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [ForeignKey("ApplicationUserID")]
-        public ApplicationUser ApplicationUser { get; set; }
 
-        [Required]
-        [Display(Name = "Author")]
-        public string ApplicationUserID { get; set; }
 
-        // W jednym tescie bedzie wiele cwiczen.
-        public virtual ICollection<Exercise> Exercises { get; set; }
+        // W jednym tescie bedzie wiele zadan.
+        public virtual ICollection<ExerciseExams> ExerciseExams { get; set; }
     }
 }

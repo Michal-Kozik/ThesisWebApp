@@ -9,15 +9,15 @@ namespace ThesisWebApp.Models
 {
     public class TypeOfExercise
     {
-        [Key]
-        [Display(Name = "Type of exercise ID")]
-        public int TypeOfExerciseID { get; set; }
+        //[Key]
+        //[Display(Name = "Type of exercise ID")]
+        //public int TypeOfExerciseID { get; set; }
 
-        [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
+        //[Required]
+        //[Display(Name = "Name")]
+        //public string Name { get; set; }
 
-        // Jeden typ zadania bedzie w wielu zadaniach.
-        public virtual ICollection<Exercise> Exercises { get; set; }
+        //// Jeden typ zadania bedzie w wielu zadaniach.
+        //public virtual ICollection<Exercise> Exercises { get; set; }
     }
 }

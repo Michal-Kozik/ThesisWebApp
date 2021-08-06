@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThesisWebApp.Data;
 
 namespace ThesisWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210805165459_updateDataBase_ver_1_2")]
+    partial class updateDataBase_ver_1_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,11 +234,20 @@ namespace ThesisWebApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserForeignKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ExamID");
+
+                    b.HasIndex("ApplicationUserForeignKey");
 
                     b.ToTable("Exams");
                 });
@@ -248,9 +259,12 @@ namespace ThesisWebApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserForeignKey")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ApplicationUserID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -266,7 +280,7 @@ namespace ThesisWebApp.Data.Migrations
 
                     b.HasKey("ExerciseID");
 
-                    b.HasIndex("ApplicationUserID");
+                    b.HasIndex("ApplicationUserForeignKey");
 
                     b.ToTable("Exercises");
                 });
@@ -278,7 +292,13 @@ namespace ThesisWebApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ExamForeignKey")
+                        .HasColumnType("int");
+
                     b.Property<int>("ExamID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ExerciseForeignKey")
                         .HasColumnType("int");
 
                     b.Property<int>("ExerciseID")
@@ -286,9 +306,9 @@ namespace ThesisWebApp.Data.Migrations
 
                     b.HasKey("ExerciseExamsID");
 
-                    b.HasIndex("ExamID");
+                    b.HasIndex("ExamForeignKey");
 
-                    b.HasIndex("ExerciseID");
+                    b.HasIndex("ExerciseForeignKey");
 
                     b.ToTable("ExerciseExams");
                 });
@@ -344,28 +364,29 @@ namespace ThesisWebApp.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ThesisWebApp.Models.Exam", b =>
+                {
+                    b.HasOne("ThesisWebApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Exams")
+                        .HasForeignKey("ApplicationUserForeignKey");
+                });
+
             modelBuilder.Entity("ThesisWebApp.Models.Exercise", b =>
                 {
                     b.HasOne("ThesisWebApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Exercises")
-                        .HasForeignKey("ApplicationUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserForeignKey");
                 });
 
             modelBuilder.Entity("ThesisWebApp.Models.ExerciseExams", b =>
                 {
                     b.HasOne("ThesisWebApp.Models.Exam", "Exam")
                         .WithMany("ExerciseExams")
-                        .HasForeignKey("ExamID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExamForeignKey");
 
                     b.HasOne("ThesisWebApp.Models.Exercise", "Exercise")
                         .WithMany("ExerciseExams")
-                        .HasForeignKey("ExerciseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExerciseForeignKey");
                 });
 #pragma warning restore 612, 618
         }

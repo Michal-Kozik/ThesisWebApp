@@ -21,18 +21,20 @@ namespace ThesisWebApp.Models
         [Display(Name = "Path to file")]
         public string PathToFile { get; set; }
 
-        [ForeignKey("ExamID")]
-        public Exam Exam { get; set; }
+        [Required]
+        [Display(Name = "Type of exercise")]
+        public string TypeOfExercise { get; set; }
+
+
+
+        public ApplicationUser ApplicationUser { get; set; }
 
         [Required]
-        [Display(Name = "Exam ID")]
-        public int ExamID { get; set; }
+        [ForeignKey("ApplicationUser")]
+        [Display(Name = "Author ID")]
+        public string ApplicationUserID { get; set; }
 
-        [ForeignKey("TypeOfExerciseID")]
-        public TypeOfExercise TypeOfExercise { get; set; }
-
-        [Required]
-        [Display(Name = "Type of exercise ID")]
-        public int TypeOfExerciseID { get; set; }
+        // Jedno zadanie bedzie w wielu egzaminach.
+        public virtual ICollection<ExerciseExams> ExerciseExams { get; set; }
     }
 }

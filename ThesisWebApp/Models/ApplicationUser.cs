@@ -15,10 +15,9 @@ namespace ThesisWebApp.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Display(Name = "Is Teacher")]
-        public bool IsTeacher { get; set; }
 
-        // Jeden uzytkownik moze stworzyc wiele testow.
-        public virtual ICollection<Exam> Exams { get; set; }
+
+        // Jeden uzytkownik moze stworzyc wiele cwiczen.
+        public virtual ICollection<Exercise> Exercises { get; set; }
     }
 }
