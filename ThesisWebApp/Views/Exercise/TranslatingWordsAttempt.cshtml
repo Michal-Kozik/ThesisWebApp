@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Exercises | Attempt";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model TranslatingWordsSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ZADANIE - TŁUMACZENIE SŁÓW</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="row justify-content-center">
+            <div class="col-5 text-center">
+                <p>Polski</p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5 text-center">
+                <p>Angielski</p>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.NumberOfWords; i++)
+        {
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group">
+                        @*<input asp-for="TranslateFromArray[i]" class="form-control" readonly />*@
+                        <p class="lead">@Model.TranslateFromArray[i]</p>
+                    </div>
+                </div>
+                <div class="col-2 text-center">
+                    <p>-</p>
+                </div>
+                <div class="col-5">
+                    <div class="form-group">
+                        <input asp-for="TranslateToArray[i]" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        }
+        <button class="btn btn-primary">Dalej</button>
+    </form>
+</div>

@@ -36,7 +36,7 @@ namespace ThesisWebApp.Controllers
             return true;
         }
 
-        private string CreateFileName()
+        private string CreateFilePath()
         {
             DateTime now = DateTime.Now;
             string nameOfFile = "exercise-";
@@ -47,24 +47,12 @@ namespace ThesisWebApp.Controllers
             nameOfFile += now.Minute.ToString();
             nameOfFile += now.Second.ToString();
             nameOfFile += ".txt";
-            return nameOfFile;
+            return "Content/Resources/" + nameOfFile;
         }
 
-        private void SaveExerciseToTxt(TranslatingWordsSettingsViewModel model, string nameOfFile)
+        private void SaveExerciseToTxt(TranslatingWordsSettingsViewModel model, string path)
         {
-            // Tworzenie nazwy pliku txt.
-            //DateTime now = DateTime.Now;
-            //string nameOfFile = "uzytkownik";
-            //nameOfFile += now.Day.ToString();
-            //nameOfFile += now.Month.ToString();
-            //nameOfFile += now.Year.ToString();
-            //nameOfFile += now.Hour.ToString();
-            //nameOfFile += now.Minute.ToString();
-            //nameOfFile += now.Second.ToString();
-            //nameOfFile += ".txt";
-
             // Zapisywanie slow w pliku w odpowiednim formacie - slowo;slowo.
-            string path = "Content/Resources/" + nameOfFile;
             var logFile = System.IO.File.Create(path);
             var logWriter = new System.IO.StreamWriter(logFile);
             for (int i = 0; i < model.NumberOfWords; i++)
@@ -79,21 +67,19 @@ namespace ThesisWebApp.Controllers
             return userManager.GetUserAsync(HttpContext.User);
         }
 
-        private async Task SaveExerciseInDatabase(string nameOfFile)
+        private async Task SaveExerciseInDatabase(string path)
         {
             using (var context = new ApplicationDbContext())
             {
                 var user = await GetCurrentUserAsync();
-                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = "Zadanie testowe", TypeOfExercise = "Translating Words", PathToFile = "Content/Resources/" + nameOfFile };
+                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = "Zadanie testowe", TypeOfExercise = "Translating Words", PathToFile = path };
                 context.Exercises.Add(exercise);
                 await context.SaveChangesAsync();
             }
         }
 
-        private TranslatingWordsSettingsViewModel ReadExerciseFromTxt()
+        public static TranslatingWordsSettingsViewModel ReadExerciseFromTxt(string path)
         {
-            string nameOfFile = "uzytkownik307202117493.txt";
-            string path = "Content/Resources/" + nameOfFile;
             string line;
             int counter = 0;
             var logReader = new System.IO.StreamReader(path);
@@ -142,11 +128,11 @@ namespace ThesisWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(TranslatingWordsSettingsViewModel model)
         {
-            string nameOfFile = CreateFileName();
-            SaveExerciseToTxt(model, nameOfFile);
-            await SaveExerciseInDatabase(nameOfFile);
+            string path = CreateFilePath();
+            SaveExerciseToTxt(model, path);
+            await SaveExerciseInDatabase(path);
 
-            model = ReadExerciseFromTxt();
+            model = ReadExerciseFromTxt(path);
             return View(model);
         }
     }
