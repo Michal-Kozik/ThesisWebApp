@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Exercises | List";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ĆWICZENIA</b></h1>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="Index">Informacje</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
+                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card border-dark mb-3">
+                <div class="card-header">Informacje</div>
+                <div class="card-body">
+                    <h4 style="font-family:'Mistral'"><b>LISTA ĆWICZEŃ</b></h4>
+                    <p class="lead">
+                        Tutaj bedzie lista ćwiczeń.
+                    </p>
+                    <div class="list-group">
+                        @foreach (var exercise in ViewBag.exercises)
+                        {
+                            <a class="list-group-item list-group-item-action">@exercise.PathToFile</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
