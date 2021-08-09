@@ -31,5 +31,11 @@ namespace ThesisWebApp.Controllers
             ViewBag.exercises = context.Exercises.ToList();
             return View();
         }
+
+        public IActionResult ChoosenExercise(int ExerciseID)
+        {
+            var exercise = context.Exercises.Where(ex => ex.ExerciseID == ExerciseID).FirstOrDefault();
+            return View(exercise);
+        }
     }
 }
