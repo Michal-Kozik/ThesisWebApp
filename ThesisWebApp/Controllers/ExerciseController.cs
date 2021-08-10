@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ThesisWebApp.Data;
 using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace ThesisWebApp.Controllers
 {
@@ -42,7 +43,7 @@ namespace ThesisWebApp.Controllers
 
         public IActionResult ListExercises()
         {
-            ViewBag.exercises = context.Exercises.ToList();
+            ViewBag.exercises = context.Exercises.Include(e => e.ApplicationUser).ToList();
             return View();
         }
 

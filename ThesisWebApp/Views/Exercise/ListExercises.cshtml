@@ -20,16 +20,18 @@
         </div>
         <div class="col-9">
             <div class="card border-dark mb-3">
-                <div class="card-header">Informacje</div>
+                <div class="card-header">Lista ćwiczeń</div>
                 <div class="card-body">
-                    <h4 style="font-family:'Mistral'"><b>LISTA ĆWICZEŃ</b></h4>
-                    <p class="lead">
-                        Tutaj bedzie lista ćwiczeń.
-                    </p>
                     <div class="list-group">
                         @foreach (var exercise in ViewBag.exercises)
                         {
-                            <a class="list-group-item list-group-item-action" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-ExerciseID="@exercise.ExerciseID">@exercise.PathToFile</a>
+                            <div class="list-group">
+                                <a class="list-group-item list-group-item-action" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-ExerciseID="@exercise.ExerciseID">
+                                    <h5>@exercise.Name</h5>
+                                    <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
+                                    <small class="text-muted">@exercise.PathToFile</small>
+                                </a>
+                            </div>
                         }
                     </div>
                 </div>
