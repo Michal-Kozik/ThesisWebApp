@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Exercises | Score";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model TranslatingWordsSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ZADANIE - TŁUMACZENIE SŁÓW</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="row justify-content-center">
+            <div class="col-3 text-center">
+                <p>Polski</p>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4 text-center">
+                <p>Twoja odpowiedź</p>
+            </div>
+            <div class="col-4 text-center">
+                <p>Poprawna odpowiedź</p>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.NumberOfWords; i++)
+        {
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <p class="lead">@Model.TranslateFromArray[i]</p>
+                    </div>
+                </div>
+                <div class="col-1 text-center">
+                    <p>-</p>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        @if (Model.UserAnswers[i] == Model.TranslateToArray[i])
+                        {
+                            <input value="@Model.UserAnswers[i]" class="form-control is-valid" readonly />
+                        }
+                        else
+                        {
+                            <input value="@Model.UserAnswers[i]" class="form-control is-invalid" readonly />
+                        }
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <input value="@Model.TranslateToArray[i]" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <p>@ViewBag.points / @Model.NumberOfWords</p>
+        </div>
+        <button class="btn btn-primary" disabled>Dalej</button>
+    </form>
+</div>

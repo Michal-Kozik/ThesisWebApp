@@ -12,6 +12,7 @@ namespace ThesisWebApp.ViewModels
         {
             TranslateFromArray = new string[15];
             TranslateToArray = new string[15];
+            UserAnswers = new string[15];
         }
 
         [Display(Name = "Ilość słów")]
@@ -19,5 +20,6 @@ namespace ThesisWebApp.ViewModels
 
         public string[] TranslateFromArray { get; set; }
         public string[] TranslateToArray { get; set; }
+        public string[] UserAnswers { get; set; }
     }
 }

@@ -17,6 +17,19 @@ namespace ThesisWebApp.Controllers
 
 
 
+        private int TranslatingWordsCheck(TranslatingWordsSettingsViewModel model)
+        {
+            int points = 0;
+            for (int i = 0; i < model.NumberOfWords; i++)
+            {
+                if (model.UserAnswers[i] == model.TranslateToArray[i])
+                    points++;
+            }
+            return points;
+        }
+
+
+
         public IActionResult Index()
         {
             return View();
@@ -50,6 +63,13 @@ namespace ThesisWebApp.Controllers
         public IActionResult TranslatingWordsAttempt(Exercise exercise)
         {
             TranslatingWordsSettingsViewModel model = TranslatingWordsController.ReadExerciseFromTxt(exercise.PathToFile);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult TranslatingWordsScore(TranslatingWordsSettingsViewModel model)
+        {
+            ViewBag.points = TranslatingWordsCheck(model);
             return View(model);
         }
     }
