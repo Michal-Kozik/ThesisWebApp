@@ -46,6 +46,7 @@
         }
         <br />
         @Html.HiddenFor(m => m.NumberOfWords, new { Value = Model.NumberOfWords })
+        @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
         <button asp-controller="TranslatingWords" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
     </form>
 </div>

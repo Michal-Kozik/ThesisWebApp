@@ -53,7 +53,7 @@ namespace ThesisWebApp.Controllers
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == ExerciseID).FirstOrDefault();
             switch (exercise.TypeOfExercise)
             {
-                case "Translating Words":
+                case ExerciseType.TRANSLATING_WORDS:
                     return RedirectToAction("TranslatingWordsAttempt", exercise);
                 default:
                     return View(exercise);

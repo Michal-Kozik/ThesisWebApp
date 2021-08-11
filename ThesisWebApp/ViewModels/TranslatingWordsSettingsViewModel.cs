@@ -15,6 +15,9 @@ namespace ThesisWebApp.ViewModels
             UserAnswers = new string[15];
         }
 
+        [Display(Name = "Nazwa ćwiczenia")]
+        public string ExerciseName { get; set; }
+
         [Display(Name = "Ilość słów")]
         public int NumberOfWords { get; set; }
 

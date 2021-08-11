@@ -67,12 +67,12 @@ namespace ThesisWebApp.Controllers
             return userManager.GetUserAsync(HttpContext.User);
         }
 
-        private async Task SaveExerciseInDatabase(string path)
+        private async Task SaveExerciseInDatabase(string exerciseName, string path)
         {
             using (var context = new ApplicationDbContext())
             {
                 var user = await GetCurrentUserAsync();
-                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = "Zadanie testowe", TypeOfExercise = "Translating Words", PathToFile = path };
+                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = exerciseName, TypeOfExercise = ExerciseType.TRANSLATING_WORDS, PathToFile = path };
                 context.Exercises.Add(exercise);
                 await context.SaveChangesAsync();
             }
@@ -103,14 +103,15 @@ namespace ThesisWebApp.Controllers
         [HttpGet]
         public IActionResult Settings()
         {
-            return View();
+            return View(new TranslatingWordsSettingsViewModel());
         }
 
         [HttpGet]
-        public IActionResult Add(int numberOfWords)
+        public IActionResult Add(int numberOfWords, string exerciseName)
         {
             TranslatingWordsSettingsViewModel model = new TranslatingWordsSettingsViewModel();
             model.NumberOfWords = numberOfWords;
+            model.ExerciseName = exerciseName;
             return View(model);
         }
 
@@ -139,7 +140,7 @@ namespace ThesisWebApp.Controllers
         {
             string path = CreateFilePath();
             SaveExerciseToTxt(model, path);
-            await SaveExerciseInDatabase(path);
+            await SaveExerciseInDatabase(model.ExerciseName, path);
 
             model = ReadExerciseFromTxt(path);
             return View(model);

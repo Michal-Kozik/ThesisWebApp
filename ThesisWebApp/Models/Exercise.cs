@@ -7,6 +7,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ThesisWebApp.Models
 {
+    public enum ExerciseType
+    {
+        TRANSLATING_WORDS = 0,
+        READING_TITLES = 1,
+        READING_TF = 2
+    }
+
     public class Exercise
     {
         [Key]
@@ -23,7 +30,8 @@ namespace ThesisWebApp.Models
 
         [Required]
         [Display(Name = "Type of exercise")]
-        public string TypeOfExercise { get; set; }
+        [EnumDataType(typeof(ExerciseType))]
+        public ExerciseType TypeOfExercise { get; set; }
 
 
 

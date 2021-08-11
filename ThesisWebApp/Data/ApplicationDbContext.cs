@@ -22,7 +22,7 @@ namespace ThesisWebApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=aspnet-ThesisWebApp-A8B0920F-AAAE-49E7-A4DF-2214F6BE4D5F;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=aspnet-ThesisWebApp-A8B0920F-AAAE-49E7-A4DF-2214F6BE4D5F;Trusted_Connection=True;MultipleActiveResultSets=true");
             base.OnConfiguring(optionsBuilder);
         }
 
