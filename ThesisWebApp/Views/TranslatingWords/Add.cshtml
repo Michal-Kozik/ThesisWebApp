@@ -12,11 +12,7 @@
 
 <div class="container-fluid">
     <form method="post">
-        <div class="alert alert-dismissible alert-danger">
-            <div class="text-center">
-                <strong>Pamiętaj aby wypełnić wszystkie pola!</strong>
-            </div>
-        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row justify-content-center">
             <div class="col-5 text-center">
                 <p>Polski</p>
@@ -26,7 +22,6 @@
                 <p>Angielski</p>
             </div>
         </div>
-        @*<div asp-validation-summary="All" class="text-danger"></div>*@
         @for (int i = 0; i < Model.NumberOfWords; i++)
             {
             <div class="row">
@@ -49,11 +44,8 @@
                 </div>
             </div>
         }
-        <div class="form-group">
-            <label asp-for="NumberOfWords"></label>
-            <input asp-for="NumberOfWords" class="form-control" readonly />
-        </div>
         <br />
+        @Html.HiddenFor(m => m.NumberOfWords, new { Value = Model.NumberOfWords })
         <button asp-controller="TranslatingWords" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
     </form>
 </div>

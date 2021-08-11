@@ -106,6 +106,14 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Add(int numberOfWords)
+        {
+            TranslatingWordsSettingsViewModel model = new TranslatingWordsSettingsViewModel();
+            model.NumberOfWords = numberOfWords;
+            return View(model);
+        }
+
         [HttpPost]
         public IActionResult Add(TranslatingWordsSettingsViewModel model)
         {
@@ -115,6 +123,7 @@ namespace ThesisWebApp.Controllers
             }
             else
             {
+                ModelState.AddModelError("", "Wypełnij wszystkie pola!");
                 return View(model);
             }
         }
