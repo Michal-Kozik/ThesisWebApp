@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Reading - Titles | Add";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ReadingTitlesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>DOPASOWYWANIE TYTUŁÓW (CZYTANIE) - UZUPEŁNIANIE</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row justify-content-center">
+            <div class="col-5 text-center">
+                <p style="font-size:x-large">Akapit</p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5 text-center">
+                <p style="font-size:x-large">Tytuł</p>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+        {
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <textarea asp-for="Paragraphs[i]" class="form-control" rows="5" maxlength="50" placeholder="Tutaj wpisz treść akapitu..."></textarea>
+                    </div>
+                </div>
+                <div class="col-2 text-center align-self-center">
+                    <p>-</p>
+                </div>
+                <div class="col-5 align-self-center">
+                    <div class="form-group">
+                        <input asp-for="CorrectTitles[i]" class="form-control" placeholder="Tytuł dla akapitu po lewej..." />
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row justify-content-center">
+            <div class="col-5 text-center">
+                <p style="font-size:x-large">Nadmiarowe tytuły</p>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.NumberOfAdditionalTitles; i++)
+        {
+            <div class="row justify-content-center">
+                <div class="col-5">
+                    <div class="form-group">
+                        <input asp-for="AdditionalTitles[i]" class="form-control" placeholder="Tytuł nie pasujący do żadnego akapitu..." />
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        @Html.HiddenFor(m => m.NumberOfParagraphs, new { Value = Model.NumberOfParagraphs })
+        @Html.HiddenFor(m => m.NumberOfAdditionalTitles, new { Value = Model.NumberOfAdditionalTitles })
+        @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
+        <button asp-controller="ReadingTitles" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
+    </form>
+</div>

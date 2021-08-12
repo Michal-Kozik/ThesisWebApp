@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Reading - Titles | Settings";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ReadingTitlesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>DOPASOWYWANIE TYTUŁÓW (CZYTANIE) - KONFIGURACJA</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="get">
+        <div class="row">
+            <div class="col-6">
+                @*Ilosc akapitow*@
+                <label class="lead" asp-for="NumberOfParagraphs"></label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfParagraphs" value="3" class="form-check-input" checked />
+                        3 akapity
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfParagraphs" value="4" class="form-check-input" />
+                        4 akapity
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfParagraphs" value="5" class="form-check-input" />
+                        5 akapitów
+                    </label>
+                </div>
+            </div>
+            <div class="col-6">
+                @*Ilosc nadmiarowych tytulow*@
+                <label class="lead" asp-for="NumberOfAdditionalTitles"></label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfAdditionalTitles" value="1" class="form-check-input" checked />
+                        1 nadmiarowy tytuł
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfAdditionalTitles" value="2" class="form-check-input" />
+                        2 nadmiarowe tytuły
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfAdditionalTitles" value="3" class="form-check-input" />
+                        3 nadmiarowe tytuły
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfAdditionalTitles" value="4" class="form-check-input" />
+                        4 nadmiarowe tytuły
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfAdditionalTitles" value="5" class="form-check-input" />
+                        5 nadmiarowych tytułów
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ExerciseName"></label>
+                    <input asp-for="ExerciseName" class="form-control" />
+                </div>
+                <br />
+                <button asp-controller="ReadingTitles" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
+            </div>
+        </div>
+    </form>    
+</div>
