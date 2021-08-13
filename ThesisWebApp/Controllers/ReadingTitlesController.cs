@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
+using System.IO;
 
 namespace ThesisWebApp.Controllers
 {
@@ -41,6 +42,66 @@ namespace ThesisWebApp.Controllers
             return true;
         }
 
+        private string CreateFilePath()
+        {
+            DateTime now = DateTime.Now;
+            string nameOfFile = "exercise-";
+            nameOfFile += now.Day.ToString();
+            nameOfFile += now.Month.ToString();
+            nameOfFile += now.Year.ToString();
+            nameOfFile += now.Hour.ToString();
+            nameOfFile += now.Minute.ToString();
+            nameOfFile += now.Second.ToString();
+            nameOfFile += ".txt";
+            return "Content/Resources/ReadingTitles/" + nameOfFile;
+        }
+
+        private void SaveExerciseToTxt(ReadingTitlesSettingsViewModel model, string path)
+        {
+            // Format: 1 linijka - <N_akapitow>;<M_nadmiarowych_odpowiedzi>
+            //         N linii - <akapit>;<odpowiedz>
+            //         M linii - <nadmiarowa_odpowiedz>
+            var logFile = System.IO.File.Create(path);
+            var logWriter = new StreamWriter(logFile);
+            logWriter.WriteLine(model.NumberOfParagraphs.ToString() + ';' + model.NumberOfAdditionalTitles.ToString());
+            for (int i = 0; i < model.NumberOfParagraphs; i++)
+            {
+                logWriter.WriteLine(model.Paragraphs[i] + ';' + model.CorrectTitles[i]);
+            }
+            for (int i = 0; i < model.NumberOfAdditionalTitles; i++)
+            {
+                logWriter.WriteLine(model.AdditionalTitles[i]);
+            }
+            logWriter.Dispose();
+        }
+
+        public static ReadingTitlesSettingsViewModel ReadExerciseFromTxt(string path)
+        {
+            string line;
+            var logReader = new StreamReader(path);
+
+            // Wpisywanie danych do modelu
+            ReadingTitlesSettingsViewModel model = new ReadingTitlesSettingsViewModel();
+            line = logReader.ReadLine();
+            string[] pair = line.Split(';');
+            model.NumberOfParagraphs = Int32.Parse(pair[0]);
+            model.NumberOfAdditionalTitles = Int32.Parse(pair[1]);
+            for (int i = 0; i < model.NumberOfParagraphs; i++)
+            {
+                line = logReader.ReadLine();
+                pair = line.Split(';');
+                model.Paragraphs[i] = pair[0];
+                model.CorrectTitles[i] = pair[1];
+            }
+            for (int i = 0; i < model.NumberOfAdditionalTitles; i++)
+            {
+                line = logReader.ReadLine();
+                model.AdditionalTitles[i] = line;
+            }
+            logReader.Close();
+            return model;
+        }
+
 
 
         [HttpGet]
@@ -64,14 +125,29 @@ namespace ThesisWebApp.Controllers
         {
             if (ValidateInputs(model))
             {
-                //redirect to action Result.
-                return View(model);
+                return RedirectToAction("Result", model);
             }
             else
             {
                 ModelState.AddModelError("", "Wypełnij wszystkie pola!");
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        public IActionResult Result(ReadingTitlesSettingsViewModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Save(ReadingTitlesSettingsViewModel model)
+        {
+            string path = CreateFilePath();
+            SaveExerciseToTxt(model, path);
+
+            model = ReadExerciseFromTxt(path);
+            return View(model);
         }
     }
 }

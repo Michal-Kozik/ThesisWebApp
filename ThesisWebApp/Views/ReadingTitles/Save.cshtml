@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Reading - Titles | Save";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ReadingTitlesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>DOPASOWYWANIE TYTUŁÓW (CZYTANIE) - ZAPISANO</b></h1>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <p>Udało się zapisać.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+        {
+            <div class="col-2">
+                <div class="card border-success mb-3">
+                    <div class="card-header text-center">
+                        <span class="badge rounded-pill bg-success" style="font-size:large">@Model.CorrectTitles[i]</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text lead">@Model.Paragraphs[i]</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="border-bottom" style="margin-bottom: 20px"></div>
+    <div class="row">
+        <div class="col">
+            @for (int i = 0; i < Model.NumberOfAdditionalTitles; i++)
+            {
+                <span class="badge rounded-pill bg-danger" style="font-size:large">@Model.AdditionalTitles[i]</span>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <br />
+            <button class="btn btn-primary">Zapisz</button>
+        </div>
+    </div>
+</div>

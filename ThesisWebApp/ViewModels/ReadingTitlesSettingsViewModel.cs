@@ -10,10 +10,10 @@ namespace ThesisWebApp.ViewModels
     {
         public ReadingTitlesSettingsViewModel()
         {
-            Paragraphs = new string[5];
-            CorrectTitles = new string[5];
-            AdditionalTitles = new string[5];
-            UserAnswers = new string[5];
+            Paragraphs = new string[6];
+            CorrectTitles = new string[6];
+            AdditionalTitles = new string[6];
+            UserAnswers = new string[6];
         }
 
         [Display(Name = "Nazwa ćwiczenia")]

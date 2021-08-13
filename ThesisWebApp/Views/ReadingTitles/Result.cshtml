@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Reading - Titles | Result";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ReadingTitlesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>DOPASOWYWANIE TYTUŁÓW (CZYTANIE) - REZULTAT</b></h1>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+        {
+            <div class="col-2">
+                <div class="card border-success mb-3">
+                    <div class="card-header text-center">
+                        <span class="badge rounded-pill bg-success" style="font-size:large">@Model.CorrectTitles[i]</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text lead">@Model.Paragraphs[i]</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="border-bottom" style="margin-bottom: 20px"></div>
+    <div class="row">
+        <div class="col">
+            @for (int i = 0; i < Model.NumberOfAdditionalTitles; i++)
+            {
+                <span class="badge rounded-pill bg-danger" style="font-size:large">@Model.AdditionalTitles[i]</span>
+            }
+            @*<form method="post">
+                @Html.HiddenFor(m => m.NumberOfWords, new { Value = Model.NumberOfWords })
+                @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
+                @for (int i = 0; i < Model.NumberOfWords; i++)
+                {
+                    @Html.HiddenFor(m => m.TranslateFromArray[i], new { Value = Model.TranslateFromArray[i] });
+                    @Html.HiddenFor(m => m.TranslateToArray[i], new { Value = Model.TranslateToArray[i] });
+                }
+                <button asp-controller="TranslatingWords" asp-action="Save" class="btn btn-primary">Zapisz</button>
+            </form>*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <form method="post">
+                @Html.HiddenFor(m => m.NumberOfParagraphs, new { Value = Model.NumberOfParagraphs })
+                @Html.HiddenFor(m => m.NumberOfAdditionalTitles, new { Value = Model.NumberOfAdditionalTitles })
+                @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+                {
+                    @Html.HiddenFor(m => m.Paragraphs[i], new { Value = Model.Paragraphs[i] });
+                    @Html.HiddenFor(m => m.CorrectTitles[i], new { Value = Model.CorrectTitles[i] });
+                }
+                @for (int i = 0; i < Model.NumberOfAdditionalTitles; i++)
+                {
+                    @Html.HiddenFor(m => m.AdditionalTitles[i], new { Value = Model.AdditionalTitles[i] })
+                }
+                <br />
+                <button asp-controller="ReadingTitles" asp-action="Save" type="submit" class="btn btn-primary">Zapisz</button>
+            </form>
+        </div>
+    </div>
+</div>
