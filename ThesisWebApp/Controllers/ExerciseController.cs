@@ -55,6 +55,8 @@ namespace ThesisWebApp.Controllers
             {
                 case ExerciseType.TRANSLATING_WORDS:
                     return RedirectToAction("TranslatingWordsAttempt", exercise);
+                case ExerciseType.READING_TITLES:
+                    return RedirectToAction("ReadingTitlesAttempt", exercise);
                 default:
                     return View(exercise);
             }
@@ -71,6 +73,13 @@ namespace ThesisWebApp.Controllers
         public IActionResult TranslatingWordsScore(TranslatingWordsSettingsViewModel model)
         {
             ViewBag.points = TranslatingWordsCheck(model);
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ReadingTitlesAttempt(Exercise exercise)
+        {
+            ReadingTitlesSettingsViewModel model = ReadingTitlesController.ReadExerciseFromTxt(exercise.PathToFile);
             return View(model);
         }
     }

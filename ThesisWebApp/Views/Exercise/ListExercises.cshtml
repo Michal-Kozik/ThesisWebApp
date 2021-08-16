@@ -29,6 +29,7 @@
                                 <a class="list-group-item list-group-item-action" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-ExerciseID="@exercise.ExerciseID">
                                     <h5>@exercise.Name</h5>
                                     <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
+                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
                                     <small class="text-muted">@exercise.PathToFile</small>
                                 </a>
                             </div>

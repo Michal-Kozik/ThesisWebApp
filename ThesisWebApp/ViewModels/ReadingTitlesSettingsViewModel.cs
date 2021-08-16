@@ -29,5 +29,45 @@ namespace ThesisWebApp.ViewModels
         public string[] CorrectTitles { get; set; }
         public string[] AdditionalTitles { get; set; }
         public string[] UserAnswers { get; set; }
+
+
+        public string[] ShuffleAnswers()
+        {
+            // Dodac warunek sprawdzajacy czy tablice posiadaja dane.
+            int correctTitleCount = 0;
+            int additionalTitleCount = 0;
+            string[] result = new string[NumberOfParagraphs + NumberOfAdditionalTitles];
+            Random rnd = new Random();
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (rnd.Next(2) == 0)
+                {
+                    if (correctTitleCount < NumberOfParagraphs)
+                    {
+                        result[i] = CorrectTitles[correctTitleCount];
+                        correctTitleCount++;
+                    }
+                    else
+                    {
+                        result[i] = AdditionalTitles[additionalTitleCount];
+                        additionalTitleCount++;
+                    }
+                }
+                else
+                {
+                    if (additionalTitleCount < NumberOfAdditionalTitles)
+                    {
+                        result[i] = AdditionalTitles[additionalTitleCount];
+                        additionalTitleCount++;
+                    }
+                    else
+                    {
+                        result[i] = CorrectTitles[correctTitleCount];
+                        correctTitleCount++;
+                    }
+                }
+            }
+            return result;
+        }
     }
 }
