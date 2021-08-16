@@ -23,6 +23,26 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+            {
+                <div class="col-2">
+                    <div class="card border-primary mb-3">
+                        <div class="card-header text-center">
+                            <select class="form-select" asp-for="UserAnswers[i]">
+                                @for (int j = 0; j < answers.Length; j++)
+                                {
+                                    <option>@answers[j]</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text lead">@Model.Paragraphs[i]</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
         @*Przekazanie wartosci z obecnego modelu do nowego za pomoca hidden.*@
         @*@Html.HiddenFor(m => m.NumberOfWords, new { Value = Model.NumberOfWords })
         @for (int i = 0; i < Model.NumberOfWords; i++)
