@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Matching Sentences | Settings";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model MatchingSentencesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ŁĄCZENIE ZDAŃ - KONFIGURACJA</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="get">
+        <div class="row">
+            <div class="col">
+                @*Ilosc akapitow*@
+                <label class="lead" asp-for="NumberOfSentences"></label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfSentences" value="6" class="form-check-input" checked />
+                        6 zdań
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfSentences" value="8" class="form-check-input" />
+                        8 zdań
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="NumberOfSentences" value="10" class="form-check-input" />
+                        10 zdań
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ExerciseName"></label>
+                    <input asp-for="ExerciseName" class="form-control" />
+                </div>
+                <br />
+                <button asp-controller="MatchingSentences" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
+            </div>
+        </div>
+    </form>
+</div>

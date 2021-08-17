@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Matching Sentences | Add";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model MatchingSentencesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ŁĄCZENIE ZDAŃ - UZUPEŁNIANIE</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row justify-content-center">
+            <div class="col-5 text-center">
+                <p style="font-size:x-large">Pierwsza część zdania</p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5 text-center">
+                <p style="font-size:x-large">Druga część zdania</p>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.NumberOfSentences; i++)
+        {
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <input asp-for="SentencesFirstPart[i]" class="form-control" placeholder="Pierwsza część zdania..."/>
+                    </div>
+                </div>
+                <div class="col-2 text-center align-self-center">
+                    <p>-</p>
+                </div>
+                <div class="col-5 align-self-center">
+                    <div class="form-group">
+                        <input asp-for="SentencesSecondPart[i]" class="form-control" placeholder="Druga część zdania..." />
+                    </div>
+                </div>
+            </div>
+        }
+        @Html.HiddenFor(m => m.NumberOfSentences, new { Value = Model.NumberOfSentences })
+        @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
+        <button asp-controller="MatchingSentences" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
+    </form>
+</div>
