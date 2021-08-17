@@ -43,28 +43,18 @@
                 </div>
             }
         </div>
-        @*Przekazanie wartosci z obecnego modelu do nowego za pomoca hidden.*@
-        @*@Html.HiddenFor(m => m.NumberOfWords, new { Value = Model.NumberOfWords })
-        @for (int i = 0; i < Model.NumberOfWords; i++)
+        @*Przekazanie danych dalej*@
+        @Html.HiddenFor(m => m.NumberOfParagraphs, new { Value = Model.NumberOfParagraphs })
+        @Html.HiddenFor(m => m.NumberOfAdditionalTitles, new { Value = Model.NumberOfAdditionalTitles })
+        @for (int i = 0; i < Model.NumberOfParagraphs; i++)
         {
-            <div class="row">
-                <div class="col-5">
-                    <div class="form-group">
-                        <p class="lead">@Model.TranslateFromArray[i]</p>
-                        @Html.HiddenFor(m => m.TranslateFromArray[i], new { Value = Model.TranslateFromArray[i] })
-                        @Html.HiddenFor(m => m.TranslateToArray[i], new { Value = Model.TranslateToArray[i] })
-                    </div>
-                </div>
-                <div class="col-2 text-center">
-                    <p>-</p>
-                </div>
-                <div class="col-5">
-                    <div class="form-group">
-                        <input asp-for="UserAnswers[i]" class="form-control" />
-                    </div>
-                </div>
-            </div>
-        }*@
-        <button asp-controller="Exercise" asp-action="TranslatingWordsScore" type="submit" class="btn btn-primary">Dalej</button>
+            @Html.HiddenFor(m => m.Paragraphs[i], new { Value = Model.Paragraphs[i] });
+            @Html.HiddenFor(m => m.CorrectTitles[i], new { Value = Model.CorrectTitles[i] });
+        }
+        @for (int i = 0; i < Model.NumberOfAdditionalTitles; i++)
+        {
+            @Html.HiddenFor(m => m.AdditionalTitles[i], new { Value = Model.AdditionalTitles[i] })
+        }
+        <button asp-controller="Exercise" asp-action="ReadingTitlesScore" type="submit" class="btn btn-primary">Dalej</button>
     </form>
 </div>

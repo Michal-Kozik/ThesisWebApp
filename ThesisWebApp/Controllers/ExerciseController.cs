@@ -29,6 +29,17 @@ namespace ThesisWebApp.Controllers
             return points;
         }
 
+        private int ReadingTitlesCheck(ReadingTitlesSettingsViewModel model)
+        {
+            int points = 0;
+            for (int i = 0; i < model.NumberOfParagraphs; i++)
+            {
+                if (model.UserAnswers[i] == model.CorrectTitles[i])
+                    points++;
+            }
+            return points;
+        }
+
 
 
         public IActionResult Index()
@@ -80,6 +91,13 @@ namespace ThesisWebApp.Controllers
         public IActionResult ReadingTitlesAttempt(Exercise exercise)
         {
             ReadingTitlesSettingsViewModel model = ReadingTitlesController.ReadExerciseFromTxt(exercise.PathToFile);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ReadingTitlesScore(ReadingTitlesSettingsViewModel model)
+        {
+            ViewBag.points = ReadingTitlesCheck(model);
             return View(model);
         }
     }

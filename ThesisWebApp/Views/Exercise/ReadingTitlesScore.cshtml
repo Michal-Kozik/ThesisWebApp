@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Exercises | Score";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ReadingTitlesSettingsViewModel
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ZADANIE - DOPASOWYWANIE TYTUŁÓW</b></h1>
+</div>
+
+<div class="container-fluid">
+    @*Znacznik form jesli nie bedzie uzyty to wyrzucic*@
+    <form method="post">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-dismissible alert-secondary text-center">
+                    @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+                    {
+                        <span class="badge rounded-pill bg-success" style="font-size:large">@Model.CorrectTitles[i]</span>
+                    }
+                    @for (int i = 0; i < Model.NumberOfAdditionalTitles; i++)
+                    {
+                        <span class="badge rounded-pill bg-danger" style="font-size:large">@Model.AdditionalTitles[i]</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @for (int i = 0; i < Model.NumberOfParagraphs; i++)
+            {
+                <div class="col-2">
+                    <div class="card border-primary mb-3">
+                        <div class="card-header text-center">
+                            <input value="@Model.CorrectTitles[i]" class="form-control" readonly />
+                            @if (Model.UserAnswers[i] == Model.CorrectTitles[i])
+                            {
+                                <input value="@Model.UserAnswers[i]" class="form-control is-valid" readonly />
+                            }
+                            else
+                            {
+                                <input value="@Model.UserAnswers[i]" class="form-control is-invalid" readonly />
+                            }
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text lead">@Model.Paragraphs[i]</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <p>@ViewBag.points / @Model.NumberOfParagraphs</p>
+        </div>
+        <button class="btn btn-primary" disabled>Dalej</button>
+    </form>
+</div>
