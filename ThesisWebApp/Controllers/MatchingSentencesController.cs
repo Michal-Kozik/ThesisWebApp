@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ThesisWebApp.Data;
 using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
 
@@ -83,6 +84,22 @@ namespace ThesisWebApp.Controllers
             return model;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private async Task SaveExerciseInDatabase(string exerciseName, string path)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var user = await GetCurrentUserAsync();
+                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = exerciseName, TypeOfExercise = ExerciseType.MATCHING_SENTENCES, PathToFile = path };
+                context.Exercises.Add(exercise);
+                await context.SaveChangesAsync();
+            }
+        }
+
 
 
         [HttpGet]
@@ -121,10 +138,11 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(MatchingSentencesSettingsViewModel model)
+        public async Task<IActionResult> Save(MatchingSentencesSettingsViewModel model)
         {
             string path = CreateFilePath();
             SaveExerciseToTxt(model, path);
+            await SaveExerciseInDatabase(model.ExerciseName, path);
 
             model = ReadExerciseFromTxt(path);
             return View(model);

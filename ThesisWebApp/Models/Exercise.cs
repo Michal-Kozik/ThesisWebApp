@@ -11,7 +11,7 @@ namespace ThesisWebApp.Models
     {
         TRANSLATING_WORDS = 0,
         READING_TITLES = 1,
-        READING_TF = 2
+        MATCHING_SENTENCES = 2
     }
 
     public class Exercise
