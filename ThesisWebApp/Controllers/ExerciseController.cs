@@ -40,6 +40,17 @@ namespace ThesisWebApp.Controllers
             return points;
         }
 
+        private int MatchingSentencesCheck(MatchingSentencesSettingsViewModel model)
+        {
+            int points = 0;
+            for (int i = 0; i < model.NumberOfSentences; i++)
+            {
+                if (model.UserAnswers[i] == model.SentencesSecondPart[i])
+                    points++;
+            }
+            return points;
+        }
+
 
 
         public IActionResult Index()
@@ -68,6 +79,8 @@ namespace ThesisWebApp.Controllers
                     return RedirectToAction("TranslatingWordsAttempt", exercise);
                 case ExerciseType.READING_TITLES:
                     return RedirectToAction("ReadingTitlesAttempt", exercise);
+                case ExerciseType.MATCHING_SENTENCES:
+                    return RedirectToAction("MatchingSentencesAttempt", exercise);
                 default:
                     return View(exercise);
             }
@@ -98,6 +111,20 @@ namespace ThesisWebApp.Controllers
         public IActionResult ReadingTitlesScore(ReadingTitlesSettingsViewModel model)
         {
             ViewBag.points = ReadingTitlesCheck(model);
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult MatchingSentencesAttempt(Exercise exercise)
+        {
+            MatchingSentencesSettingsViewModel model = MatchingSentencesController.ReadExerciseFromTxt(exercise.PathToFile);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult MatchingSentencesScore(MatchingSentencesSettingsViewModel model)
+        {
+            ViewBag.points = MatchingSentencesCheck(model);
             return View(model);
         }
     }
