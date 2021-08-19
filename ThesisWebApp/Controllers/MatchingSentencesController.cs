@@ -105,7 +105,17 @@ namespace ThesisWebApp.Controllers
         [HttpGet]
         public IActionResult Settings()
         {
-            return View(new MatchingSentencesSettingsViewModel());
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Settings([Bind("ExerciseName, NumberOfSentences")] MatchingSentencesSettingsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Add", new { numberOfSentences = model.NumberOfSentences, exerciseName = model.ExerciseName });
+            }
+            return View(model);
         }
 
         [HttpGet]
