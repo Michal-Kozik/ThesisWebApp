@@ -109,7 +109,7 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Settings([Bind("ExerciseName, NumberOfSentences")] MatchingSentencesSettingsViewModel model)
+        public IActionResult Settings(MatchingSentencesSettingsViewModel model)
         {
             if (ModelState.IsValid)
             {

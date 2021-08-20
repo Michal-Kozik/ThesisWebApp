@@ -11,7 +11,7 @@
 </div>
 
 <div class="container-fluid">
-    <form method="get">
+    <form method="post">
         <div class="row">
             <div class="col-6">
                 @*Ilosc akapitow*@
@@ -81,9 +81,10 @@
                 <div class="form-group">
                     <label asp-for="ExerciseName"></label>
                     <input asp-for="ExerciseName" class="form-control" />
+                    <span asp-validation-for="ExerciseName" class="text-danger"></span>
                 </div>
                 <br />
-                <button asp-controller="ReadingTitles" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
+                <button asp-controller="ReadingTitles" asp-action="Settings" type="submit" class="btn btn-primary">Dalej</button>
             </div>
         </div>
     </form>    

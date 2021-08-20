@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Content\Resources\MatchingSentences\" />
+    <Folder Include="Content\Resources\TranslatingWords\" />
     <Folder Include="Content\Resources\ReadingTitles\" />
   </ItemGroup>
 

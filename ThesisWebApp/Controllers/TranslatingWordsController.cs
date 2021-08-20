@@ -47,14 +47,14 @@ namespace ThesisWebApp.Controllers
             nameOfFile += now.Minute.ToString();
             nameOfFile += now.Second.ToString();
             nameOfFile += ".txt";
-            return "Content/Resources/" + nameOfFile;
+            return "Content/Resources/TranslatingWords/" + nameOfFile;
         }
 
         private void SaveExerciseToTxt(TranslatingWordsSettingsViewModel model, string path)
         {
             // Zapisywanie slow w pliku w odpowiednim formacie - slowo;slowo.
             var logFile = System.IO.File.Create(path);
-            var logWriter = new System.IO.StreamWriter(logFile);
+            var logWriter = new StreamWriter(logFile);
             for (int i = 0; i < model.NumberOfWords; i++)
             {
                 logWriter.WriteLine(model.TranslateFromArray[i] + ';' + model.TranslateToArray[i]);
@@ -82,7 +82,7 @@ namespace ThesisWebApp.Controllers
         {
             string line;
             int counter = 0;
-            var logReader = new System.IO.StreamReader(path);
+            var logReader = new StreamReader(path);
 
             // Wpisywanie slow do modelu.
             TranslatingWordsSettingsViewModel model = new TranslatingWordsSettingsViewModel();
@@ -103,7 +103,17 @@ namespace ThesisWebApp.Controllers
         [HttpGet]
         public IActionResult Settings()
         {
-            return View(new TranslatingWordsSettingsViewModel());
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Settings(TranslatingWordsSettingsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Add", new { numberOfWords = model.NumberOfWords, exerciseName = model.ExerciseName });
+            }
+            return View(model);
         }
 
         [HttpGet]

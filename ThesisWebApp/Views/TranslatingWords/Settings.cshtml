@@ -13,7 +13,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <form method="get">
+            <form method="post">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" asp-for="NumberOfWords" value="5" class="form-check-input" checked />
@@ -35,8 +35,9 @@
                 <div class="form-group">
                     <label asp-for="ExerciseName"></label>
                     <input asp-for="ExerciseName" class="form-control" />
+                    <span asp-validation-for="ExerciseName" class="text-danger"></span>
                 </div>
-                <button asp-controller="TranslatingWords" asp-action="Add" type="submit" class="btn btn-primary">Dalej</button>
+                <button asp-controller="TranslatingWords" asp-action="Settings" type="submit" class="btn btn-primary">Dalej</button>
             </form>
         </div>
     </div>

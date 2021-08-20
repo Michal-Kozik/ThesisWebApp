@@ -124,7 +124,17 @@ namespace ThesisWebApp.Controllers
         [HttpGet]
         public IActionResult Settings()
         {
-            return View(new ReadingTitlesSettingsViewModel());
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Settings(ReadingTitlesSettingsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Add", new { numberOfParagraphs = model.NumberOfParagraphs, numberOfAdditionalTitles = model.NumberOfAdditionalTitles, exerciseName = model.ExerciseName });
+            }
+            return View(model);
         }
 
         [HttpGet]

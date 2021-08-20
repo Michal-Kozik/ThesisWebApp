@@ -17,6 +17,9 @@ namespace ThesisWebApp.ViewModels
         }
 
         [Display(Name = "Nazwa ćwiczenia")]
+        [RegularExpression(@"[a-zA-Z\s]*$", ErrorMessage = "Nazwa ćwiczenia może zawierać jedynie litery alfabetu angielskiego.")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Nazwa ćwiczenia musi mieć długość od 5 do 50 znaków.")]
+        [Required(ErrorMessage = "Nazwa ćwiczenia jest wymagana.")]
         public string ExerciseName { get; set; }
 
         [Display(Name = "Ilość akapitów")]
