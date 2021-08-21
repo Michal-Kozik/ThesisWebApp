@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Exams | Show Exercise";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model Exercise
+}
+
+<p class="lead">ID ćwiczenia: @Model.ExerciseID</p>
+<p class="lead">ID autora: @Model.ApplicationUserID</p>
+<p class="lead">Nazwa ćwiczenia: @Model.Name</p>
+<p class="lead">Ścieżka do pliku: @Model.PathToFile</p>
+
+<a asp-controller="Exam" asp-action="AddToExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-primary">Dodaj do testu</a>
+<a asp-controller="Exam" asp-action="CreateExam" class="btn btn-primary">Wróć</a>
+
+
