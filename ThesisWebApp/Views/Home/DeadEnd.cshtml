@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Something Went Wrong";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="height: 100vh">
+    <div class="row align-items-center" style="height: 50%">
+        <div class="col text-center">
+            <p class="lead">Coś poszło nie tak...</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Wróć do strony głównej</a>
+        </div>
+    </div>
+</div>

@@ -113,17 +113,25 @@ namespace ThesisWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Add", new { numberOfSentences = model.NumberOfSentences, exerciseName = model.ExerciseName });
+                TempData["NumberOfSentences"] = model.NumberOfSentences;
+                TempData["ExerciseName"] = model.ExerciseName;
+                return RedirectToAction("Add");
             }
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Add(int numberOfSentences, string exerciseName)
+        public IActionResult Add()
         {
+            // warunek na sprawdzenie czy tempdata posiada dane - jezeli nie, przekierowanie na error.
+            if (TempData["ExerciseName"] == null || TempData["NumberOfSentences"] == null)
+            {
+                //return error.
+                return RedirectToAction("DeadEnd", "Home");
+            }
             MatchingSentencesSettingsViewModel model = new MatchingSentencesSettingsViewModel();
-            model.NumberOfSentences = numberOfSentences;
-            model.ExerciseName = exerciseName;
+            model.NumberOfSentences = (int)TempData["NumberOfSentences"];
+            model.ExerciseName = TempData["ExerciseName"].ToString();
             return View(model);
         }
 
