@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Exams | End Exam";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ExamResult
+}
+
+<p class="lead">Koniec testu.</p>
+<p class="lead">Punkty: @Model.Points / @Model.MaxPoints</p>

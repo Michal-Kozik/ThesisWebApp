@@ -96,6 +96,19 @@ namespace ThesisWebApp.Controllers
         [HttpPost]
         public IActionResult TranslatingWordsScore(TranslatingWordsSettingsViewModel model)
         {
+            if (TempData["CurrentExercise"] != null)
+            {
+                if (TempData["Points"] == null)
+                    TempData["Points"] = TranslatingWordsCheck(model);
+                else
+                    TempData["Points"] = (int)TempData["Points"] + TranslatingWordsCheck(model);
+
+                if (TempData["MaxPoints"] == null)
+                    TempData["MaxPoints"] = model.NumberOfWords;
+                else
+                    TempData["MaxPoints"] = (int)TempData["MaxPoints"] + model.NumberOfWords;
+                return RedirectToAction("ContinueExam", "Exam");
+            }
             ViewBag.points = TranslatingWordsCheck(model);
             return View(model);
         }
@@ -110,6 +123,19 @@ namespace ThesisWebApp.Controllers
         [HttpPost]
         public IActionResult ReadingTitlesScore(ReadingTitlesSettingsViewModel model)
         {
+            if (TempData["CurrentExercise"] != null)
+            {
+                if (TempData["Points"] == null)
+                    TempData["Points"] = ReadingTitlesCheck(model);
+                else
+                    TempData["Points"] = (int)TempData["Points"] + ReadingTitlesCheck(model);
+
+                if (TempData["MaxPoints"] == null)
+                    TempData["MaxPoints"] = model.NumberOfParagraphs;
+                else
+                    TempData["MaxPoints"] = (int)TempData["MaxPoints"] + model.NumberOfParagraphs;
+                return RedirectToAction("ContinueExam", "Exam");
+            }
             ViewBag.points = ReadingTitlesCheck(model);
             return View(model);
         }
@@ -124,6 +150,19 @@ namespace ThesisWebApp.Controllers
         [HttpPost]
         public IActionResult MatchingSentencesScore(MatchingSentencesSettingsViewModel model)
         {
+            if (TempData["CurrentExercise"] != null)
+            {
+                if (TempData["Points"] == null)
+                    TempData["Points"] = MatchingSentencesCheck(model);
+                else
+                    TempData["Points"] = (int)TempData["Points"] + MatchingSentencesCheck(model);
+
+                if (TempData["MaxPoints"] == null)
+                    TempData["MaxPoints"] = model.NumberOfSentences;
+                else
+                    TempData["MaxPoints"] = (int)TempData["MaxPoints"] + model.NumberOfSentences;
+                return RedirectToAction("ContinueExam", "Exam");
+            }
             ViewBag.points = MatchingSentencesCheck(model);
             return View(model);
         }
