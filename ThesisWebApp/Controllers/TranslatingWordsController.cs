@@ -111,26 +111,36 @@ namespace ThesisWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Add", new { numberOfWords = model.NumberOfWords, exerciseName = model.ExerciseName });
+                TempData["NumberOfWords"] = model.NumberOfWords;
+                TempData["ExerciseName"] = model.ExerciseName;
+                return RedirectToAction("Add");
             }
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Add(int numberOfWords, string exerciseName)
+        public IActionResult Add()
         {
+            if (TempData["ExerciseName"] == null || TempData["NumberOfWords"] == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
             TranslatingWordsSettingsViewModel model = new TranslatingWordsSettingsViewModel();
-            model.NumberOfWords = numberOfWords;
-            model.ExerciseName = exerciseName;
+            model.NumberOfWords = (int)TempData["NumberOfWords"];
+            model.ExerciseName = TempData["ExerciseName"].ToString();
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Add(TranslatingWordsSettingsViewModel model)
+        public async Task<IActionResult> Add(TranslatingWordsSettingsViewModel model)
         {
             if (ValidateWords(model))
             {
-                return RedirectToAction("Result", model);
+                string path = CreateFilePath();
+                SaveExerciseToTxt(model, path);
+                await SaveExerciseInDatabase(model.ExerciseName, path);
+                TempData["Path"] = path;
+                return RedirectToAction("Save");
             }
             else
             {
@@ -140,19 +150,11 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Result(TranslatingWordsSettingsViewModel model)
+        public IActionResult Save()
         {
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Save(TranslatingWordsSettingsViewModel model)
-        {
-            string path = CreateFilePath();
-            SaveExerciseToTxt(model, path);
-            await SaveExerciseInDatabase(model.ExerciseName, path);
-
-            model = ReadExerciseFromTxt(path);
+            TranslatingWordsSettingsViewModel model;
+            model = ReadExerciseFromTxt(TempData["Path"].ToString());
+            TempData.Clear();
             return View(model);
         }
     }

@@ -96,6 +96,7 @@ namespace ThesisWebApp.Controllers
         [HttpPost]
         public IActionResult TranslatingWordsScore(TranslatingWordsSettingsViewModel model)
         {
+            // Jesli zadanie jest aktualnie czescia testu
             if (TempData["CurrentExercise"] != null)
             {
                 if (TempData["Points"] == null)
@@ -109,6 +110,7 @@ namespace ThesisWebApp.Controllers
                     TempData["MaxPoints"] = (int)TempData["MaxPoints"] + model.NumberOfWords;
                 return RedirectToAction("ContinueExam", "Exam");
             }
+            // Jesli zadanie jest samodzielnym skladnikiem
             ViewBag.points = TranslatingWordsCheck(model);
             return View(model);
         }

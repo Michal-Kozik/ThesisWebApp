@@ -91,7 +91,6 @@ namespace ThesisWebApp.Controllers
             string exercisesIDs = Request.Cookies["ChoosenExercises"];
             string[] exercisesIDsArray = exercisesIDs.Split('-');
             TempData["CurrentExercise"] = 0;
-            //TempData["NumberOfExercises"] = exercisesIDsArray.Length;
             int firstExerciseID = Int32.Parse(exercisesIDsArray[0]);
             return RedirectToAction("ChoosenExercise", "Exercise", new { ExerciseID = firstExerciseID });
         }

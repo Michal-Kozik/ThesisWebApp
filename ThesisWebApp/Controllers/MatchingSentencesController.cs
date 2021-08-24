@@ -136,11 +136,15 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(MatchingSentencesSettingsViewModel model)
+        public async Task<IActionResult> Add(MatchingSentencesSettingsViewModel model)
         {
             if (ValidateInputs(model))
             {
-                return RedirectToAction("Result", model);
+                string path = CreateFilePath();
+                SaveExerciseToTxt(model, path);
+                await SaveExerciseInDatabase(model.ExerciseName, path);
+                TempData["Path"] = path;
+                return RedirectToAction("Save");
             }
             else
             {
@@ -150,19 +154,11 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Result(MatchingSentencesSettingsViewModel model)
+        public IActionResult Save()
         {
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Save(MatchingSentencesSettingsViewModel model)
-        {
-            string path = CreateFilePath();
-            SaveExerciseToTxt(model, path);
-            await SaveExerciseInDatabase(model.ExerciseName, path);
-
-            model = ReadExerciseFromTxt(path);
+            MatchingSentencesSettingsViewModel model;
+            model = ReadExerciseFromTxt(TempData["Path"].ToString());
+            TempData.Clear();
             return View(model);
         }
     }

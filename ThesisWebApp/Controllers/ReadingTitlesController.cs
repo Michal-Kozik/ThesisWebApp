@@ -132,27 +132,38 @@ namespace ThesisWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Add", new { numberOfParagraphs = model.NumberOfParagraphs, numberOfAdditionalTitles = model.NumberOfAdditionalTitles, exerciseName = model.ExerciseName });
+                TempData["NumberOfParagraphs"] = model.NumberOfParagraphs;
+                TempData["NumberOfAdditionalTitles"] = model.NumberOfAdditionalTitles;
+                TempData["ExerciseName"] = model.ExerciseName;
+                return RedirectToAction("Add");
             }
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Add(int numberOfParagraphs, int numberOfAdditionalTitles, string exerciseName)
+        public IActionResult Add()
         {
+            if (TempData["ExerciseName"] == null || TempData["NumberOfParagraphs"] == null || TempData["NumberOfAdditionalTitles"] == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
             ReadingTitlesSettingsViewModel model = new ReadingTitlesSettingsViewModel();
-            model.NumberOfParagraphs = numberOfParagraphs;
-            model.NumberOfAdditionalTitles = numberOfAdditionalTitles;
-            model.ExerciseName = exerciseName;
+            model.NumberOfParagraphs = (int)TempData["NumberOfParagraphs"];
+            model.NumberOfAdditionalTitles = (int)TempData["NumberOfAdditionalTitles"];
+            model.ExerciseName = TempData["ExerciseName"].ToString();
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Add(ReadingTitlesSettingsViewModel model)
+        public async Task<IActionResult> Add(ReadingTitlesSettingsViewModel model)
         {
             if (ValidateInputs(model))
             {
-                return RedirectToAction("Result", model);
+                string path = CreateFilePath();
+                SaveExerciseToTxt(model, path);
+                await SaveExerciseInDatabase(model.ExerciseName, path);
+                TempData["Path"] = path;
+                return RedirectToAction("Save");
             }
             else
             {
@@ -162,19 +173,11 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Result(ReadingTitlesSettingsViewModel model)
+        public IActionResult Save()
         {
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Save(ReadingTitlesSettingsViewModel model)
-        {
-            string path = CreateFilePath();
-            SaveExerciseToTxt(model, path);
-            await SaveExerciseInDatabase(model.ExerciseName, path);
-
-            model = ReadExerciseFromTxt(path);
+            ReadingTitlesSettingsViewModel model;
+            model = ReadExerciseFromTxt(TempData["Path"].ToString());
+            TempData.Clear();
             return View(model);
         }
     }
