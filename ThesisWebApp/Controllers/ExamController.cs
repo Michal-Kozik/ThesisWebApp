@@ -29,6 +29,22 @@ namespace ThesisWebApp.Controllers
             return userManager.GetUserAsync(HttpContext.User);
         }
 
+        private bool CanAddToExam(string exerciseID)
+        {
+            string cookie = Request.Cookies["ChoosenExercises"];
+            string[] idArray = cookie.Split('-');
+            if (idArray.Length >= 10)
+            {
+                return false;
+            }
+            foreach (string id in idArray)
+            {
+                if (id == exerciseID)
+                    return false;
+            }
+            return true;
+        }
+
 
 
         public IActionResult Index()
@@ -64,6 +80,10 @@ namespace ThesisWebApp.Controllers
         public IActionResult ShowExercise(int exerciseID)
         {
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
+                ViewBag.canAdd = true;
+            else
+                ViewBag.canAdd = CanAddToExam(exerciseID.ToString());
             return View(exercise);
         }
 
@@ -75,15 +95,45 @@ namespace ThesisWebApp.Controllers
             }
             else
             {
-                string oldCookie = Request.Cookies["ChoosenExercises"];
-                Response.Cookies.Append("ChoosenExercises", $"{oldCookie}-{exerciseID}");
+                if (CanAddToExam(exerciseID.ToString()))
+                {
+                    string oldCookie = Request.Cookies["ChoosenExercises"];
+                    Response.Cookies.Append("ChoosenExercises", $"{oldCookie}-{exerciseID}");
+                }
             }
+            return RedirectToAction("CreateExam");
+        }
+
+        public IActionResult RemoveFromExam(int exerciseID)
+        {
+            if (!String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
+            {
+                string oldCookie = Request.Cookies["ChoosenExercises"];
+                string[] idArray = oldCookie.Split('-');
+                string cookie = "";
+                for (int i = 0; i < idArray.Length; i++)
+                {
+                    if (idArray[i] == exerciseID.ToString())
+                        idArray[i] = "";
+                    cookie += $"-{idArray[i]}";
+                }
+                // Przy usuwaniu pierwszego i ostatniego zadania.
+                cookie = cookie.Trim('-');
+                // Przy usuwaniu srodkowego zadania.
+                cookie = cookie.Replace("--", "-");
+                Response.Cookies.Append("ChoosenExercises", cookie);
+            }
+            return RedirectToAction("CreateExam");
+        }
+
+        public IActionResult ClearCookie()
+        {
+            Response.Cookies.Delete("ChoosenExercises");
             return RedirectToAction("CreateExam");
         }
 
         public IActionResult StartExam()
         {
-            // przetestowac try catch.
             if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
             {
                 return RedirectToAction("DeadEnd", "Home");
@@ -97,7 +147,6 @@ namespace ThesisWebApp.Controllers
 
         public IActionResult ContinueExam()
         {
-            // przetestowac try catch
             if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
             {
                 return RedirectToAction("DeadEnd", "Home");
@@ -116,7 +165,6 @@ namespace ThesisWebApp.Controllers
 
         public IActionResult EndExam()
         {
-            // przetestowac try catch
             if (TempData["Points"] == null)
             {
                 return RedirectToAction("DeadEnd", "Home");
