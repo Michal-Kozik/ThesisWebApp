@@ -70,25 +70,36 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChoosenExercise(int ExerciseID)
+        public IActionResult ChoosenExercise(int exerciseID, ExerciseType typeOfExercise)
         {
-            var exercise = context.Exercises.Where(ex => ex.ExerciseID == ExerciseID).FirstOrDefault();
-            switch (exercise.TypeOfExercise)
+            //var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            switch (typeOfExercise)
             {
                 case ExerciseType.TRANSLATING_WORDS:
-                    return RedirectToAction("TranslatingWordsAttempt", exercise);
+                    return RedirectToAction("TranslatingWordsAttempt", new { exerciseID = exerciseID });
                 case ExerciseType.READING_TITLES:
-                    return RedirectToAction("ReadingTitlesAttempt", exercise);
+                    return RedirectToAction("ReadingTitlesAttempt", new { exerciseID = exerciseID });
                 case ExerciseType.MATCHING_SENTENCES:
-                    return RedirectToAction("MatchingSentencesAttempt", exercise);
+                    return RedirectToAction("MatchingSentencesAttempt", new { exerciseID = exerciseID });
                 default:
-                    return View(exercise);
+                    // w przypadku nie znalezionego typu zadania.
+                    return View(exerciseID);
             }
         }
 
         [HttpGet]
-        public IActionResult TranslatingWordsAttempt(Exercise exercise)
+        public IActionResult TranslatingWordsAttempt(int exerciseID)
         {
+            var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            if (exercise == null)
+            {
+                // Nie znaleziono cwiczenia w bazie.
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            if (exercise.TypeOfExercise != ExerciseType.TRANSLATING_WORDS)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
             TranslatingWordsSettingsViewModel model = TranslatingWordsController.ReadExerciseFromTxt(exercise.PathToFile);
             return View(model);
         }
@@ -116,8 +127,18 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ReadingTitlesAttempt(Exercise exercise)
+        public IActionResult ReadingTitlesAttempt(int exerciseID)
         {
+            var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            if (exercise == null)
+            {
+                // Nie znaleziono cwiczenia w bazie.
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            if (exercise.TypeOfExercise != ExerciseType.READING_TITLES)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
             ReadingTitlesSettingsViewModel model = ReadingTitlesController.ReadExerciseFromTxt(exercise.PathToFile);
             return View(model);
         }
@@ -143,8 +164,18 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult MatchingSentencesAttempt(Exercise exercise)
+        public IActionResult MatchingSentencesAttempt(int exerciseID)
         {
+            var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            if (exercise == null)
+            {
+                // Nie znaleziono cwiczenia w bazie.
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            if (exercise.TypeOfExercise != ExerciseType.MATCHING_SENTENCES)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
             MatchingSentencesSettingsViewModel model = MatchingSentencesController.ReadExerciseFromTxt(exercise.PathToFile);
             return View(model);
         }
