@@ -26,9 +26,14 @@ namespace ThesisWebApp.Data
             base.OnConfiguring(optionsBuilder);
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasOne(s => s.Statistics)
+            //    .WithOne(i => i.ApplicationUser)
+            //    .HasForeignKey<Statistics>(s => s.ApplicationUserID);
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -37,6 +42,6 @@ namespace ThesisWebApp.Data
 
         public DbSet<Exercise> Exercises { get; set; }
 
-        public DbSet<ExerciseExams> ExerciseExams { get; set; }
+        public DbSet<Statistics> Statistics { get; set; }
     }
 }

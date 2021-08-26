@@ -16,8 +16,13 @@ namespace ThesisWebApp.Models
         public string LastName { get; set; }
 
 
+        // Kazdy uzytkownik ma swoje statystyki (relacja 1 do 1).
+        public Statistics Statistics { get; set; }
 
         // Jeden uzytkownik moze stworzyc wiele cwiczen.
         public virtual ICollection<Exercise> Exercises { get; set; }
+
+        // Jeden uzytkownik moze stworzyc wiele testow.
+        public virtual ICollection<Exam> Exams { get; set; }
     }
 }

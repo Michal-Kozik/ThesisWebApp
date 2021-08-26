@@ -17,9 +17,20 @@ namespace ThesisWebApp.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Required]
+        [Display(Name = "Exercises Pattern")]
+        public string ExercisesPattern { get; set; }
+
+        [Required]
+        [Display(Name = "Visible")]
+        public bool Visible { get; set; }
 
 
-        // W jednym tescie bedzie wiele zadan.
-        public virtual ICollection<ExerciseExams> ExerciseExams { get; set; }
+        // Kazdy test ma swojego autora.
+        [Required]
+        [ForeignKey("ApplicationUser")]
+        [Display(Name = "Author ID")]
+        public string ApplicationUserID { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

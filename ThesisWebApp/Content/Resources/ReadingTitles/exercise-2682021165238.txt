@@ -1,0 +1,7 @@
+4;2
+adasdasdasdasdas;tytul1
+dasdasdasdasd;tytul2
+asdasdasdasdasd;tytul3
+asdasdasdasdasdsa;tytul4
+nadmiar1
+nadmiar2

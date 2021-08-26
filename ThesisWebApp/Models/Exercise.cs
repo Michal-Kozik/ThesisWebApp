@@ -33,16 +33,16 @@ namespace ThesisWebApp.Models
         [EnumDataType(typeof(ExerciseType))]
         public ExerciseType TypeOfExercise { get; set; }
 
+        [Required]
+        [Display(Name = "Visible")]
+        public bool Visible { get; set; }
 
 
-        public ApplicationUser ApplicationUser { get; set; }
-
+        // Kazde zadanie ma swojego autora.
         [Required]
         [ForeignKey("ApplicationUser")]
         [Display(Name = "Author ID")]
         public string ApplicationUserID { get; set; }
-
-        // Jedno zadanie bedzie w wielu egzaminach.
-        public virtual ICollection<ExerciseExams> ExerciseExams { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -94,7 +94,7 @@ namespace ThesisWebApp.Controllers
             using (var context = new ApplicationDbContext())
             {
                 var user = await GetCurrentUserAsync();
-                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = exerciseName, TypeOfExercise = ExerciseType.MATCHING_SENTENCES, PathToFile = path };
+                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = exerciseName, TypeOfExercise = ExerciseType.MATCHING_SENTENCES, PathToFile = path, Visible = true };
                 context.Exercises.Add(exercise);
                 await context.SaveChangesAsync();
             }
