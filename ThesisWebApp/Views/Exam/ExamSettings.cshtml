@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Exams | Save";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model Exam
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TEST - KONFIGURACJA</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="row">
+            <div class="col-6">
+                @*Wybrane zadania*@
+                @foreach (var exercise in ViewBag.exercises)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <div class="card border-primary mb-3">
+                                <div class="card-header text-center">
+                                    @exercise.Name
+                                </div>
+                                <div class="card-body">
+                                    <p class="lead">Typ zadania: @exercise.TypeOfExercise</p>
+                                    <p class="lead">Punkty: [liczba]</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col">
+                        @*Widocznosc testu*@
+                        <label asp-for="Visible"></label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" asp-for="Visible" class="form-check-input" checked />
+                                <p class="lead">Publiczny</p>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        @*Nazwa testu*@
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <button class="btn btn-primary">Zapisz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ExerciseName"></label>
+                    <input asp-for="ExerciseName" class="form-control" />
+                    <span asp-validation-for="ExerciseName" class="text-danger"></span>
+                </div>
+                <br />
+                <button asp-controller="ReadingTitles" asp-action="Settings" type="submit" class="btn btn-primary">Dalej</button>
+            </div>
+        </div>*@
+    </form>
+</div>

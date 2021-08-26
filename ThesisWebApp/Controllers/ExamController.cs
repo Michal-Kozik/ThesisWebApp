@@ -87,6 +87,24 @@ namespace ThesisWebApp.Controllers
             return View(exercise);
         }
 
+        [HttpGet]
+        public IActionResult ExamSettings()
+        {
+            if (!String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
+            {
+                string cookie = Request.Cookies["ChoosenExercises"];
+                string[] idArray = cookie.Split('-');
+                List<string> idList = idArray.ToList();
+                ViewBag.exercises = context.Exercises.Where(ex => idList.Contains(ex.ExerciseID.ToString()));
+                ViewBag.choosenExercises = Request.Cookies["ChoosenExercises"];
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
+        }
+
         public IActionResult AddToExam(int exerciseID)
         {
             if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))

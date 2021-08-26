@@ -22,10 +22,20 @@
                 <div class="card-header">Informacje</div>
                 <div class="card-body">
                     <h4 style="font-family:'Mistral'"><b>TWORZENIE TESTU</b></h4>
-                    <div class="border-bottom" style="margin-bottom: 20px">
+                    <div class="border-bottom" style="margin-bottom: 20px; padding-bottom: 20px">
                         <p class="lead">
                             Wybrane zadania: @ViewBag.choosenExercises
                         </p>
+                        @if (String.IsNullOrEmpty(ViewBag.choosenExercises))
+                        {
+                            <a class="btn btn-outline-success disabled">Zapisz</a>
+                            <a class="btn btn-outline-danger disabled">Anuluj</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Exam" asp-action="ExamSettings" class="btn btn-outline-success">Zapisz</a>
+                            <a asp-controller="Exam" asp-action="ClearCookie" class="btn btn-outline-danger">Anuluj</a>
+                        }
                     </div>
                     <div class="list-group">
                         @foreach (var exercise in ViewBag.userExercises)
