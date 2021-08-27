@@ -66,6 +66,7 @@ namespace ThesisWebApp.Controllers
 
         public IActionResult PublicExams()
         {
+            ViewBag.exams = context.Exams.Include(e => e.ApplicationUser).ToList();
             return View();
         }
 

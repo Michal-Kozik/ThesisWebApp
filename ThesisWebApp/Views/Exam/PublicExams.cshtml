@@ -22,11 +22,17 @@
                 <div class="card-header">Publiczne testy</div>
                 <div class="card-body">
                     <h4 style="font-family:'Mistral'"><b>CZYM SĄ PUBLICZNE TESTY?</b></h4>
-                    <p class="lead">
-                        Tutaj będą znajdować się testy stworzone przez użtykowników mających rolę
-                        nauczyciel. Widoczne będą tylko te testy, które zostały ustawione jako publiczne.
-                    </p>
-                    <a asp-controller="Exam" asp-action="StartExam" class="btn btn-outline-primary">Rozwiąż test</a>
+                    <div class="list-group">
+                        @foreach (var exam in ViewBag.exams)
+                        { 
+                            <a class="list-group-item list-group-item-action">
+                                <h5>@exam.Name</h5>
+                                <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
+                                <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>
+                            </a>
+                        }
+                    </div>
+                    @*<a asp-controller="Exam" asp-action="StartExam" class="btn btn-outline-primary">Rozwiąż test</a>*@
                 </div>
             </div>
         </div>
