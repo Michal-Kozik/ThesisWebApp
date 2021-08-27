@@ -3,7 +3,7 @@
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    @model Exam
+    @model ExamViewModel
 }
 
 <div class="border-bottom" style="margin-bottom: 20px">
@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-6">
                 @*Wybrane zadania*@
-                @foreach (var exercise in ViewBag.exercises)
+                @foreach (var exercise in Model.Exercises)
                 {
                     <div class="row">
                         <div class="col">
@@ -54,7 +54,7 @@
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <br />
-                        <button class="btn btn-primary">Zapisz</button>
+                        <button asp-controller="Exam" asp-action="ExamSettings" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

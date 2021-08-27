@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThesisWebApp.Data;
 using ThesisWebApp.Models;
+using ThesisWebApp.ViewModels;
 
 namespace ThesisWebApp.Controllers
 {
@@ -27,6 +28,17 @@ namespace ThesisWebApp.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
             return userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private async Task SaveExamInDatabase(ExamViewModel model)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var user = await GetCurrentUserAsync();
+                Exam exam = new Exam { ApplicationUserID = user.Id, Name = model.Name, ExercisesPattern = model.ExercisePattern, Visible = model.Visible };
+                context.Exams.Add(exam);
+                await context.SaveChangesAsync();
+            }
         }
 
         private bool CanAddToExam(string exerciseID)
@@ -95,13 +107,34 @@ namespace ThesisWebApp.Controllers
                 string cookie = Request.Cookies["ChoosenExercises"];
                 string[] idArray = cookie.Split('-');
                 List<string> idList = idArray.ToList();
-                ViewBag.exercises = context.Exercises.Where(ex => idList.Contains(ex.ExerciseID.ToString()));
-                ViewBag.choosenExercises = Request.Cookies["ChoosenExercises"];
-                return View();
+                ExamViewModel model = new ExamViewModel();
+                model.Exercises = context.Exercises.Where(ex => idList.Contains(ex.ExerciseID.ToString())).ToList();
+                //ViewBag.choosenExercises = Request.Cookies["ChoosenExercises"];
+                return View(model);
             }
             else
             {
                 return RedirectToAction("DeadEnd", "Home");
+            }
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> ExamSettings(ExamViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.ExercisePattern = Request.Cookies["ChoosenExercises"];
+                await SaveExamInDatabase(model);
+                Response.Cookies.Delete("ChoosenExercises");
+                return RedirectToAction("Index", "Exam");
+            }
+            else
+            {
+                string cookie = Request.Cookies["ChoosenExercises"];
+                string[] idArray = cookie.Split('-');
+                List<string> idList = idArray.ToList();
+                model.Exercises = context.Exercises.Where(ex => idList.Contains(ex.ExerciseID.ToString())).ToList();
+                return View(model);
             }
         }
 
