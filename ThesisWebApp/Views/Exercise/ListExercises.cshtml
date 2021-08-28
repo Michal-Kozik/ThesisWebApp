@@ -3,6 +3,7 @@
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @model PaginatedList<Exercise>
 }
 
 <div class="border-bottom" style="margin-bottom: 20px">
@@ -25,8 +26,13 @@
                 </div>
                 <div class="card-body">
                     @*Poprawic kod html*@
-                    <div class="list-group">
-                        @foreach (var exercise in ViewBag.exercises)
+                    @if (Model.TotalPages < Model.PageIndex)
+                    {
+                        <p class="lead">Brak wyników...</p>
+                    }
+                    else
+                    {
+                        foreach (var exercise in Model)
                         {
                             <div class="list-group">
                                 <a class="list-group-item list-group-item-action" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-exerciseID="@exercise.ExerciseID" asp-route-typeOfExercise="@exercise.TypeOfExercise">
@@ -37,7 +43,35 @@
                                 </a>
                             </div>
                         }
-                    </div>
+                        <br />
+                        var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+                        var nextDisabled = Model.HasNextPage ? "" : "disabled";
+                        <div>
+                            <ul class="pagination">
+                                <li class="page-item @prevDisabled">
+                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                                </li>
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item active">
+                                    <a class="page-link">@Model.PageIndex</a>
+                                </li>
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item @nextDisabled">
+                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

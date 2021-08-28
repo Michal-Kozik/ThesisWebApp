@@ -63,10 +63,14 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
-        public IActionResult ListExercises()
+        public async Task<IActionResult> ListExercises(int? pageNumber)
         {
-            ViewBag.exercises = context.Exercises.Include(e => e.ApplicationUser).ToList();
-            return View();
+            if (pageNumber < 1)
+                pageNumber = 1;
+            var exercises = context.Exercises.Include(e => e.ApplicationUser);
+            int pageSize = 2;
+            PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
         }
 
         [HttpGet]
