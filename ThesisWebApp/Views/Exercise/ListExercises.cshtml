@@ -13,10 +13,31 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-3">
-            <div class="list-group">
-                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="Index">Informacje</a>
-                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
-                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
+            <div class="row">
+                <div class="col">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="Index">Informacje</a>
+                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
+                        <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+                <div class="col text-center">
+                    <p class="lead">Typ sortowania:</p>
+                </div>
+            </div>
+            <div class="row">
+                @{
+                    var sortName = (ViewData["NameSortParam"].ToString() == "name") ? "active" : "";
+                    var sortNameDesc = (ViewData["NameSortParam"].ToString() == "name_desc") ? "active" : "";
+                }
+                <div class="col text-center">
+                    <div class="btn-group" style="width:inherit">
+                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="name" class="btn btn-outline-secondary btn-block @sortName">Nazwa A-Z</a>
+                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="name_desc" class="btn btn-outline-secondary btn-block @sortNameDesc">Nazwa Z-A</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-9">
@@ -49,12 +70,12 @@
                         <div>
                             <ul class="pagination">
                                 <li class="page-item @prevDisabled">
-                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewData["CurrentSort"]" class="page-link">&laquo;</a>
                                 </li>
                                 @if (Model.HasPreviousPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewData["CurrentSort"]" class="page-link">@(Model.PageIndex - 1)</a>
                                     </li>
                                 }
                                 <li class="page-item active">
@@ -63,11 +84,11 @@
                                 @if (Model.HasNextPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewData["CurrentSort"]" class="page-link">@(Model.PageIndex + 1)</a>
                                     </li>
                                 }
                                 <li class="page-item @nextDisabled">
-                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewData["CurrentSort"]" class="page-link">&raquo;</a>
                                 </li>
                             </ul>
                         </div>

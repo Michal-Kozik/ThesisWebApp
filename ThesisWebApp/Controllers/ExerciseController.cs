@@ -63,12 +63,25 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ListExercises(int? pageNumber)
+        public async Task<IActionResult> ListExercises(int? pageNumber, string sortOrder)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name" : sortOrder;
             if (pageNumber < 1)
                 pageNumber = 1;
-            var exercises = context.Exercises.Include(e => e.ApplicationUser);
+            var exercises = context.Exercises.Include(e => e.ApplicationUser).AsQueryable();
             int pageSize = 2;
+
+            // Sortowanie.
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    exercises = exercises.OrderByDescending(e => e.Name);
+                    break;
+                default:
+                    exercises = exercises.OrderBy(e => e.Name);
+                    break;
+            }
             PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }
