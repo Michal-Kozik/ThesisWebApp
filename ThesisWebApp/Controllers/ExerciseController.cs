@@ -87,8 +87,14 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChoosenExercise(int exerciseID, ExerciseType typeOfExercise)
+        public IActionResult ChoosenExercise(int exerciseID, ExerciseType? typeOfExercise)
         {
+            // w przypadku testow, kazde zadanie trzeba pobrac z bazy.
+            if (typeOfExercise == null)
+            {
+                var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+                typeOfExercise = exercise.TypeOfExercise;
+            }
             //var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             switch (typeOfExercise)
             {

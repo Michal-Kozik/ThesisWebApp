@@ -184,14 +184,16 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("CreateExam");
         }
 
-        public IActionResult StartExam()
+        public IActionResult StartExam(int examID)
         {
-            if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
+            var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
+            if (exam == null)
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
-            string exercisesIDs = Request.Cookies["ChoosenExercises"];
-            string[] exercisesIDsArray = exercisesIDs.Split('-');
+            string cookie = exam.ExercisesPattern;
+            Response.Cookies.Append("ChoosenExercises", cookie);
+            string[] exercisesIDsArray = cookie.Split('-');
             TempData["CurrentExercise"] = 0;
             int firstExerciseID = Int32.Parse(exercisesIDsArray[0]);
             return RedirectToAction("ChoosenExercise", "Exercise", new { ExerciseID = firstExerciseID });
