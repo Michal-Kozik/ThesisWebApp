@@ -63,15 +63,32 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ListExercises(int? pageNumber, string sortOrder)
+        public async Task<IActionResult> ListExercises(int? pageNumber, string sortOrder, string typeParam)
         {
             ViewData["CurrentSort"] = sortOrder;
+            ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "any" : typeParam;
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name" : sortOrder;
             if (pageNumber < 1)
                 pageNumber = 1;
-            var exercises = context.Exercises.Include(e => e.ApplicationUser).AsQueryable();
             int pageSize = 2;
 
+            IQueryable<Exercise> exercises;
+            switch (typeParam)
+            {
+                case "translatingWords":
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.TRANSLATING_WORDS).AsQueryable();
+                    break;
+                case "readingTitles":
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.READING_TITLES).AsQueryable();
+                    break;
+                case "matchingSentences":
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES).AsQueryable();
+                    break;
+                default:
+                    exercises = context.Exercises.Include(e => e.ApplicationUser).AsQueryable();
+                    break;
+            }
+            
             // Sortowanie.
             switch (sortOrder)
             {

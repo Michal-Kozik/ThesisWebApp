@@ -33,10 +33,29 @@
                     var sortNameDesc = (ViewData["NameSortParam"].ToString() == "name_desc") ? "active" : "";
                 }
                 <div class="col text-center">
-                    <div class="btn-group" style="width:inherit">
+                    <div class="btn-group" style="width: inherit">
                         <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="name" class="btn btn-outline-secondary btn-block @sortName">Nazwa A-Z</a>
                         <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="name_desc" class="btn btn-outline-secondary btn-block @sortNameDesc">Nazwa Z-A</a>
                     </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+                <div class="col text-center">
+                    <label class="lead">Typ zadania:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @{ 
+                        var anyType = (ViewData["ExerciseTypeParam"].ToString() == "any") ? "active" : "";
+                        var translatingWords = (ViewData["ExerciseTypeParam"].ToString() == "translatingWords") ? "active" : "";
+                        var readingTitles = (ViewData["ExerciseTypeParam"].ToString() == "readingTitles") ? "active" : "";
+                        var matchingSentences = (ViewData["ExerciseTypeParam"].ToString() == "matchingSentences") ? "active" : "";
+                    }
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-typeParam="" class="btn btn-outline-secondary @anyType" style="width: inherit">Dowolne</a>
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-typeParam="translatingWords" class="btn btn-outline-secondary @translatingWords" style="width: inherit">Tłumaczenie słów</a>
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-typeParam="readingTitles" class="btn btn-outline-secondary @readingTitles" style="width: inherit">Dopasowywanie tytułów</a>
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-typeParam="matchingSentences" class="btn btn-outline-secondary @matchingSentences" style="width: inherit">Łączenie zdań</a>
                 </div>
             </div>
         </div>
@@ -48,7 +67,7 @@
                 <div class="card-body">
                     @*Poprawic kod html*@
                     @if (Model.TotalPages < Model.PageIndex)
-                    {
+                            {
                         <p class="lead">Brak wyników...</p>
                     }
                     else
