@@ -99,11 +99,14 @@ namespace ThesisWebApp.Controllers
             switch (typeOfExercise)
             {
                 case ExerciseType.TRANSLATING_WORDS:
-                    return RedirectToAction("TranslatingWordsAttempt", new { exerciseID = exerciseID });
+                    TempData["TranslatingWords"] = exerciseID;
+                    return RedirectToAction("TranslatingWordsAttempt");
                 case ExerciseType.READING_TITLES:
-                    return RedirectToAction("ReadingTitlesAttempt", new { exerciseID = exerciseID });
+                    TempData["ReadingTitles"] = exerciseID;
+                    return RedirectToAction("ReadingTitlesAttempt");
                 case ExerciseType.MATCHING_SENTENCES:
-                    return RedirectToAction("MatchingSentencesAttempt", new { exerciseID = exerciseID });
+                    TempData["MatchingSentences"] = exerciseID;
+                    return RedirectToAction("MatchingSentencesAttempt");
                 default:
                     // w przypadku nie znalezionego typu zadania.
                     return View(exerciseID);
@@ -111,19 +114,16 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult TranslatingWordsAttempt(int exerciseID)
+        public IActionResult TranslatingWordsAttempt()
         {
+            if (TempData["TranslatingWords"] == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            int exerciseID = (int)TempData["TranslatingWords"];
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
-            if (exercise == null)
-            {
-                // Nie znaleziono cwiczenia w bazie.
-                return RedirectToAction("DeadEnd", "Home");
-            }
-            if (exercise.TypeOfExercise != ExerciseType.TRANSLATING_WORDS)
-            {
-                return RedirectToAction("DeadEnd", "Home");
-            }
             TranslatingWordsSettingsViewModel model = TranslatingWordsController.ReadExerciseFromTxt(exercise.PathToFile);
+            TempData.Remove("TranslatingWords");
             return View(model);
         }
 
@@ -150,19 +150,16 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ReadingTitlesAttempt(int exerciseID)
+        public IActionResult ReadingTitlesAttempt()
         {
+            if (TempData["ReadingTitles"] == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            int exerciseID = (int)TempData["ReadingTitles"];
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
-            if (exercise == null)
-            {
-                // Nie znaleziono cwiczenia w bazie.
-                return RedirectToAction("DeadEnd", "Home");
-            }
-            if (exercise.TypeOfExercise != ExerciseType.READING_TITLES)
-            {
-                return RedirectToAction("DeadEnd", "Home");
-            }
             ReadingTitlesSettingsViewModel model = ReadingTitlesController.ReadExerciseFromTxt(exercise.PathToFile);
+            TempData.Remove("ReadingTitles");
             return View(model);
         }
 
@@ -187,19 +184,16 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult MatchingSentencesAttempt(int exerciseID)
+        public IActionResult MatchingSentencesAttempt()
         {
+            if (TempData["MatchingSentences"] == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            int exerciseID = (int)TempData["MatchingSentences"];
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
-            if (exercise == null)
-            {
-                // Nie znaleziono cwiczenia w bazie.
-                return RedirectToAction("DeadEnd", "Home");
-            }
-            if (exercise.TypeOfExercise != ExerciseType.MATCHING_SENTENCES)
-            {
-                return RedirectToAction("DeadEnd", "Home");
-            }
             MatchingSentencesSettingsViewModel model = MatchingSentencesController.ReadExerciseFromTxt(exercise.PathToFile);
+            TempData.Remove("MatchingSentences");
             return View(model);
         }
 
