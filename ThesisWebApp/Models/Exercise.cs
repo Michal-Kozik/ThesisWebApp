@@ -14,6 +14,17 @@ namespace ThesisWebApp.Models
         MATCHING_SENTENCES = 2
     }
 
+    public enum ExerciseLevel
+    {
+        UNKNOWN = 0,
+        A1 = 1,
+        A2 = 2,
+        B1 = 3,
+        B2 = 4,
+        C1 = 5,
+        C2 = 6
+    }
+
     public class Exercise
     {
         [Key]
@@ -34,8 +45,19 @@ namespace ThesisWebApp.Models
         public ExerciseType TypeOfExercise { get; set; }
 
         [Required]
+        [Display(Name = "Level of exercise")]
+        [EnumDataType(typeof(ExerciseLevel))]
+        public ExerciseLevel LevelOfExercise { get; set; }
+
+        [Required]
         [Display(Name = "Visible")]
         public bool Visible { get; set; }
+
+        [Required]
+        [Display(Name = "Created")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Created { get; set; }
 
 
         // Kazde zadanie ma swojego autora.

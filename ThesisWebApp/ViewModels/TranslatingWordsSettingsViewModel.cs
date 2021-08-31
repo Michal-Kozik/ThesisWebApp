@@ -24,6 +24,9 @@ namespace ThesisWebApp.ViewModels
         [Display(Name = "Ilość słów")]
         public int NumberOfWords { get; set; }
 
+        [Display(Name = "Poziom")]
+        public int Level { get; set; }
+
         public string[] TranslateFromArray { get; set; }
         public string[] TranslateToArray { get; set; }
         public string[] UserAnswers { get; set; }

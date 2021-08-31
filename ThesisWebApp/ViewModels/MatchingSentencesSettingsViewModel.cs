@@ -24,6 +24,9 @@ namespace ThesisWebApp.ViewModels
         [Display(Name = "Ilość zdań")]
         public int NumberOfSentences { get; set; }
 
+        [Display(Name = "Poziom")]
+        public int Level { get; set; }
+
         public string[] SentencesFirstPart { get; set; }
         public string[] SentencesSecondPart { get; set; }
         public string[] UserAnswers { get; set; }

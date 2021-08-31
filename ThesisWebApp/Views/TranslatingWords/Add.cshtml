@@ -23,7 +23,7 @@
             </div>
         </div>
         @for (int i = 0; i < Model.NumberOfWords; i++)
-            {
+        {
             <div class="row">
                 <div class="col-5">
                     <div class="form-group">
@@ -43,6 +43,7 @@
         <br />
         @Html.HiddenFor(m => m.NumberOfWords, new { Value = Model.NumberOfWords })
         @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
+        @Html.HiddenFor(m => m.Level, new { Value = Model.Level })
         <button asp-controller="TranslatingWords" asp-action="Add" type="submit" class="btn btn-primary">Zapisz</button>
     </form>
 </div>

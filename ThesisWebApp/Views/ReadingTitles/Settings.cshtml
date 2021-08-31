@@ -34,6 +34,50 @@
                         6 akapitów
                     </label>
                 </div>
+                @*Poziom trudnosci*@
+                <label class="lead" asp-for="Level"></label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="0" class="form-check-input" checked />
+                        Nieznany
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="1" class="form-check-input" />
+                        A1
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="2" class="form-check-input" />
+                        A2
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="3" class="form-check-input" />
+                        B1
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="4" class="form-check-input" />
+                        B2
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="5" class="form-check-input" />
+                        C1
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" asp-for="Level" value="6" class="form-check-input" />
+                        C2
+                    </label>
+                </div>
             </div>
             <div class="col-6">
                 @*Ilosc nadmiarowych tytulow*@

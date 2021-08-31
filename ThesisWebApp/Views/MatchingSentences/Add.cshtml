@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-5">
                     <div class="form-group">
-                        <input asp-for="SentencesFirstPart[i]" class="form-control" placeholder="Pierwsza część zdania..."/>
+                        <input asp-for="SentencesFirstPart[i]" class="form-control" placeholder="Pierwsza część zdania..." />
                     </div>
                 </div>
                 <div class="col-2 text-center align-self-center">
@@ -42,6 +42,7 @@
         }
         @Html.HiddenFor(m => m.NumberOfSentences, new { Value = Model.NumberOfSentences })
         @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
+        @Html.HiddenFor(m => m.Level, new { Value = Model.Level })
         <button asp-controller="MatchingSentences" asp-action="Add" type="submit" class="btn btn-primary">Zapisz</button>
     </form>
 </div>

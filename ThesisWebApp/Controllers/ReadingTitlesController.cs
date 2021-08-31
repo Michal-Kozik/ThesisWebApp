@@ -108,12 +108,18 @@ namespace ThesisWebApp.Controllers
             return userManager.GetUserAsync(HttpContext.User);
         }
 
-        private async Task SaveExerciseInDatabase(string exerciseName, string path)
+        private async Task SaveExerciseInDatabase(ReadingTitlesSettingsViewModel model, string path)
         {
             using (var context = new ApplicationDbContext())
             {
                 var user = await GetCurrentUserAsync();
-                Exercise exercise = new Exercise { ApplicationUserID = user.Id, Name = exerciseName, TypeOfExercise = ExerciseType.READING_TITLES, PathToFile = path, Visible = true };
+                Exercise exercise = new Exercise { ApplicationUserID = user.Id,
+                                                   Name = model.ExerciseName,
+                                                   TypeOfExercise = ExerciseType.READING_TITLES,
+                                                   PathToFile = path, 
+                                                   Visible = true,
+                                                   Created = DateTime.Today,
+                                                   LevelOfExercise = (ExerciseLevel)model.Level };
                 context.Exercises.Add(exercise);
                 await context.SaveChangesAsync();
             }
@@ -135,6 +141,7 @@ namespace ThesisWebApp.Controllers
                 TempData["NumberOfParagraphs"] = model.NumberOfParagraphs;
                 TempData["NumberOfAdditionalTitles"] = model.NumberOfAdditionalTitles;
                 TempData["ExerciseName"] = model.ExerciseName;
+                TempData["Level"] = model.Level;
                 return RedirectToAction("Add");
             }
             return View(model);
@@ -151,6 +158,7 @@ namespace ThesisWebApp.Controllers
             model.NumberOfParagraphs = (int)TempData["NumberOfParagraphs"];
             model.NumberOfAdditionalTitles = (int)TempData["NumberOfAdditionalTitles"];
             model.ExerciseName = TempData["ExerciseName"].ToString();
+            model.Level = (int)TempData["Level"];
             return View(model);
         }
 
@@ -161,7 +169,7 @@ namespace ThesisWebApp.Controllers
             {
                 string path = CreateFilePath();
                 SaveExerciseToTxt(model, path);
-                await SaveExerciseInDatabase(model.ExerciseName, path);
+                await SaveExerciseInDatabase(model, path);
                 TempData["Path"] = path;
                 return RedirectToAction("Save");
             }

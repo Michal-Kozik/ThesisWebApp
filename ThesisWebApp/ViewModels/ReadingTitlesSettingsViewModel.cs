@@ -28,6 +28,9 @@ namespace ThesisWebApp.ViewModels
         [Display(Name = "Ilość nadmiarowych tytułów")]
         public int NumberOfAdditionalTitles { get; set; }
 
+        [Display(Name = "Poziom")]
+        public int Level { get; set; }
+
         public string[] Paragraphs { get; set; }
         public string[] CorrectTitles { get; set; }
         public string[] AdditionalTitles { get; set; }
