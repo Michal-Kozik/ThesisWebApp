@@ -65,9 +65,8 @@ namespace ThesisWebApp.Controllers
 
         public async Task<IActionResult> ListExercises(int? pageNumber, string sortOrder, string typeParam)
         {
-            //ViewData["CurrentSort"] = sortOrder;
-            ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "any" : typeParam;
-            ViewData["DateSortParam"] = String.IsNullOrEmpty(sortOrder) ? "date" : sortOrder;
+            ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "" : typeParam;
+            ViewData["SortParam"] = String.IsNullOrEmpty(sortOrder) ? "" : sortOrder;
             if (pageNumber < 1)
                 pageNumber = 1;
             int pageSize = 3;
@@ -93,6 +92,12 @@ namespace ThesisWebApp.Controllers
             // Sortowanie.
             switch (sortOrder)
             {
+                case "level_asc":
+                    exercises = exercises.OrderBy(ex => ex.LevelOfExercise);
+                    break;
+                case "level_desc":
+                    exercises = exercises.OrderByDescending(ex => ex.LevelOfExercise);
+                    break;
                 case "date_asc":
                     exercises = exercises.OrderBy(ex => ex.Created);
                     break;
