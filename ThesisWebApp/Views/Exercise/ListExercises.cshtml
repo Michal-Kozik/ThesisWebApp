@@ -65,9 +65,8 @@
                     Lista ćwiczeń
                 </div>
                 <div class="card-body">
-                    @*Poprawic kod html*@
                     @if (Model.TotalPages < Model.PageIndex)
-                            {
+                    {
                         <p class="lead">Brak wyników...</p>
                     }
                     else
@@ -75,11 +74,42 @@
                         foreach (var exercise in Model)
                         {
                             <div class="list-group">
-                                <a class="list-group-item list-group-item-action" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-exerciseID="@exercise.ExerciseID" asp-route-typeOfExercise="@exercise.TypeOfExercise">
-                                    <h5>@exercise.Name</h5>
+                                <a class="list-group-item list-group-item-action flex-column align-items-center" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-exerciseID="@exercise.ExerciseID" asp-route-typeOfExercise="@exercise.TypeOfExercise">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5>@exercise.Name</h5>
+                                        <small class="text-muted">@exercise.Created.ToString("dd-MM-yyyy")</small>
+                                    </div>
                                     <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
                                     <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
-                                    <small class="text-muted">@exercise.PathToFile</small>
+                                    <div class="row justify-content-between">
+                                        <div class="col-3">
+                                            <p class="lead">Poziom: @exercise.LevelOfExercise</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="progress">
+                                                @{
+                                                    string barColor;
+                                                    if (exercise.LevelOfExercise == ExerciseLevel.A1 || exercise.LevelOfExercise == ExerciseLevel.A2)
+                                                        barColor = "bg-success";
+                                                    else if (exercise.LevelOfExercise == ExerciseLevel.B1 || exercise.LevelOfExercise == ExerciseLevel.B2)
+                                                        barColor = "bg-warning";
+                                                    else
+                                                        barColor = "bg-danger";
+
+                                                    string progressPercent;
+                                                    if (exercise.LevelOfExercise != ExerciseLevel.C2)
+                                                    {
+                                                        progressPercent = ((int)exercise.LevelOfExercise * 16.5).ToString() + '%';
+                                                    }
+                                                    else
+                                                    {
+                                                        progressPercent = "100%";
+                                                    }
+                                                }
+                                                <div class="progress-bar-striped @barColor" style="width: @progressPercent" role="progressbar" aria-valuemin="0" aria-valuenow="@((int)exercise.LevelOfExercise)" aria-valuemax="6"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </a>
                             </div>
                         }

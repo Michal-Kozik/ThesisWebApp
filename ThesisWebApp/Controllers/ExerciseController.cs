@@ -70,7 +70,7 @@ namespace ThesisWebApp.Controllers
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name" : sortOrder;
             if (pageNumber < 1)
                 pageNumber = 1;
-            int pageSize = 2;
+            int pageSize = 3;
 
             IQueryable<Exercise> exercises;
             switch (typeParam)
