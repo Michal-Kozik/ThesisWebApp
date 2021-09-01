@@ -65,13 +65,14 @@ namespace ThesisWebApp.Controllers
 
         public async Task<IActionResult> ListExercises(int? pageNumber, string sortOrder, string typeParam)
         {
-            ViewData["CurrentSort"] = sortOrder;
+            //ViewData["CurrentSort"] = sortOrder;
             ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "any" : typeParam;
-            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name" : sortOrder;
+            ViewData["DateSortParam"] = String.IsNullOrEmpty(sortOrder) ? "date" : sortOrder;
             if (pageNumber < 1)
                 pageNumber = 1;
             int pageSize = 3;
 
+            // Wybieranie danych.
             IQueryable<Exercise> exercises;
             switch (typeParam)
             {
@@ -85,18 +86,18 @@ namespace ThesisWebApp.Controllers
                     exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES).AsQueryable();
                     break;
                 default:
-                    exercises = context.Exercises.Include(e => e.ApplicationUser).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).AsQueryable();
                     break;
             }
             
             // Sortowanie.
             switch (sortOrder)
             {
-                case "name_desc":
-                    exercises = exercises.OrderByDescending(e => e.Name);
+                case "date_asc":
+                    exercises = exercises.OrderBy(ex => ex.Created);
                     break;
                 default:
-                    exercises = exercises.OrderBy(e => e.Name);
+                    exercises = exercises.OrderByDescending(ex => ex.Created);
                     break;
             }
             PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize);
