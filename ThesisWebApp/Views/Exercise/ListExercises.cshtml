@@ -12,6 +12,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        @*Lewa strona*@
         <div class="col-3">
             <div class="row">
                 <div class="col">
@@ -48,7 +49,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    @{ 
+                    @{
                         var anyType = (ViewData["ExerciseTypeParam"].ToString() == "") ? "active" : "";
                         var translatingWords = (ViewData["ExerciseTypeParam"].ToString() == "translatingWords") ? "active" : "";
                         var readingTitles = (ViewData["ExerciseTypeParam"].ToString() == "readingTitles") ? "active" : "";
@@ -61,6 +62,7 @@
                 </div>
             </div>
         </div>
+        @*Prawa strona*@
         <div class="col-9">
             <div class="card border-dark mb-3">
                 <div class="card-header">
@@ -73,7 +75,7 @@
                     }
                     else
                     {
-                        foreach (var exercise in Model)
+                        @foreach (var exercise in Model)
                         {
                             <div class="list-group">
                                 <a class="list-group-item list-group-item-action flex-column align-items-center" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-exerciseID="@exercise.ExerciseID" asp-route-typeOfExercise="@exercise.TypeOfExercise">
@@ -119,7 +121,7 @@
                         var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
                         var nextDisabled = Model.HasNextPage ? "" : "disabled";
                         <div>
-                            <ul class="pagination">
+                            <ul class="pagination justify-content-center">
                                 <li class="page-item @prevDisabled">
                                     <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">&laquo;</a>
                                 </li>
