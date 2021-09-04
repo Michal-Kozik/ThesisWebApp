@@ -47,6 +47,16 @@
                 </div>
                 <div class="row">
                     <div class="col">
+                        @*Haslo do testu*@
+                        <div class="form-group">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         @*Nazwa testu*@
                         <div class="form-group">
                             <label asp-for="Name"></label>

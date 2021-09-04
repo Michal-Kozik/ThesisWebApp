@@ -25,6 +25,9 @@ namespace ThesisWebApp.Models
         [Display(Name = "Widoczność testu")]
         public bool Visible { get; set; }
 
+        [Display(Name = "Hasło do testu")]
+        public string Password { get; set; }
+
 
         // Kazdy test ma swojego autora.
         [Required]

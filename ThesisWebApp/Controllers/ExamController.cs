@@ -35,7 +35,11 @@ namespace ThesisWebApp.Controllers
             using (var context = new ApplicationDbContext())
             {
                 var user = await GetCurrentUserAsync();
-                Exam exam = new Exam { ApplicationUserID = user.Id, Name = model.Name, ExercisesPattern = model.ExercisePattern, Visible = model.Visible };
+                Exam exam = new Exam { ApplicationUserID = user.Id,
+                                       Name = model.Name,
+                                       ExercisesPattern = model.ExercisePattern,
+                                       Visible = model.Visible,
+                                       Password = model.Password };
                 context.Exams.Add(exam);
                 await context.SaveChangesAsync();
             }
@@ -110,7 +114,6 @@ namespace ThesisWebApp.Controllers
                 List<string> idList = idArray.ToList();
                 ExamViewModel model = new ExamViewModel();
                 model.Exercises = context.Exercises.Where(ex => idList.Contains(ex.ExerciseID.ToString())).ToList();
-                //ViewBag.choosenExercises = Request.Cookies["ChoosenExercises"];
                 return View(model);
             }
             else
@@ -135,6 +138,39 @@ namespace ThesisWebApp.Controllers
                 string[] idArray = cookie.Split('-');
                 List<string> idList = idArray.ToList();
                 model.Exercises = context.Exercises.Where(ex => idList.Contains(ex.ExerciseID.ToString())).ToList();
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ShowExam(int examID)
+        {
+            var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
+            if (exam == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
+            if (String.IsNullOrEmpty(exam.Password))
+            {
+                return RedirectToAction("StartExam", new { ExamID = exam.ExamID });
+            }
+            StartExamViewModel model = new StartExamViewModel();
+            model.ExamID = exam.ExamID;
+            model.ExamPassword = exam.Password;
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ShowExam(StartExamViewModel model)
+        {
+            // Jesli haslo pasuje.
+            if (model.InputPassword == model.ExamPassword)
+            {
+                return RedirectToAction("StartExam", new { examID = model.ExamID });
+            }
+            else
+            {
+                ModelState.AddModelError("", "Niepoprawne hasło.");
                 return View(model);
             }
         }

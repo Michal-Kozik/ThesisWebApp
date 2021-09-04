@@ -25,7 +25,7 @@
                     <div class="list-group">
                         @foreach (var exam in ViewBag.exams)
                         { 
-                            <a asp-controller="Exam" asp-action="StartExam" asp-route-examID="@exam.ExamID" class="list-group-item list-group-item-action">
+                            <a asp-controller="Exam" asp-action="ShowExam" asp-route-examID="@exam.ExamID" class="list-group-item list-group-item-action">
                                 <h5>@exam.Name</h5>
                                 <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
                                 <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>

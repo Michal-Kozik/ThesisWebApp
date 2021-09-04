@@ -20,6 +20,11 @@ namespace ThesisWebApp.ViewModels
         [Required(ErrorMessage = "Nazwa testu jest wymagana.")]
         public string Name { get; set; }
 
+        [Display(Name = "Hasło do testu")]
+        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$", ErrorMessage = "Hasło musi zawierać conajmniej 5 znaków, w tym conajmniej 1 literę i 1 cyfrę i nie może mieć spacji.")]
+        [StringLength(25, ErrorMessage = "Długość hasła nie może być dłuższa niż 25 znaków.")]
+        public string Password { get; set; }
+
         [Required]
         [Display(Name = "Widoczność testu")]
         public bool Visible { get; set; }
