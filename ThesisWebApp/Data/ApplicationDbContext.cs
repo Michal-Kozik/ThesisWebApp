@@ -32,6 +32,11 @@ namespace ThesisWebApp.Data
             //    .HasOne(s => s.Statistics)
             //    .WithOne(i => i.ApplicationUser)
             //    .HasForeignKey<Statistics>(s => s.ApplicationUserID);
+            //modelBuilder
+            //    .Entity<Mark>()
+            //    .HasOne(e => e.Exam)
+            //    .WithMany(e => e.Marks)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -43,5 +48,7 @@ namespace ThesisWebApp.Data
         public DbSet<Exercise> Exercises { get; set; }
 
         public DbSet<Statistics> Statistics { get; set; }
+
+        public DbSet<Mark> Marks { get; set; }
     }
 }

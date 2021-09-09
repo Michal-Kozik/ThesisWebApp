@@ -24,5 +24,8 @@ namespace ThesisWebApp.Models
 
         // Jeden uzytkownik moze stworzyc wiele testow.
         public virtual ICollection<Exam> Exams { get; set; }
+
+        // Jeden uzytkownik moze miec wiele ocen
+        public virtual ICollection<Mark> Marks { get; set; }
     }
 }

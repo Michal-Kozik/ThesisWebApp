@@ -81,6 +81,15 @@ namespace ThesisWebApp.Controllers
 
         public IActionResult ExamsResults()
         {
+            ViewBag.exams = context.Exams.Include(e => e.ApplicationUser).ToList();
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ParticularExamResults(int examID)
+        {
+            ViewData["ExamID"] = examID;
+            ViewBag.marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).ToList();
             return View();
         }
 
@@ -227,6 +236,10 @@ namespace ThesisWebApp.Controllers
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
+            if (!String.IsNullOrEmpty(exam.Password))
+            {
+                TempData["ExamHasPasswordID"] = exam.ExamID;
+            }
             string cookie = exam.ExercisesPattern;
             Response.Cookies.Append("ChoosenExercises", cookie);
             string[] exercisesIDsArray = cookie.Split('-');
@@ -253,7 +266,7 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("ChoosenExercise", "Exercise", new { ExerciseID = currentExerciseID });
         }
 
-        public IActionResult EndExam()
+        public async Task<IActionResult> EndExam()
         {
             if (TempData["Points"] == null)
             {
@@ -262,6 +275,21 @@ namespace ThesisWebApp.Controllers
             ExamResult model = new ExamResult();
             model.Points = (int)TempData["Points"];
             model.MaxPoints = (int)TempData["MaxPoints"];
+            // Zapisanie wyniku jesli test posiadal haslo.
+            if (TempData["ExamHasPasswordID"] != null)
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    var user = await GetCurrentUserAsync();
+                    Mark mark = new Mark { ApplicationUserID = user.Id,
+                                           ExamID = (int)TempData["ExamHasPasswordID"],
+                                           Created = DateTime.Now,
+                                           UserScore = model.Points,
+                                           MaxPoints = model.MaxPoints };
+                    context.Marks.Add(mark);
+                    await context.SaveChangesAsync();
+                }
+            }
             Response.Cookies.Delete("ChoosenExercises");
             TempData.Clear();
             return View(model);

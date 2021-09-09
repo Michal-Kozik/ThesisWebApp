@@ -35,5 +35,8 @@ namespace ThesisWebApp.Models
         [Display(Name = "Author ID")]
         public string ApplicationUserID { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+        // Kazdy test moze miec wiele zdobytych ocen.
+        public virtual ICollection<Mark> Marks { get; set; }
     }
 }
