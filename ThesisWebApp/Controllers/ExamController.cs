@@ -88,7 +88,8 @@ namespace ThesisWebApp.Controllers
         [HttpGet]
         public IActionResult ParticularExamResults(int examID)
         {
-            ViewData["ExamID"] = examID;
+            var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
+            ViewData["ExamName"] = exam.Name.ToUpper();
             ViewBag.marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).ToList();
             return View();
         }
