@@ -1,6 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Exam | Public exams";
 }
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model PaginatedList<Exam>
+}
 
 <div class="border-bottom" style="margin-bottom: 20px">
     <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
@@ -21,17 +25,58 @@
             <div class="card border-dark mb-3">
                 <div class="card-header">Publiczne testy</div>
                 <div class="card-body">
-                    <h4 style="font-family:'Mistral'"><b>CZYM SĄ PUBLICZNE TESTY?</b></h4>
-                    <div class="list-group">
-                        @foreach (var exam in ViewBag.exams)
-                        { 
-                            <a asp-controller="Exam" asp-action="ShowExam" asp-route-examID="@exam.ExamID" class="list-group-item list-group-item-action">
-                                <h5>@exam.Name</h5>
-                                <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
-                                <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>
-                            </a>
+                    @if (Model.TotalPages < Model.PageIndex)
+                    {
+                        <p class="lead">Brak wyników...</p>
+                    }
+                    else
+                    {
+                        @foreach (var exam in Model)
+                        {
+                            <div class="list-group">
+                                <a asp-controller="Exam" asp-action="ShowExam" asp-route-examID="@exam.ExamID" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5>@exam.Name</h5>
+                                        @if (!String.IsNullOrEmpty(exam.Password))
+                                        {
+                                            <i class="material-icons-outlined">lock</i>
+                                        }
+                                    </div>
+                                    <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
+                                    <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>
+                                    <p class="mb-1">Ilość zadań: @exam.ExercisesPattern.Split('-').Length</p>
+                                </a>
+                            </div>
                         }
-                    </div>
+                        <br />
+                        var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+                        var nextDisabled = Model.HasNextPage ? "" : "disabled";
+                        <div>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item @prevDisabled">
+                                    <a asp-controller="Exam" asp-action="PublicExams" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                                </li>
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a asp-controller="Exam" asp-action="PublicExams" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item active">
+                                    <a class="page-link">@Model.PageIndex</a>
+                                </li>
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a asp-controller="Exam" asp-action="PublicExams" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item @nextDisabled">
+                                    <a asp-controller="Exam" asp-action="PublicExams" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

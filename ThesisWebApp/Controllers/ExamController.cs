@@ -68,10 +68,17 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
-        public IActionResult PublicExams()
+        public async Task<IActionResult> PublicExams(int? pageNumber)
         {
-            ViewBag.exams = context.Exams.Include(e => e.ApplicationUser).ToList();
-            return View();
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 2;
+
+            // Wybranie danych.
+            var exams = context.Exams.Include(e => e.ApplicationUser).AsQueryable();
+            //ViewBag.exams = context.Exams.Include(e => e.ApplicationUser).ToList();
+            PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
         }
 
         public IActionResult DoneExams()
