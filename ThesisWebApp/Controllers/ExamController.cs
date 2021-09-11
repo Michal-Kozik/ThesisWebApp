@@ -102,12 +102,19 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateExam()
+        public async Task<IActionResult> CreateExam(int? pageNumber)
         {
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 3;
+
+            // Wybranie danych.
             var user = await GetCurrentUserAsync();
-            ViewBag.userExercises = context.Exercises.Include(e => e.ApplicationUser).Where(e => e.ApplicationUserID == user.Id).ToList();
+            var exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
+            PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize); 
+            //ViewBag.userExercises = context.Exercises.Include(e => e.ApplicationUser).Where(e => e.ApplicationUserID == user.Id).ToList();
             ViewBag.choosenExercises = Request.Cookies["ChoosenExercises"];
-            return View();
+            return View(model);
         }
 
         [HttpGet]

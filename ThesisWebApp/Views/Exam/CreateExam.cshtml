@@ -1,6 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Exam | Create";
 }
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model PaginatedList<Exercise>
+}
 
 <div class="border-bottom" style="margin-bottom: 20px">
     <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
@@ -19,9 +23,8 @@
         </div>
         <div class="col-9">
             <div class="card border-dark mb-3">
-                <div class="card-header">Informacje</div>
+                <div class="card-header">Tworzenie testu</div>
                 <div class="card-body">
-                    <h4 style="font-family:'Mistral'"><b>TWORZENIE TESTU</b></h4>
                     <div class="border-bottom" style="margin-bottom: 20px; padding-bottom: 20px">
                         <p class="lead">
                             Wybrane zadania: @ViewBag.choosenExercises
@@ -37,17 +40,80 @@
                             <a asp-controller="Exam" asp-action="ClearCookie" class="btn btn-outline-danger">Anuluj</a>
                         }
                     </div>
-                    <div class="list-group">
-                        @foreach (var exercise in ViewBag.userExercises)
+                    @if (Model.TotalPages < Model.PageIndex)
+                    {
+                        <p class="lead">Brak wyników...</p>
+                    }
+                    else
+                    {
+                        @foreach (var exercise in Model)
                         {
-                            <a class="list-group-item list-group-item-action" asp-controller="Exam" asp-action="ShowExercise" asp-route-exerciseID="@exercise.ExerciseID">
-                                <h5>@exercise.Name</h5>
-                                <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
-                                <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
-                                <small class="text-muted">@exercise.PathToFile</small>
-                            </a>
+                            <div class="list-group">
+                                <a class="list-group-item list-group-item-action" asp-controller="Exam" asp-action="ShowExercise" asp-route-exerciseID="@exercise.ExerciseID">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5>@exercise.Name</h5>
+                                        <small class="text-muted">Dodano: @exercise.Created.ToString("dd-MM-yyyy")</small>
+                                    </div>
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
+                                        @if (!exercise.Visible)
+                                        {
+                                            <i class="material-icons-outlined">visibility_off</i>
+                                        }
+                                    </div>
+                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
+                                    <div class="d-flex w-100 justify-content-start">
+                                        <p class="lead" style="margin-right: 10px">Poziom:</p>
+                                        @if (exercise.LevelOfExercise == ExerciseLevel.UNKNOWN)
+                                        {
+                                            <i class="material-icons-outlined">help_outline</i>
+                                        }
+                                        else
+                                        {
+                                            for (int i = 0; i < (int)exercise.LevelOfExercise; i++)
+                                            {
+                                                <i class="material-icons-outlined">star</i>
+                                            }
+                                            for (int i = 0; i < 6 - (int)exercise.LevelOfExercise; i++)
+                                            {
+                                                <i class="material-icons-outlined">star_border</i>
+                                            }
+                                        }
+                                        <p class="lead" style="margin-left: 10px">(@exercise.LevelOfExercise)</p>
+                                    </div>
+                                </a>
+                            </div>
                         }
-                    </div>
+                        <br />
+                        var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+                        var nextDisabled = Model.HasNextPage ? "" : "disabled";
+                        <div>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item @prevDisabled">
+                                    <a asp-controller="Exam" asp-action="CreateExam" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                                </li>
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a asp-controller="Exam" asp-action="CreateExam" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item active">
+                                    <a class="page-link">@Model.PageIndex</a>
+                                </li>
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a asp-controller="Exam" asp-action="CreateExam" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item @nextDisabled">
+                                    <a asp-controller="Exam" asp-action="CreateExam" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
                 </div>
             </div>
         </div>
