@@ -76,14 +76,21 @@ namespace ThesisWebApp.Controllers
 
             // Wybranie danych.
             var exams = context.Exams.Include(e => e.ApplicationUser).AsQueryable();
-            //ViewBag.exams = context.Exams.Include(e => e.ApplicationUser).ToList();
             PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }
 
-        public IActionResult DoneExams()
+        public async Task<IActionResult> DoneExams(int? pageNumber)
         {
-            return View();
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 10;
+
+            // Wybranie danych.
+            var user = await GetCurrentUserAsync();
+            var marks = context.Marks.Include(m => m.Exam.ApplicationUser).Where(m => m.ApplicationUserID == user.Id).AsQueryable();
+            PaginatedList<Mark> model = await PaginatedList<Mark>.CreateAsync(marks.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
         }
 
         [HttpGet]
@@ -101,12 +108,20 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ParticularExamResults(int examID)
+        public async Task<IActionResult> ParticularExamResults(int? pageNumber, int examID)
         {
+            ViewData["ExamID"] = examID;
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 10;
+
+            // Wybranie danych.
             var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
             ViewData["ExamName"] = exam.Name.ToUpper();
-            ViewBag.marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).ToList();
-            return View();
+            var marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).AsQueryable();
+            //ViewBag.marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).ToList();
+            PaginatedList<Mark> model = await PaginatedList<Mark>.CreateAsync(marks.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
         }
 
         [HttpGet]

@@ -1,6 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Exam | Done exams";
 }
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model PaginatedList<Mark>
+}
 
 <div class="border-bottom" style="margin-bottom: 20px">
     <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
@@ -21,15 +25,81 @@
             <div class="card border-dark mb-3">
                 <div class="card-header">Zrobione testy</div>
                 <div class="card-body">
-                    <h4 style="font-family:'Mistral'"><b>CZYM SĄ ZROBIONE TESTY?</b></h4>
-                    <p class="lead">
-                        Tutaj ZALOGOWANY użytkownik będzie mógł przejrzeć wszystkie dotychczas
-                        zrobione przez siebie testy wraz z ich wynikami.
-                    </p>
-                    @for (int i = 0; i < 10; i++)
-                    {
-                        <br />
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="table-primary">
+                                <th style="text-align:center; vertical-align:middle">Nr</th>
+                                <th style="text-align:center; vertical-align:middle">Nazwa testu</th>
+                                <th style="text-align:center; vertical-align:middle">Autor</th>
+                                <th style="text-align:center; vertical-align:middle">Punkty</th>
+                                <th style="text-align:center; vertical-align:middle">Maks. Punktów</th>
+                                <th style="text-align:center; vertical-align:middle">Wynik</th>
+                                <th style="text-align:center; vertical-align:middle"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int i = 1; }
+                            @foreach (var mark in Model)
+                            {
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">@(i + (Model.PageIndex-1) * 10).</td>
+                                    <td style="text-align:center; vertical-align:middle">@mark.Exam.Name</td>
+                                    <td style="text-align:center; vertical-align:middle">@mark.Exam.ApplicationUser.FirstName @mark.Exam.ApplicationUser.LastName</td>
+                                    <td style="text-align:center; vertical-align:middle">@mark.UserScore</td>
+                                    <td style="text-align:center; vertical-align:middle">@mark.MaxPoints</td>
+                                    @{
+                                        double result = Math.Round((double)mark.UserScore / (double)mark.MaxPoints * 100, 2, MidpointRounding.AwayFromZero);
+                                        string resultString = Convert.ToInt32(result).ToString();
+                                        string resultStringPercent = resultString + '%';
+                                        string color;
+                                        if (result < 50.00)
+                                            color = "bg-danger";
+                                        else if (result >= 50.00 && result < 75.00)
+                                            color = "bg-warning";
+                                        else
+                                            color = "bg-success";
+                                    }
+                                    <td style="text-align:center; vertical-align:middle">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped @color" role="progressbar" style="width:@resultStringPercent" aria-valuenow="@resultString" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center; vertical-align:middle">@result%</td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                    @{ 
+                        var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+                        var nextDisabled = Model.HasNextPage ? "" : "disabled";
                     }
+                    <div>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @prevDisabled">
+                                <a asp-controller="Exam" asp-action="DoneExams" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                            </li>
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a asp-controller="Exam" asp-action="DoneExams" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                </li>
+                            }
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageIndex</a>
+                            </li>
+                            @if (Model.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a asp-controller="Exam" asp-action="DoneExams" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                </li>
+                            }
+                            <li class="page-item @nextDisabled">
+                                <a asp-controller="Exam" asp-action="DoneExams" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

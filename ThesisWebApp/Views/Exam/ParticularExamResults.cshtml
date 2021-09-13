@@ -3,6 +3,7 @@
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @model PaginatedList<Mark>
 }
 
 <div class="border-bottom" style="margin-bottom: 20px">
@@ -39,15 +40,15 @@
                         </thead>
                         <tbody>
                             @{ int i = 1; }
-                            @foreach (var mark in ViewBag.marks)
+                            @foreach (var mark in Model)
                             {
                                 <tr class="table-light">
-                                    <td style="text-align:center; vertical-align:middle">@i.</td>
+                                    <td style="text-align:center; vertical-align:middle">@(i + (Model.PageIndex-1) * 10).</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.ApplicationUser.FirstName</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.ApplicationUser.LastName</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.UserScore</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.MaxPoints</td>
-                                    @{ 
+                                    @{
                                         double result = Math.Round((double)mark.UserScore / (double)mark.MaxPoints * 100, 2, MidpointRounding.AwayFromZero);
                                         string resultString = Convert.ToInt32(result).ToString();
                                         string resultStringPercent = resultString + '%';
@@ -70,6 +71,36 @@
                             }
                         </tbody>
                     </table>
+                    <br />
+                    @{
+                        var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+                        var nextDisabled = Model.HasNextPage ? "" : "disabled";
+                    }
+                    <div>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @prevDisabled">
+                                <a asp-controller="Exam" asp-action="ParticularExamResults" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-examID="@ViewData["ExamID"]" class="page-link">&laquo;</a>
+                            </li>
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a asp-controller="Exam" asp-action="ParticularExamResults" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-examID="@ViewData["ExamID"]" class="page-link">@(Model.PageIndex - 1)</a>
+                                </li>
+                            }
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageIndex</a>
+                            </li>
+                            @if (Model.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a asp-controller="Exam" asp-action="ParticularExamResults" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-examID="@ViewData["ExamID"]" class="page-link">@(Model.PageIndex + 1)</a>
+                                </li>
+                            }
+                            <li class="page-item @nextDisabled">
+                                <a asp-controller="Exam" asp-action="ParticularExamResults" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-examID="@ViewData["ExamID"]" class="page-link">&raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="text-center">
                         <a class="btn btn-outline-primary" asp-controller="Exam" asp-action="ExamsResults">Wróć</a>
                     </div>
