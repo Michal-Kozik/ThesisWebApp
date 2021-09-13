@@ -86,10 +86,18 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
-        public IActionResult ExamsResults()
+        [HttpGet]
+        public async Task<IActionResult> ExamsResults(int? pageNumber)
         {
-            ViewBag.exams = context.Exams.Include(e => e.ApplicationUser).ToList();
-            return View();
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 3;
+
+            // Wybranie danych.
+            var user = await GetCurrentUserAsync();
+            var exams = context.Exams.Include(e => e.ApplicationUser).Where(e => e.ApplicationUserID == user.Id).AsQueryable();
+            PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
         }
 
         [HttpGet]
@@ -112,7 +120,6 @@ namespace ThesisWebApp.Controllers
             var user = await GetCurrentUserAsync();
             var exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
             PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize); 
-            //ViewBag.userExercises = context.Exercises.Include(e => e.ApplicationUser).Where(e => e.ApplicationUserID == user.Id).ToList();
             ViewBag.choosenExercises = Request.Cookies["ChoosenExercises"];
             return View(model);
         }
