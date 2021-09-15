@@ -8,6 +8,7 @@ using ThesisWebApp.Data;
 using ThesisWebApp.Models;
 using ThesisWebApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ThesisWebApp.Controllers
 {
@@ -15,6 +16,12 @@ namespace ThesisWebApp.Controllers
     public class ExerciseController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public ExerciseController(UserManager<ApplicationUser> userManager)
+        {
+            this.userManager = userManager;
+        }
 
 
 
@@ -49,6 +56,61 @@ namespace ThesisWebApp.Controllers
                     points++;
             }
             return points;
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private void CreateStatisticsForUser(string userID)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                Statistics statistics = new Statistics
+                {
+                    ApplicationUserID = userID,
+                    ExercisesA1 = 0,
+                    ExercisesA2 = 0,
+                    ExercisesB1 = 0,
+                    ExercisesB2 = 0,
+                    ExercisesC1 = 0,
+                    ExercisesC2 = 0,
+                    ExercisesUknown = 0
+                };
+                context.Statistics.Add(statistics);
+                context.SaveChanges();
+            }
+        }
+
+        private void UpdateStatisticsForUser(string userID, int level)
+        {
+            var statistics = context.Statistics.Where(s => s.ApplicationUserID == userID).FirstOrDefault();
+            switch (level)
+            {
+                case 1:
+                    statistics.ExercisesA1++;
+                    break;
+                case 2:
+                    statistics.ExercisesA2++;
+                    break;
+                case 3:
+                    statistics.ExercisesB1++;
+                    break;
+                case 4:
+                    statistics.ExercisesB2++;
+                    break;
+                case 5:
+                    statistics.ExercisesC1++;
+                    break;
+                case 6:
+                    statistics.ExercisesC2++;
+                    break;
+                default:
+                    statistics.ExercisesUknown++;
+                    break;
+            }
+            context.SaveChanges();
         }
 
 
@@ -118,7 +180,6 @@ namespace ThesisWebApp.Controllers
                 var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
                 typeOfExercise = exercise.TypeOfExercise;
             }
-            //var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             switch (typeOfExercise)
             {
                 case ExerciseType.TRANSLATING_WORDS:
@@ -131,7 +192,6 @@ namespace ThesisWebApp.Controllers
                     TempData["MatchingSentences"] = exerciseID;
                     return RedirectToAction("MatchingSentencesAttempt");
                 default:
-                    // w przypadku nie znalezionego typu zadania.
                     return View(exerciseID);
             }
         }
@@ -146,14 +206,15 @@ namespace ThesisWebApp.Controllers
             int exerciseID = (int)TempData["TranslatingWords"];
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             TranslatingWordsSettingsViewModel model = TranslatingWordsController.ReadExerciseFromTxt(exercise.PathToFile);
+            model.Level = (int)exercise.LevelOfExercise;
             TempData.Remove("TranslatingWords");
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult TranslatingWordsScore(TranslatingWordsSettingsViewModel model)
+        public async Task<IActionResult> TranslatingWordsScore(TranslatingWordsSettingsViewModel model)
         {
-            // Jesli zadanie jest aktualnie czescia testu
+            // Jesli zadanie jest aktualnie czescia testu...
             if (TempData["CurrentExercise"] != null)
             {
                 if (TempData["Points"] == null)
@@ -167,8 +228,15 @@ namespace ThesisWebApp.Controllers
                     TempData["MaxPoints"] = (int)TempData["MaxPoints"] + model.NumberOfWords;
                 return RedirectToAction("ContinueExam", "Exam");
             }
-            // Jesli zadanie jest samodzielnym skladnikiem
+            // Jesli zadanie jest samodzielnym skladnikiem...
             ViewBag.points = TranslatingWordsCheck(model);
+            var user = await GetCurrentUserAsync();
+            var currentStats = context.Statistics.Where(s => s.ApplicationUserID == user.Id).FirstOrDefault();
+            if (currentStats == null)
+            {
+                CreateStatisticsForUser(user.Id);
+            }
+            UpdateStatisticsForUser(user.Id, model.Level);
             return View(model);
         }
 
