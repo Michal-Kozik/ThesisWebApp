@@ -63,7 +63,7 @@ namespace ThesisWebApp.Controllers
             return userManager.GetUserAsync(HttpContext.User);
         }
 
-        private void CreateStatisticsForUser(string userID)
+        private async Task CreateStatisticsForUser(string userID)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -79,11 +79,11 @@ namespace ThesisWebApp.Controllers
                     ExercisesUknown = 0
                 };
                 context.Statistics.Add(statistics);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
 
-        private void UpdateStatisticsForUser(string userID, int level)
+        private async Task UpdateStatisticsForUser(string userID, int level)
         {
             var statistics = context.Statistics.Where(s => s.ApplicationUserID == userID).FirstOrDefault();
             switch (level)
@@ -110,7 +110,7 @@ namespace ThesisWebApp.Controllers
                     statistics.ExercisesUknown++;
                     break;
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
 
@@ -234,9 +234,9 @@ namespace ThesisWebApp.Controllers
             var currentStats = context.Statistics.Where(s => s.ApplicationUserID == user.Id).FirstOrDefault();
             if (currentStats == null)
             {
-                CreateStatisticsForUser(user.Id);
+                await CreateStatisticsForUser(user.Id);
             }
-            UpdateStatisticsForUser(user.Id, model.Level);
+            await UpdateStatisticsForUser(user.Id, model.Level);
             return View(model);
         }
 

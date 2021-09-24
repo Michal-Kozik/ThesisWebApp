@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model Statistics
+}
+
+<div class="container-fluid">
+    <p>Statystyki:</p>
+    <p class="lead">Ilość zadań bez poziomu trudności: @Model.ExercisesUknown</p>
+    <p class="lead">A1: @Model.ExercisesA1</p>
+    <p class="lead">A2: @Model.ExercisesA2</p>
+    <p class="lead">B1: @Model.ExercisesB1</p>
+    <p class="lead">B2: @Model.ExercisesB2</p>
+    <p class="lead">C1: @Model.ExercisesC1</p>
+    <p class="lead">C2: @Model.ExercisesC2</p>
+</div>
