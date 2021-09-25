@@ -250,12 +250,13 @@ namespace ThesisWebApp.Controllers
             int exerciseID = (int)TempData["ReadingTitles"];
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             ReadingTitlesSettingsViewModel model = ReadingTitlesController.ReadExerciseFromTxt(exercise.PathToFile);
+            model.Level = (int)exercise.LevelOfExercise;
             TempData.Remove("ReadingTitles");
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult ReadingTitlesScore(ReadingTitlesSettingsViewModel model)
+        public async Task<IActionResult> ReadingTitlesScore(ReadingTitlesSettingsViewModel model)
         {
             if (TempData["CurrentExercise"] != null)
             {
@@ -271,6 +272,13 @@ namespace ThesisWebApp.Controllers
                 return RedirectToAction("ContinueExam", "Exam");
             }
             ViewBag.points = ReadingTitlesCheck(model);
+            var user = await GetCurrentUserAsync();
+            var currentStats = context.Statistics.Where(s => s.ApplicationUserID == user.Id).FirstOrDefault();
+            if (currentStats == null)
+            {
+                await CreateStatisticsForUser(user.Id);
+            }
+            await UpdateStatisticsForUser(user.Id, model.Level);
             return View(model);
         }
 
@@ -284,12 +292,13 @@ namespace ThesisWebApp.Controllers
             int exerciseID = (int)TempData["MatchingSentences"];
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             MatchingSentencesSettingsViewModel model = MatchingSentencesController.ReadExerciseFromTxt(exercise.PathToFile);
+            model.Level = (int)exercise.LevelOfExercise;
             TempData.Remove("MatchingSentences");
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult MatchingSentencesScore(MatchingSentencesSettingsViewModel model)
+        public async Task<IActionResult> MatchingSentencesScore(MatchingSentencesSettingsViewModel model)
         {
             if (TempData["CurrentExercise"] != null)
             {
@@ -305,6 +314,13 @@ namespace ThesisWebApp.Controllers
                 return RedirectToAction("ContinueExam", "Exam");
             }
             ViewBag.points = MatchingSentencesCheck(model);
+            var user = await GetCurrentUserAsync();
+            var currentStats = context.Statistics.Where(s => s.ApplicationUserID == user.Id).FirstOrDefault();
+            if (currentStats == null)
+            {
+                await CreateStatisticsForUser(user.Id);
+            }
+            await UpdateStatisticsForUser(user.Id, model.Level);
             return View(model);
         }
     }
