@@ -54,12 +54,12 @@
                         <div>
                             <ul class="pagination justify-content-center">
                                 <li class="page-item @prevDisabled">
-                                    <a asp-controller="Exam" asp-action="ExamsResult" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                                    <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
                                 </li>
                                 @if (Model.HasPreviousPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exam" asp-action="ExamsResult" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                        <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
                                     </li>
                                 }
                                 <li class="page-item active">
@@ -68,11 +68,11 @@
                                 @if (Model.HasNextPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exam" asp-action="ExamsResult" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                        <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
                                     </li>
                                 }
                                 <li class="page-item @nextDisabled">
-                                    <a asp-controller="Exam" asp-action="ExamsResult" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                                    <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
                                 </li>
                             </ul>
                         </div>

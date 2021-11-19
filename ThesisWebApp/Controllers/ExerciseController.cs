@@ -125,6 +125,39 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
+        public async Task<IActionResult> MyExercises(int? pageNumber, string typeParam)
+        {
+            ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "" : typeParam;
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 3;
+
+            // Wybieranie danych.
+            IQueryable<Exercise> exercises;
+            //IQueryable<Exam> exams;
+            var user = await GetCurrentUserAsync();
+            exercises = context.Exercises.Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
+            //exams = context.Exams.Where(e => e.ApplicationUserID == user.Id).AsQueryable();
+            switch (typeParam)
+            {
+                case "translatingWords":
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.TRANSLATING_WORDS).AsQueryable();
+                    break;
+                case "readingTitles":
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.READING_TITLES).AsQueryable();
+                    break;
+                case "matchingSentences":
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES).AsQueryable();
+                    break;
+                default:
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).AsQueryable();
+                    break;
+            }
+
+            PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
+        }
+
         public async Task<IActionResult> ListExercises(int? pageNumber, string sortOrder, string typeParam)
         {
             ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "" : typeParam;
@@ -169,6 +202,26 @@ namespace ThesisWebApp.Controllers
             }
             PaginatedList<Exercise> model = await PaginatedList<Exercise>.CreateAsync(exercises.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ShowExercise(int exerciseID)
+        {
+            var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            return View(exercise);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeVisibility(Exercise model)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var exercise = context.Exercises.Where(ex => ex.ExerciseID == model.ExerciseID).FirstOrDefault();
+                exercise.Visible = model.Visible;
+                await context.SaveChangesAsync();
+            }
+                
+            return RedirectToAction("MyExercises", "Exercise");
         }
 
         [HttpGet]

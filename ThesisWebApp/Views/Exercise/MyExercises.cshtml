@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Exercises | List";
+    ViewData["Title"] = "Exercises | My Exercises";
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,29 +19,10 @@
                     <div class="list-group">
                         <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="Index">Informacje</a>
                         <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
-                        <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
-                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="MyExercises">Moje ćwiczenia</a>
+                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
+                        <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="MyExercises">Moje ćwiczenia</a>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-top: 20px">
-                <div class="col text-center">
-                    <label class="lead">Typ sortowania:</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    @{
-                        var dateOrder = (ViewData["SortParam"].ToString() == "") ? "active" : "";
-                        var dateOrderAsc = (ViewData["SortParam"].ToString() == "date_asc") ? "active" : "";
-                        var levelOrderAsc = (ViewData["SortParam"].ToString() == "level_asc") ? "active" : "";
-                        var levelOrderDesc = (ViewData["SortParam"].ToString() == "level_desc") ? "active" : "";
-                    }
-                </div>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @dateOrder">Od najnowszego</a>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="date_asc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @dateOrderAsc">Od najstarszego</a>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="level_asc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @levelOrderAsc">Od najprostszego</a>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="level_desc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @levelOrderDesc">Od najtrudniejszego</a>
             </div>
             <div class="row" style="margin-top: 20px">
                 <div class="col text-center">
@@ -56,10 +37,10 @@
                         var readingTitles = (ViewData["ExerciseTypeParam"].ToString() == "readingTitles") ? "active" : "";
                         var matchingSentences = (ViewData["ExerciseTypeParam"].ToString() == "matchingSentences") ? "active" : "";
                     }
-                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="" class="btn btn-outline-secondary @anyType" style="width: inherit">Dowolne</a>
-                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="translatingWords" class="btn btn-outline-secondary @translatingWords" style="width: inherit">Tłumaczenie słów</a>
-                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="readingTitles" class="btn btn-outline-secondary @readingTitles" style="width: inherit">Dopasowywanie tytułów</a>
-                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="matchingSentences" class="btn btn-outline-secondary @matchingSentences" style="width: inherit">Łączenie zdań</a>
+                    <a asp-controller="Exercise" asp-action="MyExercises" asp-route-typeParam="" class="btn btn-outline-secondary @anyType" style="width: inherit">Dowolne</a>
+                    <a asp-controller="Exercise" asp-action="MyExercises" asp-route-typeParam="translatingWords" class="btn btn-outline-secondary @translatingWords" style="width: inherit">Tłumaczenie słów</a>
+                    <a asp-controller="Exercise" asp-action="MyExercises" asp-route-typeParam="readingTitles" class="btn btn-outline-secondary @readingTitles" style="width: inherit">Dopasowywanie tytułów</a>
+                    <a asp-controller="Exercise" asp-action="MyExercises" asp-route-typeParam="matchingSentences" class="btn btn-outline-secondary @matchingSentences" style="width: inherit">Łączenie zdań</a>
                 </div>
             </div>
         </div>
@@ -79,7 +60,7 @@
                         @foreach (var exercise in Model)
                         {
                             <div class="list-group">
-                                <a class="list-group-item list-group-item-action flex-column align-items-center" asp-controller="Exercise" asp-action="ChoosenExercise" asp-route-exerciseID="@exercise.ExerciseID" asp-route-typeOfExercise="@exercise.TypeOfExercise">
+                                <a class="list-group-item list-group-item-action flex-column align-items-center" asp-controller="Exercise" asp-action="ShowExercise" asp-route-exerciseID="@exercise.ExerciseID">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5>@exercise.Name</h5>
                                         <small class="text-muted">Dodano: @exercise.Created.ToString("dd-MM-yyyy")</small>
@@ -114,12 +95,12 @@
                         <div>
                             <ul class="pagination justify-content-center">
                                 <li class="page-item @prevDisabled">
-                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">&laquo;</a>
+                                    <a asp-controller="Exercise" asp-action="MyExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">&laquo;</a>
                                 </li>
                                 @if (Model.HasPreviousPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">@(Model.PageIndex - 1)</a>
+                                        <a asp-controller="Exercise" asp-action="MyExercises" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">@(Model.PageIndex - 1)</a>
                                     </li>
                                 }
                                 <li class="page-item active">
@@ -128,11 +109,11 @@
                                 @if (Model.HasNextPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">@(Model.PageIndex + 1)</a>
+                                        <a asp-controller="Exercise" asp-action="MyExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">@(Model.PageIndex + 1)</a>
                                     </li>
                                 }
                                 <li class="page-item @nextDisabled">
-                                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewData["SortParam"]" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">&raquo;</a>
+                                    <a asp-controller="Exercise" asp-action="MyExercises" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="page-link">&raquo;</a>
                                 </li>
                             </ul>
                         </div>

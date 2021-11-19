@@ -1,0 +1,8 @@
+5;2
+akapit1;poprawne1
+akapit2;poprawne2
+akapit3;poprawne3
+akapit4;poprawne4
+akapit5;poprawne5
+nadmiar1
+nadmiar2
