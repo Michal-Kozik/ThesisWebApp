@@ -65,7 +65,13 @@
                                         <h5>@exercise.Name</h5>
                                         <small class="text-muted">Dodano: @exercise.Created.ToString("dd-MM-yyyy")</small>
                                     </div>
-                                    <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
+                                        @if (!exercise.Visible)
+                                        {
+                                            <i class="material-icons-outlined">visibility_off</i>
+                                        }
+                                    </div>
                                     <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
                                     <div class="d-flex w-100 justify-content-start">
                                         <p class="lead" style="margin-right: 10px">Poziom:</p>

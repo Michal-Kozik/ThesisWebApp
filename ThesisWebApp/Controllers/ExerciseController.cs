@@ -171,16 +171,16 @@ namespace ThesisWebApp.Controllers
             switch (typeParam)
             {
                 case "translatingWords":
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.TRANSLATING_WORDS).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.TRANSLATING_WORDS && ex.Visible).AsQueryable();
                     break;
                 case "readingTitles":
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.READING_TITLES).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.READING_TITLES && ex.Visible).AsQueryable();
                     break;
                 case "matchingSentences":
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES && ex.Visible).AsQueryable();
                     break;
                 default:
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.Visible).AsQueryable();
                     break;
             }
             
