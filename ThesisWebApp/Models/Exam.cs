@@ -28,6 +28,9 @@ namespace ThesisWebApp.Models
         [Display(Name = "Hasło do testu")]
         public string Password { get; set; }
 
+        [Display(Name = "Zarchiwizowany")]
+        public bool Archived { get; set; }
+
 
         // Kazdy test ma swojego autora.
         [Required]
