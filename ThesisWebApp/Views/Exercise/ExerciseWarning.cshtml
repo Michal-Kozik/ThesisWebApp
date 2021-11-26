@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "My Exercises | Warning";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-danger">
+    <h4 class="alert-heading">Uwaga!</h4>
+    <p class="lead mb-0">
+        Ćwiczenie <u>@ViewBag.exerciseName</u> jest częścią testu! Ćwiczenia można usunąć
+        jeżeli nie są częścią testu.
+    </p>
+</div> 
+
+<a class="btn btn-primary" asp-controller="Exercise" asp-action="MyExercises">Wróć</a>
+

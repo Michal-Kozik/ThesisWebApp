@@ -113,6 +113,24 @@ namespace ThesisWebApp.Controllers
             await context.SaveChangesAsync();
         }
 
+        private async Task<bool> CanRemoveExercise(int exerciseID)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var user = await GetCurrentUserAsync();
+                List<Exam> userExams = context.Exams.Where(e => e.ApplicationUserID == user.Id).ToList();
+                foreach (Exam exam in userExams)
+                {
+                    string[] ids = exam.ExercisesPattern.Split('-');
+                    if (ids.Contains(exerciseID.ToString()))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
 
 
         public IActionResult Index()
@@ -222,6 +240,35 @@ namespace ThesisWebApp.Controllers
             }
                 
             return RedirectToAction("MyExercises", "Exercise");
+        }
+
+        public async Task<IActionResult> DeleteExercise(int exerciseID)
+        {
+            if (await CanRemoveExercise(exerciseID))
+            {
+                string path;
+                using (var context = new ApplicationDbContext())
+                {
+                    var targetExercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+                    path = targetExercise.PathToFile;
+                    context.Exercises.Remove(targetExercise);
+                    await context.SaveChangesAsync();
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                return RedirectToAction("MyExercises", "Exercise");
+            }
+            var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
+            return RedirectToAction("ExerciseWarning", "Exercise", new { exerciseName = exercise.Name });
+        }
+
+        [HttpGet]
+        public IActionResult ExerciseWarning(string exerciseName)
+        {
+            ViewBag.exerciseName = exerciseName;
+            return View();
         }
 
         [HttpGet]

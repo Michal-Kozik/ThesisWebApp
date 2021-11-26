@@ -20,8 +20,8 @@
 
     @Html.HiddenFor(m => m.ExerciseID, new { Value = Model.ExerciseID })
     <button class="btn btn-outline-info" asp-controller="Exercise" asp-action="ChangeVisibility">Zapisz zmiany</button>
-    <a class="btn btn-outline-danger">Usuń</a>
 </form>
+<a class="btn btn-outline-danger" asp-controller="Exercise" asp-action="DeleteExercise" asp-route-exerciseID="@Model.ExerciseID">Usuń</a>
 
 
 
