@@ -39,7 +39,8 @@ namespace ThesisWebApp.Controllers
                                        Name = model.Name,
                                        ExercisesPattern = model.ExercisePattern,
                                        Visible = model.Visible,
-                                       Password = model.Password };
+                                       Password = model.Password,
+                                       Archived = false };
                 context.Exams.Add(exam);
                 await context.SaveChangesAsync();
             }
@@ -76,6 +77,20 @@ namespace ThesisWebApp.Controllers
 
             // Wybranie danych.
             var exams = context.Exams.Include(e => e.ApplicationUser).AsQueryable();
+            PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyExams(int? pageNumber)
+        {
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 2;
+
+            // Wybranie danych.
+            var user = await GetCurrentUserAsync();
+            var exams = context.Exams.Where(e => e.ApplicationUserID == user.Id && e.Archived == false).AsQueryable();
             PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }
@@ -189,7 +204,7 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowExam(int examID)
+        public IActionResult ProceedExam(int examID)
         {
             var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
             if (exam == null)
@@ -207,7 +222,7 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShowExam(StartExamViewModel model)
+        public IActionResult ProceedExam(StartExamViewModel model)
         {
             // Jesli haslo pasuje.
             if (model.InputPassword == model.ExamPassword)

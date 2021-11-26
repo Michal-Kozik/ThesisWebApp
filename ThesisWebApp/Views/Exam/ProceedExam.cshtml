@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Exam | Start";
+    ViewData["Title"] = "Exam | Proceed";
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,7 +10,6 @@
     <h1 style="font-family:'Mistral'"><b>TEST</b></h1>
 </div>
 
-<p>TODO: Podgląd testu.</p>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -25,7 +24,7 @@
                     </div>
                     @Html.HiddenFor(m => m.ExamID, new { Value = Model.ExamID })
                     @Html.HiddenFor(m => m.ExamPassword, new { Value = Model.ExamPassword })
-                    <button asp-controller="Exam" asp-action="ShowExam" type="submit" class="btn btn-primary">Rozpocznij</button>
+                    <button asp-controller="Exam" asp-action="ProceedExam" type="submit" class="btn btn-primary">Rozpocznij</button>
                 </form>
             }
         </div>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Exam | Exam Results";
+    ViewData["Title"] = "Exam | My exams";
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,14 +17,14 @@
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="Index">Informacje</a>
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="PublicExams">Publiczne testy</a>
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="DoneExams">Zrobione testy</a>
-                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exam" asp-action="ExamsResults">Wyniki testów</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="ExamsResults">Wyniki testów</a>
                 <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="CreateExam">Stwórz test</a>
-                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exam" asp-action="MyExams">Moje testy</a>
+                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exam" asp-action="MyExams">Moje testy</a>
             </div>
         </div>
         <div class="col-9">
             <div class="card border-dark mb-3">
-                <div class="card-header">Wyniki testów</div>
+                <div class="card-header">Moje testy</div>
                 <div class="card-body">
                     @if (Model.TotalPages < Model.PageIndex)
                     {
@@ -35,7 +35,7 @@
                         @foreach (var exam in Model)
                         {
                             <div class="list-group">
-                                <a asp-controller="Exam" asp-action="ParticularExamResults" asp-route-examID="@exam.ExamID" class="list-group-item list-group-item-action">
+                                <a class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5>@exam.Name</h5>
                                         @if (!String.IsNullOrEmpty(exam.Password))
@@ -43,9 +43,8 @@
                                             <i class="material-icons-outlined">lock</i>
                                         }
                                     </div>
-                                    <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
                                     <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>
-                                    <p class="mb-1">Ilość zadań: @exam.ExercisesPattern.Split('-').Length</p>
+                                    <p class="mb-1">ID zadań: @exam.ExercisesPattern</p>
                                 </a>
                             </div>
                         }
@@ -55,12 +54,12 @@
                         <div>
                             <ul class="pagination justify-content-center">
                                 <li class="page-item @prevDisabled">
-                                    <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
+                                    <a asp-controller="Exam" asp-action="MyExams" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">&laquo;</a>
                                 </li>
                                 @if (Model.HasPreviousPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
+                                        <a asp-controller="Exam" asp-action="MyExams" asp-route-pageNumber="@(Model.PageIndex - 1)" class="page-link">@(Model.PageIndex - 1)</a>
                                     </li>
                                 }
                                 <li class="page-item active">
@@ -69,11 +68,11 @@
                                 @if (Model.HasNextPage)
                                 {
                                     <li class="page-item">
-                                        <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
+                                        <a asp-controller="Exam" asp-action="MyExams" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">@(Model.PageIndex + 1)</a>
                                     </li>
                                 }
                                 <li class="page-item @nextDisabled">
-                                    <a asp-controller="Exam" asp-action="ExamsResults" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
+                                    <a asp-controller="Exam" asp-action="MyExams" asp-route-pageNumber="@(Model.PageIndex + 1)" class="page-link">&raquo;</a>
                                 </li>
                             </ul>
                         </div>
