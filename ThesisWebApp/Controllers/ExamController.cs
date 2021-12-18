@@ -90,9 +90,44 @@ namespace ThesisWebApp.Controllers
 
             // Wybranie danych.
             var user = await GetCurrentUserAsync();
-            var exams = context.Exams.Where(e => e.ApplicationUserID == user.Id && e.Archived == false).AsQueryable();
+            var exams = context.Exams.Where(e => e.ApplicationUserID == user.Id).AsQueryable();
             PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditExam(int examID)
+        {
+            var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
+            if (exam == null)
+            {
+                return RedirectToAction("DeadEnd", "Home");
+            }
+
+            return View(exam);
+        }
+
+        public async Task<IActionResult> ArchiveExam(int examID)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
+                exam.Archived = true;
+                await context.SaveChangesAsync();
+            }
+            return RedirectToAction("MyExams", "Exam");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeVisibility(Exam model)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var exam = context.Exams.Where(e => e.ExamID == model.ExamID).FirstOrDefault();
+                exam.Visible = model.Visible;
+                await context.SaveChangesAsync();
+            }
+            return RedirectToAction("MyExams", "Exam");
         }
 
         public async Task<IActionResult> DoneExams(int? pageNumber)

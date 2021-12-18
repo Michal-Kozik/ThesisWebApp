@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "My Exams | Edit Exam";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model Exam
+}
+
+<p class="lead">ID testu: @Model.ExamID</p>
+<p class="lead">Nazwa testu: @Model.Name</p>
+<p class="lead">Hasło do testu: @Model.Password</p>
+<p class="lead">Widoczność testu: @Model.Visible</p>
+<p class="lead">ID zadań: @Model.ExercisesPattern</p>
+<p class="lead">Czy zarchiwizowano: @Model.Archived</p>
+
+<form method="post">
+    <div class="form-check">
+        <input class="form-check-input" value="@Model.Visible" type="checkbox" asp-for="Visible" />
+        <label class="form-check-label" asp-for="@Model.Visible"></label>
+    </div>
+
+    @Html.HiddenFor(m => m.ExamID, new { Value = Model.ExamID })
+    <button class="btn btn-outline-info" asp-controller="Exam" asp-action="ChangeVisibility">Zapisz zmiany</button>
+</form>
+<a class="btn btn-outline-danger" asp-controller="Exam" asp-action="ArchiveExam" asp-route-examID="@Model.ExamID">Archiwizuj</a>
