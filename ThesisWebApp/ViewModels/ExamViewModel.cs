@@ -12,7 +12,10 @@ namespace ThesisWebApp.ViewModels
         public ExamViewModel()
         {
             Exercises = new List<Exercise>();
+            Archived = false;
         }
+
+        public int ExamID { get; set; }
 
         [Display(Name = "Nazwa testu")]
         [RegularExpression(@"[a-zA-Z\s]*$", ErrorMessage = "Nazwa testu może zawierać jedynie litery alfabetu angielskiego.")]
@@ -29,7 +32,10 @@ namespace ThesisWebApp.ViewModels
         [Display(Name = "Widoczność testu")]
         public bool Visible { get; set; }
 
+        public bool Archived { get; set; }
+
         public string ExercisePattern { get; set; }
+
         public List<Exercise> Exercises { get; set; }
     }
 }

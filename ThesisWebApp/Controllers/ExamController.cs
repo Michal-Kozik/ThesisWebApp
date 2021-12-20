@@ -103,8 +103,15 @@ namespace ThesisWebApp.Controllers
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
+            ExamViewModel model = new ExamViewModel();
+            model.ExamID = exam.ExamID;
+            model.Name = exam.Name;
+            model.Password = exam.Password;
+            model.Visible = exam.Visible;
+            model.ExercisePattern = exam.ExercisesPattern;
+            model.Archived = exam.Archived;
 
-            return View(exam);
+            return View(model);
         }
 
         public async Task<IActionResult> ArchiveExam(int examID)
@@ -119,15 +126,41 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeVisibility(Exam model)
+        public async Task<IActionResult> EditExam(ExamViewModel model)
         {
-            using (var context = new ApplicationDbContext())
+            if (ModelState.IsValid)
             {
-                var exam = context.Exams.Where(e => e.ExamID == model.ExamID).FirstOrDefault();
-                exam.Visible = model.Visible;
-                await context.SaveChangesAsync();
+                using (var context = new ApplicationDbContext())
+                {
+                    var exam = context.Exams.Where(e => e.ExamID == model.ExamID).FirstOrDefault();
+                    bool shouldSave = false;
+                    if (exam.Visible != model.Visible)
+                    {
+                        exam.Visible = model.Visible;
+                        shouldSave = true;
+                    }
+                    if (exam.Name != model.Name)
+                    {
+                        exam.Name = model.Name;
+                        shouldSave = true;
+                    }
+                    if (exam.Password != model.Password)
+                    {
+                        exam.Password = model.Password;
+                        shouldSave = true;
+                    }
+
+                    if (shouldSave)
+                    {
+                        await context.SaveChangesAsync();
+                    }
+                }
+                return RedirectToAction("MyExams", "Exam");
             }
-            return RedirectToAction("MyExams", "Exam");
+            else
+            {
+                return View(model);
+            }
         }
 
         public async Task<IActionResult> DoneExams(int? pageNumber)
