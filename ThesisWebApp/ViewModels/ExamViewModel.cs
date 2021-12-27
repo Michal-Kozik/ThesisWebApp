@@ -34,6 +34,9 @@ namespace ThesisWebApp.ViewModels
 
         public bool Archived { get; set; }
 
+        [Display(Name = "Wiele podejść")]
+        public bool ManyAttempts { get; set; }
+
         public string ExercisePattern { get; set; }
 
         public List<Exercise> Exercises { get; set; }

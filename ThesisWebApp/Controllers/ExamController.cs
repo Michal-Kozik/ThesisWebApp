@@ -39,6 +39,7 @@ namespace ThesisWebApp.Controllers
                                        Name = model.Name,
                                        ExercisesPattern = model.ExercisePattern,
                                        Visible = model.Visible,
+                                       ManyAttempts = model.ManyAttempts,
                                        Password = model.Password,
                                        Archived = false };
                 context.Exams.Add(exam);
@@ -108,6 +109,7 @@ namespace ThesisWebApp.Controllers
             model.Name = exam.Name;
             model.Password = exam.Password;
             model.Visible = exam.Visible;
+            model.ManyAttempts = exam.ManyAttempts;
             model.ExercisePattern = exam.ExercisesPattern;
             model.Archived = exam.Archived;
 
@@ -272,13 +274,22 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProceedExam(int examID)
+        public async Task<IActionResult> ProceedExam(int examID)
         {
+            // Czy znaleziono test.
             var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
             if (exam == null)
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
+            // Czy user moze jeszcze podejsc do testu.
+            var user = await GetCurrentUserAsync();
+            var mark = context.Marks.Where(m => m.ExamID == examID && m.ApplicationUserID == user.Id).FirstOrDefault();
+            if (mark != null && !exam.ManyAttempts)
+            {
+                return RedirectToAction("MaxAttemptsReached");
+            }
+            // Czy test ma haslo.
             if (String.IsNullOrEmpty(exam.Password))
             {
                 return RedirectToAction("StartExam", new { ExamID = exam.ExamID });
@@ -302,6 +313,11 @@ namespace ThesisWebApp.Controllers
                 ModelState.AddModelError("", "Niepoprawne hasło.");
                 return View(model);
             }
+        }
+
+        public IActionResult MaxAttemptsReached()
+        {
+            return View();
         }
 
         public IActionResult AddToExam(int exerciseID)
@@ -356,7 +372,8 @@ namespace ThesisWebApp.Controllers
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
-            if (!String.IsNullOrEmpty(exam.Password))
+            //if (!String.IsNullOrEmpty(exam.Password))
+            if (!exam.ManyAttempts)
             {
                 TempData["ExamHasPasswordID"] = exam.ExamID;
             }
@@ -395,7 +412,7 @@ namespace ThesisWebApp.Controllers
             ExamResult model = new ExamResult();
             model.Points = (int)TempData["Points"];
             model.MaxPoints = (int)TempData["MaxPoints"];
-            // Zapisanie wyniku jesli test posiadal haslo.
+            // Zapisanie wyniku jesli test mial wiele podejsc.
             if (TempData["ExamHasPasswordID"] != null)
             {
                 using (var context = new ApplicationDbContext())

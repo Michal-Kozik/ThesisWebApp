@@ -47,6 +47,18 @@
                 </div>
                 <div class="row">
                     <div class="col">
+                        @*Wiele podejsc do testu*@
+                        <label asp-for="ManyAttempts"></label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" asp-for="ManyAttempts" class="form-check-input" checked />
+                                <span class="lead">Dużo podejść</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         @*Haslo do testu*@
                         <div class="form-group">
                             <label asp-for="Password"></label>

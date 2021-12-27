@@ -31,6 +31,9 @@ namespace ThesisWebApp.Models
         [Display(Name = "Zarchiwizowany")]
         public bool Archived { get; set; }
 
+        [Display(Name = "Wiele podejść")]
+        public bool ManyAttempts { get; set; }
+
 
         // Kazdy test ma swojego autora.
         [Required]
