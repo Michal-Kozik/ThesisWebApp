@@ -104,6 +104,10 @@ namespace ThesisWebApp.Controllers
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
+            if (exam.Archived)
+            {
+                return RedirectToAction("ArchivedExam", new { examID = examID });
+            }
             ExamViewModel model = new ExamViewModel();
             model.ExamID = exam.ExamID;
             model.Name = exam.Name;
@@ -174,6 +178,20 @@ namespace ThesisWebApp.Controllers
             // Wybranie danych.
             var user = await GetCurrentUserAsync();
             var marks = context.Marks.Include(m => m.Exam.ApplicationUser).Where(m => m.ApplicationUserID == user.Id).AsQueryable();
+            PaginatedList<Mark> model = await PaginatedList<Mark>.CreateAsync(marks.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
+        }
+
+        public async Task<IActionResult> ArchivedExam(int? pageNumber, int examID)
+        {
+            ViewData["ExamID"] = examID;
+            if (pageNumber < 1)
+                pageNumber = 1;
+            int pageSize = 10;
+
+            // Wybranie danych.
+            var user = await GetCurrentUserAsync();
+            var marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).AsQueryable();
             PaginatedList<Mark> model = await PaginatedList<Mark>.CreateAsync(marks.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }
