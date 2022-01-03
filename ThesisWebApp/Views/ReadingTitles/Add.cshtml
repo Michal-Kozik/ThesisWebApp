@@ -60,6 +60,7 @@
         @Html.HiddenFor(m => m.NumberOfAdditionalTitles, new { Value = Model.NumberOfAdditionalTitles })
         @Html.HiddenFor(m => m.ExerciseName, new { Value = Model.ExerciseName })
         @Html.HiddenFor(m => m.Level, new { Value = Model.Level })
+        @Html.HiddenFor(m => m.Visible, new { Value = Model.Visible })
         <button asp-controller="ReadingTitles" asp-action="Add" type="submit" class="btn btn-primary">Zapisz</button>
     </form>
 </div>

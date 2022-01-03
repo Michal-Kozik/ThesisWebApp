@@ -117,7 +117,7 @@ namespace ThesisWebApp.Controllers
                                                    Name = model.ExerciseName,
                                                    TypeOfExercise = ExerciseType.READING_TITLES,
                                                    PathToFile = path, 
-                                                   Visible = true,
+                                                   Visible = model.Visible,
                                                    Created = DateTime.Today,
                                                    LevelOfExercise = (ExerciseLevel)model.Level };
                 context.Exercises.Add(exercise);
@@ -142,6 +142,7 @@ namespace ThesisWebApp.Controllers
                 TempData["NumberOfAdditionalTitles"] = model.NumberOfAdditionalTitles;
                 TempData["ExerciseName"] = model.ExerciseName;
                 TempData["Level"] = model.Level;
+                TempData["Visible"] = model.Visible;
                 return RedirectToAction("Add");
             }
             return View(model);
@@ -159,6 +160,7 @@ namespace ThesisWebApp.Controllers
             model.NumberOfAdditionalTitles = (int)TempData["NumberOfAdditionalTitles"];
             model.ExerciseName = TempData["ExerciseName"].ToString();
             model.Level = (int)TempData["Level"];
+            model.Visible = (bool)TempData["Visible"];
             return View(model);
         }
 
