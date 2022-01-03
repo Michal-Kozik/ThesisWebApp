@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model PaginatedList<Exercise>
 }
+@inject SignInManager<ApplicationUser> signInManager;
 
 <div class="border-bottom" style="margin-bottom: 20px">
     <h1 style="font-family:'Mistral'"><b>ĆWICZENIA</b></h1>
@@ -18,12 +19,26 @@
                 <div class="col">
                     <div class="list-group">
                         <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="Index">Informacje</a>
-                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
                         <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
-                        <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="MyExercises">Moje ćwiczenia</a>
                     </div>
                 </div>
             </div>
+            @if (signInManager.IsSignedIn(User) && User.IsInRole("Teacher"))
+            {
+                <div class="row" style="margin-top: 20px">
+                    <div class="col text-center">
+                        <label class="lead">Opcje nauczyciela:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="list-group">
+                            <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
+                            <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="MyExercises">Moje ćwiczenia</a>
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="row" style="margin-top: 20px">
                 <div class="col text-center">
                     <label class="lead">Typ zadania:</label>
@@ -48,7 +63,7 @@
         <div class="col-9">
             <div class="card border-dark mb-3">
                 <div class="card-header">
-                    Lista ćwiczeń
+                    Moje ćwiczenia
                 </div>
                 <div class="card-body">
                     @if (Model.TotalPages < Model.PageIndex)
@@ -72,7 +87,7 @@
                                             <i class="material-icons-outlined">visibility_off</i>
                                         }
                                     </div>
-                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
+                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise.ToString().Replace('_', ' ')</p>
                                     <div class="d-flex w-100 justify-content-start">
                                         <p class="lead" style="margin-right: 10px">Poziom:</p>
                                         @if (exercise.LevelOfExercise == ExerciseLevel.UNKNOWN)

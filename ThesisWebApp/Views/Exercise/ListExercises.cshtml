@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model PaginatedList<Exercise>
 }
+@inject SignInManager<ApplicationUser> signInManager;
 
 <div class="border-bottom" style="margin-bottom: 20px">
     <h1 style="font-family:'Mistral'"><b>ĆWICZENIA</b></h1>
@@ -18,12 +19,26 @@
                 <div class="col">
                     <div class="list-group">
                         <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="Index">Informacje</a>
-                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
                         <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Exercise" asp-action="ListExercises">Lista ćwiczeń</a>
-                        <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="MyExercises">Moje ćwiczenia</a>
                     </div>
                 </div>
             </div>
+            @if (signInManager.IsSignedIn(User) && User.IsInRole("Teacher"))
+            {
+                <div class="row" style="margin-top: 20px">
+                    <div class="col text-center">
+                        <label class="lead">Opcje nauczyciela:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="list-group">
+                            <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="CreateExercise">Stwórz ćwiczenie</a>
+                            <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Exercise" asp-action="MyExercises">Moje ćwiczenia</a>
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="row" style="margin-top: 20px">
                 <div class="col text-center">
                     <label class="lead">Typ sortowania:</label>
@@ -37,11 +52,11 @@
                         var levelOrderAsc = (ViewData["SortParam"].ToString() == "level_asc") ? "active" : "";
                         var levelOrderDesc = (ViewData["SortParam"].ToString() == "level_desc") ? "active" : "";
                     }
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @dateOrder" style="width: inherit">Od najnowszego</a>
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="date_asc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @dateOrderAsc" style="width: inherit">Od najstarszego</a>
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="level_asc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @levelOrderAsc" style="width: inherit">Od najprostszego</a>
+                    <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="level_desc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @levelOrderDesc" style="width: inherit">Od najtrudniejszego</a>
                 </div>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @dateOrder">Od najnowszego</a>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="date_asc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @dateOrderAsc">Od najstarszego</a>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="level_asc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @levelOrderAsc">Od najprostszego</a>
-                <a asp-controller="Exercise" asp-action="ListExercises" asp-route-sortOrder="level_desc" asp-route-typeParam="@ViewData["ExerciseTypeParam"]" class="btn btn-outline-secondary btn-block @levelOrderDesc">Od najtrudniejszego</a>
             </div>
             <div class="row" style="margin-top: 20px">
                 <div class="col text-center">
@@ -85,7 +100,7 @@
                                         <small class="text-muted">Dodano: @exercise.Created.ToString("dd-MM-yyyy")</small>
                                     </div>
                                     <p class="mb-1">Autor: @exercise.ApplicationUser.FirstName @exercise.ApplicationUser.LastName</p>
-                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
+                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise.ToString().Replace('_', ' ')</p>
                                     <div class="d-flex w-100 justify-content-start">
                                         <p class="lead" style="margin-right: 10px">Poziom:</p>
                                         @if (exercise.LevelOfExercise == ExerciseLevel.UNKNOWN)
