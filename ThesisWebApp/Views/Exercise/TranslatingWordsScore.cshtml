@@ -15,7 +15,7 @@
     <form method="post">
         <div class="row justify-content-center">
             <div class="col-3 text-center">
-                <p>Polski</p>
+                <p>Tłumaczenie z:</p>
             </div>
             <div class="col-1"></div>
             <div class="col-4 text-center">
@@ -58,6 +58,6 @@
         <div class="row">
             <p>@ViewBag.points / @Model.NumberOfWords</p>
         </div>
-        <button class="btn btn-primary" disabled>Dalej</button>
+        <a class="btn btn-primary" asp-controller="Exercise" asp-action="ListExercises">Wróć</a>
     </form>
 </div>

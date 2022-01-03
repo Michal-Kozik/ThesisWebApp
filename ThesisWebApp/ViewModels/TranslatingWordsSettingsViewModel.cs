@@ -27,6 +27,9 @@ namespace ThesisWebApp.ViewModels
         [Display(Name = "Poziom")]
         public int Level { get; set; }
 
+        [Display(Name = "Widoczny")]
+        public bool Visible { get; set; }
+
         public string[] TranslateFromArray { get; set; }
         public string[] TranslateToArray { get; set; }
         public string[] UserAnswers { get; set; }
