@@ -12,7 +12,7 @@ using ThesisWebApp.ViewModels;
 
 namespace ThesisWebApp.Controllers
 {
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Teacher")]
     public class ExamController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
