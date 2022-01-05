@@ -6,19 +6,39 @@
     @model Exercise
 }
 
-<p class="lead">ID ćwiczenia: @Model.ExerciseID</p>
-<p class="lead">ID autora: @Model.ApplicationUserID</p>
-<p class="lead">Nazwa ćwiczenia: @Model.Name</p>
-<p class="lead">Ścieżka do pliku: @Model.PathToFile</p>
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
+</div>
 
-@if (ViewBag.canAdd)
-{ 
-    <a asp-controller="Exam" asp-action="AddToExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-primary">Dodaj do testu</a>
-}
-else
-{
-    <a asp-controller="Exam" asp-action="RemoveFromExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-primary">Usuń z testu</a>
-}
-<a asp-controller="Exam" asp-action="CreateExam" class="btn btn-primary">Wróć</a>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-6 text-center">
+            <p class="lead">ID ćwiczenia: <i>@Model.ExerciseID</i></p>
+            <p class="lead">Utworzono: <i>@Model.Created.ToString("dd-MM-yyyy")</i></p>
+            <p class="lead">Nazwa ćwiczenia: <i>@Model.Name</i></p>
+            @if (Model.LevelOfExercise == ExerciseLevel.UNKNOWN)
+            {
+                <p class="lead">Poziom ćwiczenia: <i>Niezdefiniowany</i></p>
+            }
+            else
+            {
+                <p class="lead">Poziom ćwiczenia: <i>@Model.LevelOfExercise</i></p>
+            }
+            <p class="lead">Typ ćwiczenia: <i>@Model.TypeOfExercise.ToString().Replace('_', ' ')</i></p>
+            <p class="lead">Widoczność ćwiczenia: <i>@(Model.Visible ? "Widoczne" : "Ukryte")</i></p>
+            @if (ViewBag.canAdd)
+            {
+                <a asp-controller="Exam" asp-action="AddToExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-primary">Dodaj do testu</a>
+            }
+            else
+            {
+                <a asp-controller="Exam" asp-action="RemoveFromExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-primary">Usuń z testu</a>
+            }
+            <a asp-controller="Exam" asp-action="CreateExam" class="btn btn-outline-primary">Wróć</a>
+        </div>
+    </div>
+</div>
+
+
 
 

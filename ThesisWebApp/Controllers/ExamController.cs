@@ -77,7 +77,7 @@ namespace ThesisWebApp.Controllers
             int pageSize = 2;
 
             // Wybranie danych.
-            var exams = context.Exams.Include(e => e.ApplicationUser).AsQueryable();
+            var exams = context.Exams.Include(e => e.ApplicationUser).Where(e => e.Visible && !e.Archived).AsQueryable();
             PaginatedList<Exam> model = await PaginatedList<Exam>.CreateAsync(exams.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }
