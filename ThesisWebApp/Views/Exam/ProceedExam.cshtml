@@ -11,9 +11,10 @@
 </div>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-center">
+        <div class="col-6 text-center">
             <p class="lead">ID: @Model.ExamID</p>
+            <p class="lead">Ten test jest chroniony hasłem. Aby go wykonać musisz podać hasło dostępu.</p>
             @if (!String.IsNullOrEmpty(Model.ExamPassword))
             {
                 <form method="post">
@@ -24,7 +25,7 @@
                     </div>
                     @Html.HiddenFor(m => m.ExamID, new { Value = Model.ExamID })
                     @Html.HiddenFor(m => m.ExamPassword, new { Value = Model.ExamPassword })
-                    <button asp-controller="Exam" asp-action="ProceedExam" type="submit" class="btn btn-primary">Rozpocznij</button>
+                    <button asp-controller="Exam" asp-action="ProceedExam" type="submit" class="btn btn-primary mt-3">Rozpocznij</button>
                 </form>
             }
         </div>

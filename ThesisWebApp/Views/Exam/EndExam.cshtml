@@ -6,5 +6,20 @@
     @model ExamResult
 }
 
-<p class="lead">Koniec testu.</p>
-<p class="lead">Punkty: @Model.Points / @Model.MaxPoints</p>
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-6 text-center">
+            <p class="lead">
+                Rozwiązano test, jego wynik znajdziesz w zakładce <i class="fw-bold">Moje wyniki</i>.
+                Jeżeli do testu można podchodzić wielokrotnie to jego wyniki nie będą zapisywane.
+            </p>
+            <p class="lead">Punkty: @Model.Points / @Model.MaxPoints</p>
+            <a class="btn btn-outline-primary" asp-controller="Exam" asp-action="PublicExams">Wróć</a>
+            <a class="btn btn-outline-primary" asp-controller="Exam" asp-action="DoneExams">Moje wyniki</a>
+        </div>
+    </div>
+</div>
