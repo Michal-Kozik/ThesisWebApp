@@ -73,7 +73,14 @@
                                             <i class="material-icons-outlined">repeat_one</i>
                                         }
                                     </div>
-                                    <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>
+                                    @if (!exam.ManyAttempts)
+                                    { 
+                                        <p class="mb-1 text-danger">Jedno podejście</p>
+                                    }
+                                    else
+                                    { 
+                                        <p class="mb-1">Wiele podejść</p>
+                                    }
                                     <p class="mb-1">Ilość zadań: @exam.ExercisesPattern.Split('-').Length</p>
                                 </a>
                             </div>

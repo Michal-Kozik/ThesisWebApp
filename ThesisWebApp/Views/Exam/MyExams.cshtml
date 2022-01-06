@@ -63,21 +63,19 @@
                                         }
                                     </div>
                                     <div class="d-flex w-100 justify-content-between">
-                                        <p class="mb-1">Widoczność: @(exam.Visible ? "Widoczny" : "Niewidoczny")</p>
+                                        <p class="mb-1">ID ćwiczeń: @exam.ExercisesPattern</p>
                                         @if (!exam.Visible)
                                         {
                                             <i class="material-icons-outlined">visibility_off</i>
                                         }
                                     </div>
                                     <div class="d-flex w-100 justify-content-between">
-                                        <p class="mb-1">ID zadań: @exam.ExercisesPattern</p>
+                                        <p class="mb-1">Ilość podejść: @(exam.ManyAttempts ? "Wiele" : "Jedno")</p>
                                         @if (exam.Archived)
                                         {
                                             <i class="material-icons-outlined">book</i>
                                         }
                                     </div>
-                                    @*<p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>*@
-                                    @*<p class="mb-1">ID zadań: @exam.ExercisesPattern</p>*@
                                 </a>
                             </div>
                         }

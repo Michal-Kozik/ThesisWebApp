@@ -81,7 +81,7 @@
                                             <i class="material-icons-outlined">visibility_off</i>
                                         }
                                     </div>
-                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise</p>
+                                    <p class="mb-1">Typ zadania: @exercise.TypeOfExercise.ToString().Replace('_', ' ')</p>
                                     <div class="d-flex w-100 justify-content-start">
                                         <p class="lead" style="margin-right: 10px">Poziom:</p>
                                         @if (exercise.LevelOfExercise == ExerciseLevel.UNKNOWN)

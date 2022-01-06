@@ -62,8 +62,25 @@
                                             <i class="material-icons-outlined">lock</i>
                                         }
                                     </div>
-                                    <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
-                                    <p class="mb-1">Widoczność: @(exam.Visible ? "Publiczny" : "Prywatny")</p>
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <p class="mb-1">Autor: @exam.ApplicationUser.FirstName @exam.ApplicationUser.LastName</p>
+                                        @if (exam.ManyAttempts)
+                                        {
+                                            <i class="material-icons-outlined">repeat</i>
+                                        }
+                                        else
+                                        {
+                                            <i class="material-icons-outlined">repeat_one</i>
+                                        }
+                                    </div>
+                                    @if (!exam.ManyAttempts)
+                                    {
+                                        <p class="mb-1 text-danger">Jedno podejście</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="mb-1">Wiele podejść</p>
+                                    }
                                     <p class="mb-1">Ilość zadań: @exam.ExercisesPattern.Split('-').Length</p>
                                 </a>
                             </div>

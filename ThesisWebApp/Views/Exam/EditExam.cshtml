@@ -6,35 +6,53 @@
     @model ExamViewModel
 }
 
-<p class="lead">ID testu: @Model.ExamID</p>
-<p class="lead">Nazwa testu: @Model.Name</p>
-<p class="lead">Hasło do testu: @Model.Password</p>
-<p class="lead">Widoczność testu: @Model.Visible</p>
-<p class="lead">ID zadań: @Model.ExercisePattern</p>
-<p class="lead">Czy zarchiwizowano: @Model.Archived</p>
-<p class="lead">Wiele podejść: @Model.ManyAttempts</p>
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>TESTY</b></h1>
+</div>
 
-<form method="post">
-    @*Widocznosc*@
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" asp-for="Visible" />
-        <label class="form-check-label" asp-for="Visible"></label>
-    </div>
-    @*Nazwa testu*@
-    <div class="form-group">
-        <label asp-for="Name" class="lead"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    @*Haslo*@
-    <div class="form-group">
-        <label asp-for="Password" class="lead"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+<div class="container-fluid">
+    <form method="post">
+        <div class="row">
+            <div class="col-6">
+                <p class="lead">ID testu: <i>@Model.ExamID</i></p>
+                <p class="lead">Nazwa testu: <i>@Model.Name</i></p>
+                <p class="lead">Hasło do testu: <i>@(String.IsNullOrEmpty(Model.Password) ? "Brak" : Model.Password)</i></p>
+                <p class="lead">Widoczność testu: <i>@(Model.Visible ? "Widoczny" : "Ukryty")</i></p>
+                <p class="lead">ID zadań: <i>@Model.ExercisePattern</i></p>
+                <p class="lead">Czy zarchiwizowano: <i>@(Model.Archived ? "Zarchiwizowany" : "Niezarchiwizowany")</i></p>
+                <p class="lead">Wiele podejść: <i>@(Model.ManyAttempts ? "Wiele podejść" : "Jedno podejście")</i></p>
+            </div>
+            <div class="col-6">
+                @*Widocznosc*@
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="Visible" />
+                    <label class="form-check-label" asp-for="Visible"></label>
+                </div>
+                @*Nazwa testu*@
+                <div class="form-group">
+                    <label asp-for="Name" class="lead"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                @*Haslo*@
+                <div class="form-group">
+                    <label asp-for="Password" class="lead"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                @Html.HiddenFor(m => m.ExamID, new { Value = Model.ExamID })
+                @Html.HiddenFor(m => m.ExercisePattern, new { Value = Model.ExercisePattern })
+                <div class="row">
+                    <div class="col text-center mt-3">
+                        <button class="btn btn-outline-success" asp-controller="Exam" asp-action="EditExam">Zapisz zmiany</button>
+                        <a class="btn btn-outline-danger" asp-controller="Exam" asp-action="ArchiveExam" asp-route-examID="@Model.ExamID">Archiwizuj</a>
+                        <a class="btn btn-outline-primary" asp-controller="Exam" asp-action="MyExams">Wróć</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
-    @Html.HiddenFor(m => m.ExamID, new { Value = Model.ExamID })
-    @Html.HiddenFor(m => m.ExercisePattern, new { Value = Model.ExercisePattern })
-    <button class="btn btn-outline-info" asp-controller="Exam" asp-action="EditExam">Zapisz zmiany</button>
-</form>
-<a class="btn btn-outline-danger" asp-controller="Exam" asp-action="ArchiveExam" asp-route-examID="@Model.ExamID">Archiwizuj</a>
+
+
