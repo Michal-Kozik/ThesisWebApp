@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "My Exercises | Show Exercise";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model Exercise
+}
+
+<div class="border-bottom" style="margin-bottom: 20px">
+    <h1 style="font-family:'Mistral'"><b>ĆWICZENIA</b></h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="row">
+            <div class="col-6">
+                <p class="lead">ID ćwiczenia: <i>@Model.ExerciseID</i></p>
+                <p class="lead">Data utworzenia: <i>@Model.Created.ToString("dd-MM-yyyy")</i></p>
+                <p class="lead">Nazwa ćwiczenia: <i>@Model.Name</i></p>
+                @if (Model.LevelOfExercise == ExerciseLevel.UNKNOWN)
+                {
+                    <p class="lead">Poziom ćwiczenia: <i>Niezdefiniowany</i></p>
+                }
+                else
+                {
+                    <p class="lead">Poziom ćwiczenia: <i>@Model.LevelOfExercise</i></p>
+                }
+                <p class="lead">Typ zadania: <i>@Model.TypeOfExercise.ToString().Replace('_', ' ')</i></p>
+                <p class="lead">Widoczność: <i>@(Model.Visible ? "Widoczne" : "Ukryte")</i></p>
+            </div>
+            <div class="col-6">
+                @*Widocznosc*@
+                <label class="lead" asp-for="Visible"></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="Visible" />
+                    <label class="form-check-label">Publiczne</label>
+                </div>
+                @Html.HiddenFor(m => m.ExerciseID, new { Value = Model.ExerciseID })
+                <div class="row">
+                    <div class="col mt-3">
+                        <button class="btn btn-outline-success" asp-controller="Exercise" asp-action="EditExercise">Zapisz zmiany</button>
+                        <a class="btn btn-outline-danger" asp-controller="Exercise" asp-action="DeleteExercise" asp-route-exerciseID="@Model.ExerciseID">Usuń</a>
+                        <a class="btn btn-outline-primary" asp-controller="Exercise" asp-action="MyExercises">Wróć</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

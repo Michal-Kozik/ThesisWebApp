@@ -50,7 +50,7 @@ namespace ThesisWebApp.Models
         public ExerciseLevel LevelOfExercise { get; set; }
 
         [Required]
-        [Display(Name = "Visible")]
+        [Display(Name = "Widoczność")]
         public bool Visible { get; set; }
 
         [Required]

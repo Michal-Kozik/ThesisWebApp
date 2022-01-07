@@ -223,14 +223,14 @@ namespace ThesisWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowExercise(int exerciseID)
+        public IActionResult EditExercise(int exerciseID)
         {
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             return View(exercise);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeVisibility(Exercise model)
+        public async Task<IActionResult> EditExercise(Exercise model)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -238,7 +238,6 @@ namespace ThesisWebApp.Controllers
                 exercise.Visible = model.Visible;
                 await context.SaveChangesAsync();
             }
-                
             return RedirectToAction("MyExercises", "Exercise");
         }
 

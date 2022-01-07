@@ -75,7 +75,7 @@
                         @foreach (var exercise in Model)
                         {
                             <div class="list-group">
-                                <a class="list-group-item list-group-item-action flex-column align-items-center" asp-controller="Exercise" asp-action="ShowExercise" asp-route-exerciseID="@exercise.ExerciseID">
+                                <a class="list-group-item list-group-item-action flex-column align-items-center" asp-controller="Exercise" asp-action="EditExercise" asp-route-exerciseID="@exercise.ExerciseID">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5>@exercise.Name</h5>
                                         <small class="text-muted">Dodano: @exercise.Created.ToString("dd-MM-yyyy")</small>
