@@ -7,12 +7,66 @@
 }
 
 <div class="container-fluid">
-    <p>Statystyki:</p>
-    <p class="lead">Ilość zadań bez poziomu trudności: @Model.ExercisesUknown</p>
-    <p class="lead">A1: @Model.ExercisesA1</p>
-    <p class="lead">A2: @Model.ExercisesA2</p>
-    <p class="lead">B1: @Model.ExercisesB1</p>
-    <p class="lead">B2: @Model.ExercisesB2</p>
-    <p class="lead">C1: @Model.ExercisesC1</p>
-    <p class="lead">C2: @Model.ExercisesC2</p>
+    <div class="row justify-content-center">
+        <div class="col-8">
+            @if (Model == null)
+            {
+                <div class="card border-primary">
+                    <div class="card-header">Statystyki</div>
+                    <div class="card-body">
+                        <p class="lead">
+                            Wygląda na to, że jeszcze nie rozwiązałeś żadnego zadania.
+                            Tutaj będzie podliczane ile zadań oraz na jakim poziomie zostało wykonanych.
+                        </p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card border-primary">
+                    <div class="card-header">Statystyki</div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="table-primary">
+                                    <th style="text-align:center; vertical-align:middle">Poziom trudności</th>
+                                    <th style="text-align:center; vertical-align:middle">Ilość zrobionych zadań</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">Niezdefiniowane</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesUknown</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">A1</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesA1</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">A2</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesA2</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">B1</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesB1</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">B2</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesB2</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">C1</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesC1</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td style="text-align:center; vertical-align:middle">C2</td>
+                                    <td style="text-align:center; vertical-align:middle">@Model.ExercisesC2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
