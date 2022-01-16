@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThesisWebApp", "ThesisWebApp\ThesisWebApp.csproj", "{7B9EAE58-DF61-44D6-B69D-47285C053F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThesisWebApp", "ThesisWebApp\ThesisWebApp.csproj", "{7B9EAE58-DF61-44D6-B69D-47285C053F83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThesisWebApp.Tests", "ThesisWebApp.Tests\ThesisWebApp.Tests.csproj", "{33870CDF-F006-4B86-AA91-34882CC3D414}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7B9EAE58-DF61-44D6-B69D-47285C053F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B9EAE58-DF61-44D6-B69D-47285C053F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B9EAE58-DF61-44D6-B69D-47285C053F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33870CDF-F006-4B86-AA91-34882CC3D414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33870CDF-F006-4B86-AA91-34882CC3D414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33870CDF-F006-4B86-AA91-34882CC3D414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33870CDF-F006-4B86-AA91-34882CC3D414}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
