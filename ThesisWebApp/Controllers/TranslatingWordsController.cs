@@ -24,7 +24,7 @@ namespace ThesisWebApp.Controllers
 
 
 
-        private bool ValidateWords(TranslatingWordsSettingsViewModel model)
+        public bool ValidateWords(TranslatingWordsSettingsViewModel model)
         {
             for (int i = 0; i < model.NumberOfWords; i++)
             {
@@ -50,7 +50,7 @@ namespace ThesisWebApp.Controllers
             return "Content/Resources/TranslatingWords/" + nameOfFile;
         }
 
-        private void SaveExerciseToTxt(TranslatingWordsSettingsViewModel model, string path)
+        public void SaveExerciseToTxt(TranslatingWordsSettingsViewModel model, string path)
         {
             // Zapisywanie slow w pliku w odpowiednim formacie - slowo;slowo.
             var logFile = System.IO.File.Create(path);
