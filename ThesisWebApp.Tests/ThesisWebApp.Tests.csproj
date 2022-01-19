@@ -7,10 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestFiles\ReadingTitlesTestDir\ReadingTitlesPattern.txt" />
     <None Remove="TestFiles\TranslatingWordsTestDir\TranslatingWordsPattern.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestFiles\ReadingTitlesTestDir\ReadingTitlesPattern.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\TranslatingWordsTestDir\TranslatingWordsPattern.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

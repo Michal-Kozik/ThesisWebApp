@@ -24,7 +24,7 @@ namespace ThesisWebApp.Controllers
 
 
 
-        private bool ValidateInputs(ReadingTitlesSettingsViewModel model)
+        public bool ValidateInputs(ReadingTitlesSettingsViewModel model)
         {
             for (int i = 0; i < model.NumberOfParagraphs; i++)
             {
@@ -57,7 +57,7 @@ namespace ThesisWebApp.Controllers
             return "Content/Resources/ReadingTitles/" + nameOfFile;
         }
 
-        private void SaveExerciseToTxt(ReadingTitlesSettingsViewModel model, string path)
+        public void SaveExerciseToTxt(ReadingTitlesSettingsViewModel model, string path)
         {
             // Format: 1 linijka - <N_akapitow>;<M_nadmiarowych_odpowiedzi>
             //         N linii - <akapit>;<odpowiedz>
