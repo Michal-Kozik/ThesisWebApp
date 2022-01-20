@@ -24,7 +24,7 @@ namespace ThesisWebApp.Controllers
 
 
 
-        private bool ValidateInputs(MatchingSentencesSettingsViewModel model)
+        public bool ValidateInputs(MatchingSentencesSettingsViewModel model)
         {
             for (int i = 0; i < model.NumberOfSentences; i++)
             {
@@ -50,7 +50,7 @@ namespace ThesisWebApp.Controllers
             return "Content/Resources/MatchingSentences/" + nameOfFile;
         }
 
-        private void SaveExerciseToTxt(MatchingSentencesSettingsViewModel model, string path)
+        public void SaveExerciseToTxt(MatchingSentencesSettingsViewModel model, string path)
         {
             // Format: 1 linijka - <N_zdan>
             //         N linii - <1_czesc_zdania>;<2_czesc_zdania>

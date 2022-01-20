@@ -36,7 +36,7 @@ namespace ThesisWebApp.Tests
         }
 
         [Fact]
-        public void ValidateWords_FieldCompleted_ReturnTrue()
+        public void ValidateWords_FieldsCompleted_ReturnTrue()
         {
             var mockUserManager = new MockUserManager();
             var controller = new TranslatingWordsController(mockUserManager.GetMockUserManager().Object);
