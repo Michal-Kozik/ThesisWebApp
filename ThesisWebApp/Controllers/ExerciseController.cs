@@ -25,7 +25,7 @@ namespace ThesisWebApp.Controllers
 
 
 
-        private int TranslatingWordsCheck(TranslatingWordsSettingsViewModel model)
+        public int TranslatingWordsCheck(TranslatingWordsSettingsViewModel model)
         {
             int points = 0;
             for (int i = 0; i < model.NumberOfWords; i++)
@@ -36,7 +36,7 @@ namespace ThesisWebApp.Controllers
             return points;
         }
 
-        private int ReadingTitlesCheck(ReadingTitlesSettingsViewModel model)
+        public int ReadingTitlesCheck(ReadingTitlesSettingsViewModel model)
         {
             int points = 0;
             for (int i = 0; i < model.NumberOfParagraphs; i++)
@@ -47,7 +47,7 @@ namespace ThesisWebApp.Controllers
             return points;
         }
 
-        private int MatchingSentencesCheck(MatchingSentencesSettingsViewModel model)
+        public int MatchingSentencesCheck(MatchingSentencesSettingsViewModel model)
         {
             int points = 0;
             for (int i = 0; i < model.NumberOfSentences; i++)
