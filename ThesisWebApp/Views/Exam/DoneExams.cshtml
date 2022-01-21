@@ -66,7 +66,14 @@
                                     <td style="text-align:center; vertical-align:middle">@mark.Exam.Name</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.Exam.ApplicationUser.FirstName @mark.Exam.ApplicationUser.LastName</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.UserScore</td>
-                                    <td style="text-align:center; vertical-align:middle">@mark.MaxPoints</td>
+                                    @if (mark.MaxPoints == 1)
+                                    {
+                                        <td style="text-align:center; vertical-align:middle; color:darkred">Opuszczono</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:center; vertical-align:middle">@mark.MaxPoints</td>
+                                    }
                                     @{
                                         double result = Math.Round((double)mark.UserScore / (double)mark.MaxPoints * 100, 2, MidpointRounding.AwayFromZero);
                                         string resultString = Convert.ToInt32(result).ToString();

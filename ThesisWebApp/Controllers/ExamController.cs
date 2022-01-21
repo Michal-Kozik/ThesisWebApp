@@ -383,17 +383,32 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("CreateExam");
         }
 
-        public IActionResult StartExam(int examID)
+        public async Task<IActionResult> StartExam(int examID)
         {
             var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
             if (exam == null)
             {
                 return RedirectToAction("DeadEnd", "Home");
             }
-            //if (!String.IsNullOrEmpty(exam.Password))
+            // Test ma jedno podejscie.
             if (!exam.ManyAttempts)
             {
-                TempData["ExamHasPasswordID"] = exam.ExamID;
+                TempData["ExamWithOneAttemptID"] = exam.ExamID;
+                // Zapisanie zerowego wyniku na wypadek opuszczenia testu.
+                using (var context = new ApplicationDbContext())
+                {
+                    var user = await GetCurrentUserAsync();
+                    Mark mark = new Mark
+                    {
+                        ApplicationUserID = user.Id,
+                        ExamID = exam.ExamID,
+                        Created = DateTime.Now,
+                        UserScore = 0,
+                        MaxPoints = 1
+                    };
+                    context.Marks.Add(mark);
+                    await context.SaveChangesAsync();
+                }
             }
             string cookie = exam.ExercisesPattern;
             Response.Cookies.Append("ChoosenExercises", cookie);
@@ -430,18 +445,20 @@ namespace ThesisWebApp.Controllers
             ExamResult model = new ExamResult();
             model.Points = (int)TempData["Points"];
             model.MaxPoints = (int)TempData["MaxPoints"];
-            // Zapisanie wyniku jesli test mial wiele podejsc.
-            if (TempData["ExamHasPasswordID"] != null)
+            // Zapisanie wyniku jesli test mial jedno podejscie.
+            if (TempData["ExamWithOneAttemptID"] != null)
             {
                 using (var context = new ApplicationDbContext())
                 {
                     var user = await GetCurrentUserAsync();
-                    Mark mark = new Mark { ApplicationUserID = user.Id,
-                                           ExamID = (int)TempData["ExamHasPasswordID"],
-                                           Created = DateTime.Now,
-                                           UserScore = model.Points,
-                                           MaxPoints = model.MaxPoints };
-                    context.Marks.Add(mark);
+                    var mark = context.Marks.Where(m => m.ApplicationUserID == user.Id && m.ExamID == (int)TempData["ExamWithOneAttemptID"]).FirstOrDefault();
+                    if (mark == null)
+                    {
+                        return RedirectToAction("DeadEnd", "Home");
+                    }
+                    mark.Created = DateTime.Now;
+                    mark.UserScore = model.Points;
+                    mark.MaxPoints = model.MaxPoints;
                     await context.SaveChangesAsync();
                 }
             }
