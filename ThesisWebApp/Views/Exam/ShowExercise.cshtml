@@ -28,11 +28,22 @@
             <p class="lead">Widoczność ćwiczenia: <i>@(Model.Visible ? "Widoczne" : "Ukryte")</i></p>
             @if (ViewBag.canAdd)
             {
-                <a asp-controller="Exam" asp-action="AddToExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-primary">Dodaj do testu</a>
+                @if (ViewBag.isExerciseInExam)
+                {
+                    <a asp-controller="Exam" asp-action="RemoveFromExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-danger">Usuń z testu</a>
+                }
+                else
+                {
+                    <a asp-controller="Exam" asp-action="AddToExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-success">Dodaj do testu</a>
+                }
             }
             else
             {
-                <a asp-controller="Exam" asp-action="RemoveFromExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-primary">Usuń z testu</a>
+                @if (ViewBag.isExerciseInExam)
+                {
+                    <a asp-controller="Exam" asp-action="RemoveFromExam" asp-route-exerciseID="@Model.ExerciseID" class="btn btn-outline-danger">Usuń z testu</a>
+                }
+                <p class="lead" style="color:red">W teście znajduje się maksymalna ilość zadań.</p>
             }
             <a asp-controller="Exam" asp-action="CreateExam" class="btn btn-outline-primary">Wróć</a>
         </div>

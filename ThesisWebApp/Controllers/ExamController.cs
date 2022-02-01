@@ -47,7 +47,7 @@ namespace ThesisWebApp.Controllers
             }
         }
 
-        private bool CanAddToExam(string exerciseID)
+        private bool CanAddToExam()
         {
             string cookie = Request.Cookies["ChoosenExercises"];
             string[] idArray = cookie.Split('-');
@@ -55,12 +55,24 @@ namespace ThesisWebApp.Controllers
             {
                 return false;
             }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool IsExerciseInExam(string exerciseID)
+        {
+            string cookie = Request.Cookies["ChoosenExercises"];
+            string[] idArray = cookie.Split('-');
             foreach (string id in idArray)
             {
                 if (id == exerciseID)
-                    return false;
+                {
+                    return true;
+                }
             }
-            return true;
+            return false;
         }
 
 
@@ -74,7 +86,7 @@ namespace ThesisWebApp.Controllers
         {
             if (pageNumber < 1)
                 pageNumber = 1;
-            int pageSize = 2;
+            int pageSize = 3;
 
             // Wybranie danych.
             var exams = context.Exams.Include(e => e.ApplicationUser).Where(e => e.Visible && !e.Archived).AsQueryable();
@@ -247,9 +259,15 @@ namespace ThesisWebApp.Controllers
         {
             var exercise = context.Exercises.Where(ex => ex.ExerciseID == exerciseID).FirstOrDefault();
             if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
+            {
                 ViewBag.canAdd = true;
+                ViewBag.isExerciseInExam = false;
+            }   
             else
-                ViewBag.canAdd = CanAddToExam(exerciseID.ToString());
+            {
+                ViewBag.canAdd = CanAddToExam();
+                ViewBag.isExerciseInExam = IsExerciseInExam(exerciseID.ToString());
+            }
             return View(exercise);
         }
 
@@ -346,7 +364,7 @@ namespace ThesisWebApp.Controllers
             }
             else
             {
-                if (CanAddToExam(exerciseID.ToString()))
+                if (!IsExerciseInExam(exerciseID.ToString()))
                 {
                     string oldCookie = Request.Cookies["ChoosenExercises"];
                     Response.Cookies.Append("ChoosenExercises", $"{oldCookie}-{exerciseID}");
