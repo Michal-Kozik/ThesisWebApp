@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col">
             <div class="card border-dark mb-3">
-                <div class="card-header">Wyniki testów</div>
+                <div class="card-header">Wyniki testu o ID: @ViewData["ExamID"]</div>
                 <div class="card-body">
                     <h4 style="font-family:'Mistral'"><b>@ViewData["ExamName"]</b></h4>
                     <table class="table table-hover">
@@ -38,7 +38,14 @@
                                     <td style="text-align:center; vertical-align:middle">@mark.ApplicationUser.FirstName</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.ApplicationUser.LastName</td>
                                     <td style="text-align:center; vertical-align:middle">@mark.UserScore</td>
-                                    <td style="text-align:center; vertical-align:middle">@mark.MaxPoints</td>
+                                    @if (mark.MaxPoints == 1)
+                                    {
+                                        <td style="text-align:center; vertical-align:middle; color:red">Opuszczono</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:center; vertical-align:middle">@mark.MaxPoints</td> 
+                                    }
                                     @{
                                         double result = Math.Round((double)mark.UserScore / (double)mark.MaxPoints * 100, 2, MidpointRounding.AwayFromZero);
                                         string resultString = Convert.ToInt32(result).ToString();

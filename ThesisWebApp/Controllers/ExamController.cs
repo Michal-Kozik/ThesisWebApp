@@ -99,7 +99,7 @@ namespace ThesisWebApp.Controllers
         {
             if (pageNumber < 1)
                 pageNumber = 1;
-            int pageSize = 2;
+            int pageSize = 3;
 
             // Wybranie danych.
             var user = await GetCurrentUserAsync();

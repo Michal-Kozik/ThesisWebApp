@@ -154,21 +154,21 @@ namespace ThesisWebApp.Controllers
             IQueryable<Exercise> exercises;
             //IQueryable<Exam> exams;
             var user = await GetCurrentUserAsync();
-            exercises = context.Exercises.Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
+            //exercises = context.Exercises.Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
             //exams = context.Exams.Where(e => e.ApplicationUserID == user.Id).AsQueryable();
             switch (typeParam)
             {
                 case "translatingWords":
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.TRANSLATING_WORDS).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.ApplicationUserID == user.Id && ex.TypeOfExercise == ExerciseType.TRANSLATING_WORDS).AsQueryable();
                     break;
                 case "readingTitles":
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.READING_TITLES).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.ApplicationUserID == user.Id && ex.TypeOfExercise == ExerciseType.READING_TITLES).AsQueryable();
                     break;
                 case "matchingSentences":
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.ApplicationUserID == user.Id && ex.TypeOfExercise == ExerciseType.MATCHING_SENTENCES).AsQueryable();
                     break;
                 default:
-                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).AsQueryable();
+                    exercises = context.Exercises.Include(ex => ex.ApplicationUser).Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
                     break;
             }
 
