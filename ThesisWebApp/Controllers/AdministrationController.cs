@@ -22,7 +22,6 @@ namespace ThesisWebApp.Controllers
             this.userManager = userManager;
         }
 
-        // https://www.youtube.com/watch?v=TuJd2Ez9i3I.
         [HttpGet]
         public IActionResult CreateRole()
         {
@@ -69,7 +68,7 @@ namespace ThesisWebApp.Controllers
 
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with ID = {id} cannot be found";
+                ViewBag.ErrorMessage = $"Rola o ID = {id} nie może zostać znaleziona";
                 return View("NotFound");
             }
 
@@ -97,7 +96,7 @@ namespace ThesisWebApp.Controllers
 
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with ID = {model.Id} cannot be found";
+                ViewBag.ErrorMessage = $"Rola o ID = {model.Id} nie może zostać znaleziona";
                 return View("NotFound");
             }
             else
@@ -128,7 +127,7 @@ namespace ThesisWebApp.Controllers
 
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with ID = {roleId} cannot be found";
+                ViewBag.ErrorMessage = $"Rola o ID = {roleId} nie może zostać znaleziona";
                 return View("NotFound");
             }
 
@@ -164,7 +163,7 @@ namespace ThesisWebApp.Controllers
 
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with ID = {roleId} cannot be found";
+                ViewBag.ErrorMessage = $"Rola o ID = {roleId} nie może zostać znaleziona";
                 return View("NotFound");
             }
 

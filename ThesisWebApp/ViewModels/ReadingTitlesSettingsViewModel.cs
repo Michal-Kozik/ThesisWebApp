@@ -42,7 +42,6 @@ namespace ThesisWebApp.ViewModels
 
         public string[] ShuffleAnswers()
         {
-            // Dodac warunek sprawdzajacy czy tablice posiadaja dane.
             int correctTitleCount = 0;
             int additionalTitleCount = 0;
             string[] result = new string[NumberOfParagraphs + NumberOfAdditionalTitles];

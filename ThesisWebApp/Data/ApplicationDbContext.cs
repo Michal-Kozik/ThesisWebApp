@@ -28,16 +28,6 @@ namespace ThesisWebApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ApplicationUser>()
-            //    .HasOne(s => s.Statistics)
-            //    .WithOne(i => i.ApplicationUser)
-            //    .HasForeignKey<Statistics>(s => s.ApplicationUserID);
-            //modelBuilder
-            //    .Entity<Mark>()
-            //    .HasOne(e => e.Exam)
-            //    .WithMany(e => e.Marks)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
             base.OnModelCreating(modelBuilder);
         }
 

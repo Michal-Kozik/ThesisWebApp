@@ -241,7 +241,6 @@ namespace ThesisWebApp.Controllers
             var exam = context.Exams.Where(e => e.ExamID == examID).FirstOrDefault();
             ViewData["ExamName"] = exam.Name.ToUpper();
             var marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).AsQueryable();
-            //ViewBag.marks = context.Marks.Include(m => m.ApplicationUser).Where(m => m.ExamID == examID).ToList();
             PaginatedList<Mark> model = await PaginatedList<Mark>.CreateAsync(marks.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }

@@ -134,7 +134,6 @@ namespace ThesisWebApp.Controllers
             // warunek na sprawdzenie czy tempdata posiada dane - jezeli nie, przekierowanie na error.
             if (TempData["ExerciseName"] == null || TempData["NumberOfSentences"] == null)
             {
-                //return error.
                 return RedirectToAction("DeadEnd", "Home");
             }
             MatchingSentencesSettingsViewModel model = new MatchingSentencesSettingsViewModel();

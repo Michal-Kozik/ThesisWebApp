@@ -154,10 +154,7 @@ namespace ThesisWebApp.Controllers
 
             // Wybieranie danych.
             IQueryable<Exercise> exercises;
-            //IQueryable<Exam> exams;
             var user = await GetCurrentUserAsync();
-            //exercises = context.Exercises.Where(ex => ex.ApplicationUserID == user.Id).AsQueryable();
-            //exams = context.Exams.Where(e => e.ApplicationUserID == user.Id).AsQueryable();
             switch (typeParam)
             {
                 case "translatingWords":
