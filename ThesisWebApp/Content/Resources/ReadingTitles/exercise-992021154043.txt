@@ -1,7 +1,0 @@
-4;2
-akapit1;tytul1
-akapit2;tytul2
-akapit3;tytul3
-akapit4;tytul4
-nadmiar1
-nadmiar2

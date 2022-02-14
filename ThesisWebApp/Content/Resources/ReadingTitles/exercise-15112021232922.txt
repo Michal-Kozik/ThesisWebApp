@@ -1,8 +1,0 @@
-5;2
-dasdasd 1;tytul1
-dasdasda  2;tytul2
-dasdasdas 3;tytul3
-dasdasdasda 4;tytul4
-dasdasdasda 5;tytul5
-nadmiar1
-nadmiar2
