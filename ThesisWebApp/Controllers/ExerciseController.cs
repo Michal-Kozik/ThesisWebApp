@@ -30,7 +30,7 @@ namespace ThesisWebApp.Controllers
             int points = 0;
             for (int i = 0; i < model.NumberOfWords; i++)
             {
-                if (model.UserAnswers[i] == model.TranslateToArray[i])
+                if (model.UserAnswers[i].ToUpper() == model.TranslateToArray[i].ToUpper())
                     points++;
             }
             return points;
@@ -138,11 +138,13 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public IActionResult CreateExercise()
         {
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> MyExercises(int? pageNumber, string typeParam)
         {
             ViewData["ExerciseTypeParam"] = String.IsNullOrEmpty(typeParam) ? "" : typeParam;
@@ -222,6 +224,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public IActionResult EditExercise(int exerciseID)
         {
@@ -229,6 +232,7 @@ namespace ThesisWebApp.Controllers
             return View(exercise);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public async Task<IActionResult> EditExercise(Exercise model)
         {
@@ -241,6 +245,7 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("MyExercises", "Exercise");
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> DeleteExercise(int exerciseID)
         {
             if (await CanRemoveExercise(exerciseID))
@@ -263,6 +268,7 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("ExerciseWarning", "Exercise", new { exerciseName = exercise.Name });
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public IActionResult ExerciseWarning(string exerciseName)
         {

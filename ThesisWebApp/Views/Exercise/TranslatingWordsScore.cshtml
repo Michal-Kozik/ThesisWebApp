@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        @if (Model.UserAnswers[i] == Model.TranslateToArray[i])
+                        @if (Model.UserAnswers[i].ToUpper() == Model.TranslateToArray[i].ToUpper())
                         {
                             <input value="@Model.UserAnswers[i]" class="form-control is-valid" readonly />
                         }

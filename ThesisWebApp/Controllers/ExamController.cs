@@ -12,7 +12,7 @@ using ThesisWebApp.ViewModels;
 
 namespace ThesisWebApp.Controllers
 {
-    //[Authorize(Roles = "Teacher")]
+    [Authorize]
     public class ExamController : Controller
     {
         private ApplicationDbContext context = new ApplicationDbContext();
@@ -94,6 +94,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public async Task<IActionResult> MyExams(int? pageNumber)
         {
@@ -108,6 +109,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public IActionResult EditExam(int examID)
         {
@@ -132,6 +134,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> ArchiveExam(int examID)
         {
             using (var context = new ApplicationDbContext())
@@ -143,6 +146,7 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("MyExams", "Exam");
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public async Task<IActionResult> EditExam(ExamViewModel model)
         {
@@ -194,6 +198,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> ArchivedExam(int? pageNumber, int examID)
         {
             ViewData["ExamID"] = examID;
@@ -208,6 +213,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public async Task<IActionResult> ExamsResults(int? pageNumber)
         {
@@ -222,6 +228,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public async Task<IActionResult> ParticularExamResults(int? pageNumber, int examID)
         {
@@ -239,6 +246,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public async Task<IActionResult> CreateExam(int? pageNumber)
         {
@@ -254,6 +262,7 @@ namespace ThesisWebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public IActionResult ShowExercise(int exerciseID)
         {
@@ -271,6 +280,7 @@ namespace ThesisWebApp.Controllers
             return View(exercise);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public IActionResult ExamSettings()
         {
@@ -288,7 +298,8 @@ namespace ThesisWebApp.Controllers
                 return RedirectToAction("DeadEnd", "Home");
             }
         }
-        
+
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public async Task<IActionResult> ExamSettings(ExamViewModel model)
         {
@@ -356,6 +367,7 @@ namespace ThesisWebApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public IActionResult AddToExam(int exerciseID)
         {
             if (String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
@@ -373,6 +385,7 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("CreateExam");
         }
 
+        [Authorize(Roles = "Teacher")]
         public IActionResult RemoveFromExam(int exerciseID)
         {
             if (!String.IsNullOrEmpty(Request.Cookies["ChoosenExercises"]))
@@ -395,6 +408,7 @@ namespace ThesisWebApp.Controllers
             return RedirectToAction("CreateExam");
         }
 
+        [Authorize(Roles = "Teacher")]
         public IActionResult ClearCookie()
         {
             Response.Cookies.Delete("ChoosenExercises");
