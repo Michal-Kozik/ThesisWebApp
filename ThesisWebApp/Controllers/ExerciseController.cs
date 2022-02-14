@@ -30,6 +30,8 @@ namespace ThesisWebApp.Controllers
             int points = 0;
             for (int i = 0; i < model.NumberOfWords; i++)
             {
+                if (model.UserAnswers[i] == null)
+                    model.UserAnswers[i] = "";
                 if (model.UserAnswers[i].ToUpper() == model.TranslateToArray[i].ToUpper())
                     points++;
             }
